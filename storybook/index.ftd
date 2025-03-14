@@ -10,27 +10,23 @@
 -- import: design-system.fifthtry.site/actions/navigate
 export: active-file-content, active-title, active-sub-title, submit
 
--- optional string $active-file-preview-url: /storybook/self/
+-- optional string $active-file-preview-url: /storybook/calender/
 -- string $active-title: Dashboard
 -- string $active-sub-title: For Site Owner
 
 ;;           end storybook navigate module
-
-
-
 -- ds.page: Storybook
 fastn-badge: false
 
-;; -- ds.storybook:
-;; list-of-files: $toc
-;; navigate: storybook
+-- ds.storybook:
+list-of-files: $toc
+navigate: storybook
 -- end: ds.page
-
 
 -- pr.toc-item list toc:
 $processor$: pr.toc
 
 - Dashboard:
-  - For Site Owner: /storybook/self/
-  - For Site Owner - feed: /storybook/feed/
-  - For Others: /storybook/others/
+  - For Site Owner: /storybook/calender/
+;;   - For Site Owner - feed: /storybook/feed/
+;;   - For Others: /storybook/others/

@@ -1,1 +1,13 @@
+-- ftd.column:
+-- ftd.row:
+align-content: center
+background.solid: black
+border-bottom.solid: white
 
+	-- ftd.text: Calendar
+	color: white
+	
+	
+-- end: ftd.row
+
+-- end: ftd.column

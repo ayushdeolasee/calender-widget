@@ -1,0 +1,42 @@
+-- import: lets-update.fifthtry.site/actions/dummy
+-- import: lets-update.fifthtry.site as lets-update
+
+
+-- lets-update.self-page:
+viewer-is-owner: true
+feed-url: /storybook/feed/
+page: $page
+actions: dummy
+
+
+
+
+-- lets-update.paged-updates page:
+items: $updates
+
+
+
+
+-- lets-update.update list updates:
+
+-- lets-update.update: Some thought on `cdp_feed`
+permalink: /
+created-at: 21st Jan 2025
+
+This app assumes every domain is a single user domain. This means for companies
+and other orgs, the `cdp_feed` table should not be used. Orgs can create updates
+so the `cdp_update` table should be used.
+
+
+
+-- lets-update.update: Update with only title
+permalink: /
+created-at: 21st Jan 2025
+
+-- lets-update.update:
+permalink: /
+created-at: 21st Jan 2025
+
+Update with only body
+
+-- end: updates
