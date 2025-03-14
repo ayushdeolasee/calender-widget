@@ -13,8 +13,7 @@ border-width.px: 2
 	
 		-- ftd.text: Date selector
 		 color: white
-		-- ftd.text: Time selector
-		 color: white
+		
 	-- end: ftd.container
 -- end: ftd.row
 
