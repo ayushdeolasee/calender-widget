@@ -1,0 +1,69 @@
+-- ds.page: `ds.copy-regular`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+
+-- ds.section-column:
+flush: full
+align-content: left
+
+-- ds.detail: `ds.copy-regular`
+
+`ds.copy-regular` is the standard body
+text style, often used for paragraphs
+across the site. It’s readable and
+versatile for most informational content.
+
+-- ds.heading-medium: Attributes
+
+-- ds.heading-small: `align`
+
+Aligns the heading within the page, section or container.
+
+-- ds.heading-small: `color`
+
+Sets the color of the heading. Accepts both predefined
+design system colors and CSS color names.
+
+-- ds.heading-small: `link`
+
+Allows the heading to be clickable by providing a URL.
+
+-- ds.heading-small: `style`
+
+Takes values from [`ftd.text-style`](https://fastn.com/built-in-types#ftd-text-style),
+such as bold, extra-bold, etc.
+
+-- ds.heading-small: `white-space`
+
+It specifies how white-space inside an element is handled.
+To learn more, check out this documentation on
+[`ftd.white-space`](https://fastn.com/built-in-types#ftd-white-space)
+
+-- ds.rendered:
+
+\-- ds.copy-regular: 
+style: semi-bold
+
+Photography is not just about capturing an image; it’s about *telling a story*.
+With a keen eye for detail, every frame captures emotions and
+memories that last a lifetime.
+
+-- ds.copy-regular:
+style: semi-bold
+
+Photography is not just about capturing an image; it’s about *telling a story*.
+With a keen eye for detail, every frame captures emotions and
+memories that last a lifetime.
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+
+ 

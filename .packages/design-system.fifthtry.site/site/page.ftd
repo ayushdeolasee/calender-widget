@@ -1,0 +1,48 @@
+-- site-page: Site Page
+
+-- end: site-page
+
+-- component site-page:
+caption title:
+optional body description:
+children content:
+ds.gap spacing: $ds.spaces.vertical-gap.medium
+ds.hv inset: $ds.spaces.inset-square.medium
+ds.page-widths widths: $ds.widths
+;; todo: is the follow reference to `.gap` correct?
+ds.gap margin: $ds.spaces.vertical-gap.zero
+ftd.background.solid background: $ds.colors.background.base
+boolean theme-switcher: true
+boolean fastn-badge: true
+ftd.align align-content: top-left
+
+;; -- ds.page: $ds.site-title(title=$site-page.title)
+-- ds.page: $site-page.title
+description: $site-page.description
+spacing: $site-page.spacing
+inset: $site-page.inset
+widths: $site-page.widths
+margin: $site-page.margin
+/background: $site-page.background
+theme-switcher: $site-page.theme-switcher
+fastn-badge: $site-page.fastn-badge
+align-content: $site-page.align-content
+
+-- ds.site-header:
+
+;; how to update properties to this wrapper?
+-- ds.section-column:
+align-content: $site-page.align-content
+content: $site-page.content
+spacing: $site-page.spacing
+inset: $site-page.inset
+margin: $ds.spaces.vertical-gap.large
+min-height.fixed.calc: 100vh - 220px
+
+-- end: ds.section-column
+
+-- ds.site-footer:
+
+-- end: ds.page
+
+-- end: site-page

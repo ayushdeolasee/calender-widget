@@ -1,0 +1,111 @@
+-- component skeleton:
+boolean avatar: false
+
+-- ds.row:
+align-content: top-left
+spacing: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.medium
+
+-- ds.column:
+if: { skeleton.avatar }
+height.fixed.px: 46
+width.fixed.px: 46
+radius: $ds.radius.round
+background.solid: $ds.colors.background.step-2
+
+-- end: ds.column
+
+-- ds.column:
+align-content: left
+
+-- ds.column:
+height.fixed.px: 20
+radius: $ds.radius.small
+background.solid: $ds.colors.background.step-2
+
+-- end: ds.column
+
+-- ds.column:
+width.fixed.percent: 86
+height.fixed.px: 20
+radius: $ds.radius.small
+background.solid: $ds.colors.background.step-2
+
+-- end: ds.column
+
+-- ds.column:
+height.fixed.px: 20
+radius: $ds.radius.small
+background.solid: $ds.colors.background.step-2
+
+-- end: ds.column
+
+-- ds.column:
+height.fixed.px: 20
+width.fixed.percent: 86
+radius: $ds.radius.small
+background.solid: $ds.colors.background.step-2
+
+-- end: ds.column
+
+-- end: ds.column
+	
+-- end: ds.row
+
+-- end: skeleton
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Skeleton
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+flush: full
+align-content: center
+
+	-- ds.detail: Skeleton
+
+	The skeleton component in our design system provides a placeholder
+	representation of content while it loads, offering users visual
+	feedback and indicating that content is on its way. With its simple
+	and lightweight structure, the skeleton component helps maintain
+	layout consistency and reduces perceived loading times, enhancing the
+	user experience.
+
+	
+		-- ds.rendered:
+		
+		 \-- ds.skeleton:
+		
+			-- skeleton:
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		 \-- ds.skeleton:
+		 avatar: true
+		
+			-- skeleton:
+			avatar: true
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+	

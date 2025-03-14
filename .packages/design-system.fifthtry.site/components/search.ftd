@@ -1,0 +1,164 @@
+
+-- or-type search-size:
+
+-- constant integer large: 0
+-- constant integer medium: 1
+-- constant integer small: 2
+
+-- end: search-size
+
+
+
+
+
+
+
+
+
+
+
+-- component search:
+optional caption label:
+optional string placeholder:
+optional string cta-text:
+optional ftd.image-src icon-start:
+optional ftd.image-src icon-end:
+boolean button-in: false
+search-size size: medium
+boolean rounded: false
+boolean $flag: false
+
+-- ds.column:
+align-content: top-left
+spacing: $ds.spaces.vertical-gap.small
+inset: $ds.spaces.inset-square.zero
+
+	-- ds.copy-small: $search.label
+	if: { search.label != NULL }
+
+	-- ds.row:
+	spacing: $ds.spaces.horizontal-gap.small
+
+	-- ds.row:
+	width: fill-container
+	border-color: $inherited.colors.border
+	radius: $ds.radius.medium
+	border: $ds.borders.uniform.small
+	inset if { $search.size == small }: $ds.spaces.inset-wide.small
+	inset if { $search.size == medium }: $ds.spaces.inset-wide.medium
+	inset if { $search.size == large }: $ds.spaces.inset-wide.large
+	height.fixed.px if { $search.size == small }: 38
+	height.fixed.px if { $search.size == medium }: 40
+	height.fixed.px if { $search.size == large }: 42
+	background.solid: $inherited.colors.background.step-1
+	border-color if { search.flag }: $inherited.colors.shadow
+	
+	-- ftd.image:
+	if: { search.icon-start }
+	src: $search.icon-start
+	width.fixed.px: 20
+	align-self: center 
+		
+		-- ftd.text-input:
+		placeholder: $search.placeholder
+		width: fill-container
+		background.solid: $inherited.colors.background.step-1
+		color: $ds.colors.text-strong
+		$on-focus$: $ftd.set-bool($a = $search.flag, v = true)
+		$on-blur$: $ftd.set-bool($a = $search.flag, v = false)
+		
+		-- ftd.image:
+		if: { search.icon-end }
+		src: $search.icon-end
+		width.fixed.px: 20
+		align-self: center
+		
+	-- end: ds.row
+
+	-- ds.primary-button: $search.cta-text
+	link: /
+
+	-- end: ds.row
+	
+-- end: ds.column
+
+-- end: search
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Search
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+flush: full
+align-content: center
+
+	-- ds.detail: Search
+
+	A search component in a design system is a modular element designed to
+	facilitate user navigation and content discovery within an application
+	or website. Typically represented by a text input field accompanied by
+	a search icon, it allows users to input queries and retrieve relevant
+	information from a database or content repository.
+	
+		-- ds.rendered:
+		
+		 \-- ds.search: Search
+		placeholder: Search here...
+		cta-text: Search
+        
+			-- search: Search
+            cta-text: Search
+			placeholder: Search here...
+			
+		-- end: ds.rendered
+
+        -- ds.rendered:
+
+        \-- ds.search: Search
+        placeholder: Search here..
+        size: medium
+        cta-text: Search
+        icon-start: $assets.files.assets.convert.svg
+        
+        -- search: Search
+        cta-text: Search
+		placeholder: Search here...
+		size: medium
+        icon-start: $assets.files.assets.convert.svg
+
+		-- end: ds.rendered
+
+        -- ds.rendered:
+
+        \-- ds.search: Search
+        placeholder: Search here...
+        size: medium
+        cta-text: Search
+        icon-end: $assets.files.assets.convert.svg
+
+		-- search: Search
+        cta-text: Search
+		placeholder: Search here...
+		size: medium
+        icon-end: $assets.files.assets.convert.svg
+
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

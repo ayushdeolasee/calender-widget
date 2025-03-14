@@ -1,0 +1,19 @@
+-- import: fastn
+
+-- fastn.package: inter-typography.fifthtry.site
+
+-- fastn.dependency: package-doc.fifthtry.site
+-- fastn.dependency: inter-font.fifthtry.site
+
+
+
+-- fastn.sitemap:
+
+
+# Home: index.html
+
+- fastn typography: fastn-typography/
+
+
+# GitHub
+  url: https://github.com/fastn-community/inter-typography

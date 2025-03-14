@@ -1,0 +1,135 @@
+-- import: design-system.fifthtry.site/foundation-elements/borders
+
+-- component card:
+caption title:
+optional body body:
+optional ftd.image-src image:
+optional string cta-text:
+optional string cta-link:
+ds.border-data border: $ds.borders.uniform.zero
+ftd.color border-color: $ds.colors.border
+ftd.resizing width: fill-container
+optional ftd.resizing max-width:
+
+-- ftd.column:
+border-radius.px: 8
+padding.px: 24
+width: $card.width
+border-color: $card.border-color
+border-top-width.px: $card.border.top
+border-bottom-width.px: $card.border.bottom
+border-left-width.px: $card.border.left
+border-right-width.px: $card.border.right
+
+	-- ds.column:
+	align-content: left
+	
+		-- ftd.image:
+		src: $card.image
+		width: fill-container
+		border-radius.px: $ds.radius.uniform.small
+
+		-- ds.heading-tiny: $card.title
+		
+		-- ds.copy-small: $card.body
+        if: { card.body != NULL }
+
+		-- ds.primary-button: $card.cta-text
+		if: { card.cta-text != NULL }
+		link: $card.cta-link
+		width: full
+
+	-- end: ds.column
+
+-- end: ftd.column
+
+-- end: card
+
+
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Card
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Card Component
+	
+	The card component in our design system offers a modular way to present
+	content and functionality within interfaces. With its structured
+	layout and customizable elements such as imagery, text, and
+	interactive elements, it provides flexibility for displaying various
+	types of information, from articles and product listings to user
+	profiles and interactive widgets.
+
+	-- ds.rendered:
+	
+	\-- ds.card: Card component title
+	image: $assets.files.assets.placeholder.jpg
+	cta-text: Button
+	cta-link: /
+	
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum.
+	
+		-- card: Card component title
+		image: $assets.files.assets.placeholder.jpg
+		cta-text: Button
+		
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+		molestie ante in luctus rutrum.
+		
+	-- end: ds.rendered
+
+	-- ds.rendered:
+	
+	\-- ds.card: Card component title
+	image: $assets.files.assets.placeholder.jpg
+	
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum.
+	
+		-- card: Card component title
+		image: $assets.files.assets.placeholder.jpg
+		
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+		molestie ante in luctus rutrum.
+		
+	-- end: ds.rendered
+
+	-- ds.rendered:
+
+	\-- ds.card: Card component title
+	cta-text: Button
+	cta-link: /
+	
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum.
+	
+		-- card: Card component title
+		cta-text: Button
+		
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+		molestie ante in luctus rutrum.
+		
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

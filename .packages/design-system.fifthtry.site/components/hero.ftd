@@ -1,0 +1,163 @@
+-- component hero:
+caption title:
+body body:
+optional ftd.image-src image:
+optional string cta-text:
+optional string cta-link:
+optional ftd.background background:
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.space-between
+background: $hero.background
+inset: $ds.spaces.inset-square.small
+radius: $ds.radius.zero
+
+-- ds.column:
+width.fixed.px if { hero.image != NULL }: 500
+align-content: left
+inset: $ds.spaces.inset-square.zero
+
+-- ds.heading-large: $hero.title
+
+-- ds.copy-regular: $hero.body
+
+-- ds.primary-button: $hero.cta-text
+if: { hero.cta-text != NULL }
+link: $hero.cta-link
+
+-- end: ds.column
+
+-- ftd.image:
+if: { hero.image != NULL }
+src: $hero.image
+width.fixed.px: 460
+
+-- end: ds.row
+
+-- end: hero
+
+
+
+
+
+
+
+-- ds.page: Hero Component
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Hero
+
+	The hero component in our design system offers a visually striking and
+	prominent section at the top of a webpage or interface. With its
+	customizable layout and rich media capabilities, it provides an
+	engaging introduction to content or key features.
+
+	-- ds.rendered:
+		
+	\-- ds.hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+	cta-text: button
+	cta-link: /
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+
+	-- hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+	cta-text: button
+	cta-link: /
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+	
+	-- end: ds.rendered
+
+	-- ds.rendered:
+	
+	\-- ds.hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+	cta-text: button
+	cta-link: /
+	background.solid: $ds.colors.background.step-1
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+
+	-- hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+	cta-text: button
+	cta-link: /
+	background.solid: $ds.colors.background.step-1
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+	
+	-- end: ds.rendered
+
+	-- ds.rendered:
+	
+	\-- ds.hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+
+	-- hero: Hero component title
+	image: $assets.files.assets.placeholder.jpg
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+	
+	-- end: ds.rendered
+
+	-- ds.rendered:
+	
+	\-- ds.hero: Hero component title
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+
+	-- hero: Hero component title
+
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+	molestie ante in luctus rutrum. Lorem ipsum dolor sit amet,
+	consectetur adipiscing elit. Quisque molestie ante in luctus
+	rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque molestie ante in luctus rutrum.
+	
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

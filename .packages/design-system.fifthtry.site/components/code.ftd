@@ -1,0 +1,240 @@
+-- import: svg-icons.fifthtry.site/phosphor as ph
+
+-- component code:
+optional caption caption:
+optional body body:
+optional string icon:
+string text: $code.body
+string lang: ftd
+boolean copy: true
+string $copy-text: null
+boolean $copy-mouse-in: false
+boolean $mouse-in: false
+optional ftd.resizing max-height:
+optional ftd.resizing max-width:
+string clean-code: $ftd.clean-code(a = $code.text, lang = $code.lang)
+boolean line-numbers: false
+
+-- ds.section-column:
+inner-background.solid: $inherited.colors.background.code
+spacing: $ds.spaces.vertical-gap.zero
+radius: $ds.radius.large
+margin: $ds.spaces.vertical-gap.medium
+
+ -- ds.row:
+ if: { code.caption != NULL || code.copy }
+ spacing: $ds.spaces.horizontal-gap.medium
+ inset: $ds.spaces.inset-square.medium
+ width: fill-container
+ border: $ds.borders.bottom.small
+ border-color: $ds.colors.border-strong
+ radius: $ds.radius.zero
+
+   -- ds.row:
+   align-content: left
+
+   -- ds.row:
+   width: hug-content
+   align-content: left
+   spacing: $ds.spaces.horizontal-gap.extra-small
+
+   	-- ph.fill:
+   	if: { code.icon == NULL }
+   	name: circle
+    size: 14
+
+    -- ph.fill:
+    if: { code.icon == NULL }
+   	name: circle
+    size: 14
+
+    -- ph.fill:
+    if: { code.icon == NULL }
+   	name: circle
+    size: 14
+
+    -- end: ds.row
+
+      -- ph.regular: 
+      if: { code.icon != NULL }
+      name: $code.icon
+      size: 18
+
+      -- ds.copy-regular:
+      if: { code.caption != NULL }
+
+      $code.caption
+
+    -- end: ds.row
+		
+		-- ds.row:
+		if: { code.copy }
+		$on-mouse-enter$: $ftd.set-bool($a = $code.mouse-in, v = true)
+		$on-mouse-leave$: $ftd.set-bool($a = $code.mouse-in, v = false)
+		$on-mouse-leave$: $ftd.set-string($a = $code.copy-text, v = null)
+		width: hug-content
+		spacing: $ds.spaces.horizontal-gap.small
+
+		-- ftd.image:
+		if: { code.copy-text == "null" }
+		src: $assets.files.assets.copy.svg
+		src if { code.copy-mouse-in }: $assets.files.assets.copy-hover.svg
+		$on-mouse-enter$: $ftd.set-bool($a = $code.copy-mouse-in, v = true)
+		$on-mouse-leave$: $ftd.set-bool($a = $code.copy-mouse-in, v = false)
+		$on-click$: $ftd.copy-to-clipboard(a = $code.clean-code)
+		$on-click$: $ftd.set-string($a = $code.copy-text, v = Copied!)
+		width.fixed.px: 18
+
+		-- ftd.image:
+		if: { code.copy-text != "null" }
+		src: $assets.files.assets.tick.svg
+		width.fixed.px: 18
+
+		-- ds.copy-regular: $code.copy-text
+		if: { code.copy-text != "null" }
+
+		-- end: ds.row
+
+	-- end: ds.row
+  
+	-- ftd.code:
+	theme: fastn-theme.light
+	theme if { ftd.dark-mode }: fastn-theme.dark
+	text: $code.body
+	lang: $code.lang
+	width: fill-container
+	role: $inherited.types.copy-regular
+	color: $inherited.colors.text
+	background.solid: $inherited.colors.background.code
+	overflow-x: auto
+	overflow-y: auto
+	max-height if { code.max-height != NULL }: $code.max-height
+	max-width if { code.max-width != NULL }: $code.max-width
+	show-line-number if { code.line-numbers }: true
+	
+	-- ftd.column:
+	if: { code.lang != NULL }
+	anchor: parent
+	right.px: 12
+	bottom.px: 12
+	z-index: 999
+	padding.px: 6
+	border-bottom-right-radius.px: 4
+	
+		-- ds.row:
+		spacing: $ds.spaces.horizontal-gap.medium
+		
+			-- ds.row:
+			spacing: $ds.spaces.horizontal-gap.small
+			
+				-- ds.fine-print: Lang:
+				
+				-- ds.fine-print: $code.lang
+				
+			-- end: ds.row
+
+		-- end: ds.row
+
+	-- end: ftd.column
+
+-- end: ds.section-column
+
+-- end: code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Code Block
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+		-- ds.detail: Code
+
+		The code component in our design system offers a clean and readable way to
+		display and format code snippets within interfaces. With syntax
+		highlighting it enhances readability and comprehension for developers
+		and users alike.
+
+	-- ds.rendered:
+		
+		\-- ds.code:
+
+		\-- ds.column:
+		width.fixed.px: 84
+		height.fixed.px: 84
+		background.solid: $ds.colors.background.step-1
+
+		\-- ds.copy-regular: Text
+
+		\-- end: ds.column
+
+		\-- end: ds.code
+		
+		-- code:
+
+		\-- ds.column:
+		width.fixed.px: 84
+		height.fixed.px: 84
+		background.solid: $ds.colors.background.step-1
+
+		\-- ds.copy-regular: Text
+
+		\-- end: ds.column
+
+		-- end: code
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.code: index.ftd
+		copy-text: copied
+
+		\-- ds.column:
+		width.fixed.px: 84
+		height.fixed.px: 84
+		background.solid: $ds.colors.background.step-1
+
+		\-- ds.copy-regular: Code with caption
+
+		\-- end: ds.column
+
+		\-- end: ds.code
+		
+		-- code: index.ftd
+
+		\-- ds.column:
+		width.fixed.px: 84
+		height.fixed.px: 84
+		background.solid: $ds.colors.background.step-1
+
+		\-- ds.copy-regular: Code with caption
+
+		\-- end: ds.column
+
+		-- end: code
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

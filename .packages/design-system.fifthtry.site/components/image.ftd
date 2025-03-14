@@ -1,0 +1,116 @@
+-- import: design-system.fifthtry.site/foundation-elements/radius
+
+
+-- component image:
+optional caption title:
+optional body body:
+ftd.image-src src:
+ftd.resizing width: fill-container
+optional ftd.resizing max-width:
+optional ftd.resizing height:
+ds.element-radius radius: $ds.radius.zero
+ds.border-data border: $ds.borders.uniform.zero
+ftd.color border-color: $ds.colors.border
+string list css:
+optional string link:
+string list js:
+optional ftd.shadow shadow:
+
+-- ftd.column:
+spacing.fixed.px: 12
+align-content: left
+
+-- ftd.column:
+spacing.fixed.px: 6
+align-content: center
+
+-- ftd.image:
+src: $image.src
+width: $image.width
+max-width.fixed.px: $image.max-width
+link: $image.link
+border-color: $image.border-color
+height: $image.height
+border-top-left-radius.px if { image.radius.top-left != $radius.HACK-RADIUS-ROUND }: $image.radius.top-left
+border-top-right-radius.px if { image.radius.top-right != $radius.HACK-RADIUS-ROUND }: $image.radius.top-right
+border-bottom-left-radius.px if { image.radius.bottom-left != $radius.HACK-RADIUS-ROUND }: $image.radius.bottom-left
+border-bottom-right-radius.px if { image.radius.bottom-right != $radius.HACK-RADIUS-ROUND }: $image.radius.bottom-right
+border-top-left-radius.percent if { image.radius.top-left == $radius.HACK-RADIUS-ROUND }: 50
+border-top-right-radius.percent if { image.radius.top-right == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-left-radius.percent if { image.radius.bottom-left == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-right-radius.percent if { image.radius.bottom-right == $radius.HACK-RADIUS-ROUND }: 50
+border-top-width.px: $image.border.top
+border-bottom-width.px: $image.border.bottom
+border-left-width.px: $image.border.left
+border-right-width.px: $image.border.right
+css: $image.css
+js: $image.js
+shadow: $image.shadow
+
+-- ftd.text: $image.title
+if: { image.title != NULL }
+color: $inherited.colors.text
+role: $inherited.types.fine-print
+text-align: center
+
+-- end: ftd.column
+
+-- ds.copy-regular:
+if: { image.body != NULL }
+
+$image.body
+
+-- end: ftd.column
+
+-- end: image
+
+
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Image
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Image
+	
+	The image component in a design system serves as a standardized element for
+	displaying visual content within digital interfaces. It allows designers and
+	developers to easily incorporate images, photographs, icons, and other
+	graphical elements into their designs while maintaining consistency and
+	scalability across different platforms and screen sizes.
+
+	-- ds.rendered:
+	
+	\-- ds.image: Image title
+	src: $assets.files.assets.placeholder.png
+
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+	
+		-- image: Image title
+		src: $assets.files.assets.placeholder.png
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua
+		
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

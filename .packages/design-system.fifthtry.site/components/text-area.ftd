@@ -1,0 +1,68 @@
+-- component text-area:
+optional caption label:
+string placeholder:
+boolean $flag: false
+
+-- ds.column:
+align-content: top-left
+spacing: $ds.spaces.vertical-gap.small
+inset: $ds.spaces.inset-square.zero
+
+	-- ds.copy-small: $text-area.label
+	if: { text-area.label != NULL }
+		
+		-- ftd.text-input:
+		placeholder: $text-area.placeholder
+		width: fill-container
+		background.solid: $inherited.colors.background.base
+		color: $ds.colors.text-strong
+		border-color if { text-area.flag }: $inherited.colors.shadow
+        border-color: $inherited.colors.border
+        border-radius.px: 8
+		border-width.px: 1
+		$on-focus$: $ftd.set-bool($a = $text-area.flag, v = true)
+		$on-blur$: $ftd.set-bool($a = $text-area.flag, v = false)
+		multiline: true
+		padding.px: 24
+	
+-- end: ds.column
+
+-- end: text-area
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Text Input
+
+-- ftd.column:
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Text Area
+
+	The text area component in our design system provides a user-friendly
+	interface for multi-line text input within forms or interfaces.
+	
+		-- ds.rendered:
+		
+		 \-- ds.text-area: Label
+		 placeholder: Enter your text
+		
+			-- text-area: Label
+			placeholder: Enter your text
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

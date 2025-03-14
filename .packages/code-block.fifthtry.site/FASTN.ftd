@@ -1,0 +1,26 @@
+-- import: fastn
+
+-- fastn.package: code-block.fifthtry.site
+
+
+-- fastn.dependency: site-doc.fifthtry.site
+
+-- fastn.auto-import: code-block.fifthtry.site as cb
+-- fastn.auto-import: code-block.fifthtry.site/assets
+-- fastn.auto-import: site-doc.fifthtry.site as site-doc
+
+
+
+
+-- fastn.sitemap:
+
+# Home: /
+
+- Overview: /
+- Documentation: /docs/
+
+- Examples: /docs/code/
+  - Code Block: /docs/code/
+  - Rendered Code Block: /docs/rendered/
+
+- Contribute: contribute/

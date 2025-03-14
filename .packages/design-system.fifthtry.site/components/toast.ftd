@@ -1,0 +1,84 @@
+-- component toast:
+caption title:
+body body:
+string cta-text:
+boolean $toggle: false
+
+-- ds.section-column:
+align-content: left
+
+-- ds.secondary-button: $toast.cta-text
+$on-click$: $ftd.toggle($a = $toast.toggle)
+
+-- ftd.row:
+if: { toast.toggle }
+anchor: window
+left.px: 4
+background.solid: $inherited.colors.background.step-1
+border-width.px: 1
+padding.px: 18
+border-radius.px: 8
+width.fixed.px: 420
+bottom.px: 0
+spacing: space-between
+align-self: center
+align-content: center
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.small
+align-content: left
+
+-- ds.heading-tiny: $toast.title
+
+-- ds.copy-small: $toast.body
+
+-- end: ds.column
+
+-- ds.secondary-button: Undo
+$on-click$: $ftd.toggle($a = $toast.toggle)
+
+-- end: ftd.row
+
+-- end: ds.section-column
+
+-- end: toast
+
+
+
+
+
+-- ds.page: Toast
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Toast
+
+	The toast component in our design system provides a non-intrusive and
+	temporary way to display brief messages or notifications to users.
+
+	-- ds.rendered:
+		
+		\-- ds.toast: This is title
+		cta-text: Open
+		
+		This is body part for the toast component.
+
+		-- toast: This is title
+		cta-text: Open
+		
+		This is body part for the toast component.
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

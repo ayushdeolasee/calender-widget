@@ -1,0 +1,160 @@
+-- import: design-system.fifthtry.site/record as r
+
+-- component expander:
+optional caption title:
+r.expander list expanders-list:
+
+-- ds.column:
+inset: $ds.spaces.inset-square.medium
+spacing: $ds.spaces.vertical-gap.large
+radius: $ds.radius.large
+
+-- ds.heading-medium: $expander.title
+if: { expander.title != NULL }
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.large
+
+-- expander-content: $obj.title
+for: $obj in $expander.expanders-list 
+body: $obj.body
+
+-- end: ds.column
+
+-- end: ds.column
+
+-- end: expander
+
+
+
+
+
+
+
+
+
+
+-- component expander-content:
+caption title: 
+body body:
+optional ftd.image-src icon:
+boolean $toggle: false
+
+-- ds.column:
+align-content: left
+
+-- ds.row:
+$on-click$: $ftd.toggle($a = $expander-content.toggle)
+align-content: left
+
+-- ftd.image:
+src: $assets.files.assets.right.svg
+src if { expander-content.toggle }: $assets.files.assets.down.svg
+height.fixed.px: 28
+width.fixed.px: 28
+
+-- ds.heading-tiny: $expander-content.title
+color: $ds.colors.text-strong
+
+-- end: ds.row
+
+-- ds.copy-regular:
+if: { $expander-content.body != NULL && expander-content.toggle }
+color: $ds.colors.text-strong
+
+$expander-content.body
+
+-- end: ds.column
+
+-- end: expander-content
+
+
+
+
+
+-- r.expander list list-of-expanders:
+
+-- r.expander: Are there really zero fees?
+
+At Fastn, we believe businesses shouldn’t have to wait or pay to access money
+they’ve already earned. That’s why it doesn’t cost a penny to create an account
+and there are zero transaction fees when you use the Fastn platform to pay and
+get paid. If you decide to leverage some of our more premium payment features
+(like Fastn Flow, which lets you get paid before your client pays you) there
+may be a small service fee—
+
+-- r.expander: Is Fastn secure?
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie ante
+in luctus rutrum.
+
+-- r.expander: Does Fastn replace my accounting software?
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie ante
+in luctus rutrum.
+
+-- end: list-of-expanders
+
+
+
+
+
+
+
+
+
+-- ds.page: Expander
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Expander
+
+	The expander component in our design system offers an intuitive way to
+	manage and display content that can be expanded or collapsed based on
+	user interaction. With its compact initial state and clear affordances
+	for expansion, it helps conserve screen space while providing access
+	to additional information or details.
+
+	-- ds.rendered:
+		
+		\-- ds.expander: Your title here
+		expanders-list: $list-of-expanders
+
+		\-- r.expander list list-of-expanders:
+
+		\-- r.expander: Are there really zero fees?
+
+		At Fastn, we believe businesses shouldn’t have to wait or pay to access money
+		they’ve already earned. That’s why it doesn’t cost a penny to create an account
+		and there are zero transaction fees when you use the Fastn platform to pay and
+		get paid.
+
+		\-- r.expander: Is Fastn secure?
+
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie ante
+		in luctus rutrum.
+
+		\-- r.expander: Does Fastn replace my accounting software?
+
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie ante
+		in luctus rutrum.
+
+		\-- end: list-of-expanders
+		
+		-- expander: Your title here
+		expanders-list: $list-of-expanders
+
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

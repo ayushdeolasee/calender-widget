@@ -1,0 +1,349 @@
+-- import: fastn/processors as pr
+-- import: design-system.fifthtry.site/record as sr
+-- import: dark-flame-cs.fifthtry.site
+-- import: fastn-typography.fifthtry.site
+-- import: design-system.fifthtry.site/web-components
+-- import: design-system.fifthtry.site/style
+
+-- import: design-system.fifthtry.site/foundation-elements/borders as _
+export: border-data, border-thickness, borders
+exposing: border-data, border-thickness, borders
+
+-- import: design-system.fifthtry.site/foundation-elements/shadow as _
+export: shadow-data, shadow
+
+-- import: design-system.fifthtry.site/record as _
+export: package-info, tabs
+
+-- import: design-system.fifthtry.site/components/tab-button as _
+export: tab-button
+
+-- import: design-system.fifthtry.site/components/code as _
+export: code
+exposing: code
+
+-- import: design-system.fifthtry.site/components/newsletter as _
+export: newsletter
+
+-- import: design-system.fifthtry.site/components/tag as _
+export: tag
+
+-- import: design-system.fifthtry.site/components/action-button as _
+export: action-button
+
+-- import: design-system.fifthtry.site/components/spinner as _
+export: spinner
+
+-- import: design-system.fifthtry.site/components/dark-mode-toggle as _
+export: dark-mode-toggle
+exposing: dark-mode-toggle
+
+-- import: design-system.fifthtry.site/components/toast as _
+export: toast
+
+-- import: design-system.fifthtry.site/components/scroll-area as _
+export: scroll-area
+
+-- import: design-system.fifthtry.site/components/expander as _
+export: expander
+
+-- import: design-system.fifthtry.site/components/drawer as _
+export: drawer
+
+-- import: design-system.fifthtry.site/components/dropdown as _
+export: dropdown
+
+-- import: design-system.fifthtry.site/components/config-readme as _
+export: config-readme
+
+-- import: design-system.fifthtry.site/components/assets-readme as _
+export: assets-readme
+
+-- import: design-system.fifthtry.site/components/readme as _
+export: readme
+
+-- import: design-system.fifthtry.site/components/hero as _
+export: hero
+
+-- import: design-system.fifthtry.site/components/modal as _
+export: modal
+
+-- import: design-system.fifthtry.site/components/image-card as _
+export: image-card
+
+-- import: design-system.fifthtry.site/components/empty-page as _
+export: empty-page
+
+-- import: design-system.fifthtry.site/components/timeline as _
+export: timeline, timeline-info, timeline-content
+
+-- import: design-system.fifthtry.site/components/band as _
+export: band
+
+-- import: design-system.fifthtry.site/components/video as _
+export: video
+
+-- import: design-system.fifthtry.site/components/person-card as _
+export: person-card
+
+-- import: design-system.fifthtry.site/components/avatar as _
+export: avatar
+
+-- import: design-system.fifthtry.site/components/icon-banner as _
+export: icon-banner
+
+-- import: design-system.fifthtry.site/components/text-area as _
+export: text-area
+
+-- import: design-system.fifthtry.site/components/toggle-image-link as _
+export: toggle-image-link
+
+-- import: design-system.fifthtry.site/components/skeleton as _
+export: skeleton
+
+-- import: design-system.fifthtry.site/components/rating as _
+export: rating
+
+-- import: design-system.fifthtry.site/components/detail as _
+export: detail
+
+-- import: design-system.fifthtry.site/components/card as _
+export: card
+
+-- import: design-system.fifthtry.site/components/divider as _
+export: divider
+
+-- import: design-system.fifthtry.site/components/image as _
+export: image
+
+-- import: design-system.fifthtry.site/components/pagination as _
+export: pagination
+
+-- import: design-system.fifthtry.site/components/search as _
+export: search
+
+-- import: design-system.fifthtry.site/components/floating-banner as _
+export: floating-banner
+
+-- import: design-system.fifthtry.site/components/iframe as _
+export: iframe
+
+-- import: design-system.fifthtry.site/storybook as _
+export: storybook
+exposing: storybook
+
+-- import: design-system.fifthtry.site/foundation-elements/spaces as _
+export: hv, gap, insets, squishes, stretches, gaps, space-data, spaces
+
+-- import: design-system.fifthtry.site/foundation-elements/radius as _
+export: element-radius, radius-data, radius
+
+-- import: design-system.fifthtry.site/foundation-elements/site-header as _
+export: header, social-link, social-links
+
+-- import: code-block.fifthtry.site as _
+export: code, rendered
+
+-- import: design-system.fifthtry.site/components/button as _
+export: button, button-kind, button-variant, button-width, button-size, primary-button, secondary-button, tertiary-button, danger-button, header-link, link-button
+
+-- import: design-system.fifthtry.site/components/header as _
+export: header-link
+
+-- import: design-system.fifthtry.site/components/footer as _
+export: footer-heading, footer-secondary-heading, footer-link, copyright-text
+
+-- import: design-system.fifthtry.site/components/alert as _
+export: info-alert, warning-alert, success-alert, danger-alert
+
+-- import: design-system.fifthtry.site/components/checkbox as _
+export: checkbox
+
+-- import: design-system.fifthtry.site/components/input as _
+export: text-input, form-field
+
+-- import: design-system.fifthtry.site/components/toggle as _
+export: toggle-button
+
+-- import: design-system.fifthtry.site/components/label-text as _
+export: label-text
+
+-- import: design-system.fifthtry.site/components/clipboard as _
+export: copy-to-clipboard-text, copy-to-clipboard-icon
+
+-- import: design-system.fifthtry.site/components/button-group as _
+export: button-group
+
+-- import: design-system.fifthtry.site/foundation-elements/page as _
+export: page, flush, page-widths, narrow-widths, widths
+exposing: narrow-widths
+
+-- import: design-system.fifthtry.site/foundation-elements/section-row as _
+export: section-row
+
+-- import: design-system.fifthtry.site/foundation-elements/section-column as _
+export: section-column
+
+-- import: design-system.fifthtry.site/foundation-elements/container as _
+export: container
+
+-- import: design-system.fifthtry.site/foundation-elements/column as _
+export: column
+
+-- import: design-system.fifthtry.site/foundation-elements/floater as _
+export: floater
+exposing: floater
+
+-- import: design-system.fifthtry.site/foundation-elements/row as _
+export: row
+exposing: row
+
+-- import: design-system.fifthtry.site/foundation-elements/inline-row as _
+export: inline-row
+
+-- import: design-system.fifthtry.site/components/icon-button as _
+export: icon-button, circle-button, circle-text-button, phosphor-icon-button, phosphor-rounded-button, fa-icon-button, icon-position, phosphor-variant
+
+-- import: design-system.fifthtry.site/typography/index as _
+export: heading-hero, heading-large, heading-medium, heading-small, heading-tiny, copy-large, copy-regular, copy-small, fine-print, source-code, link
+exposing: heading-large, copy-regular, copy-large
+
+-- import: design-system.fifthtry.site/site/page as _
+export: site-page
+
+-- import: design-system.fifthtry.site/site/header as _
+export: site-header
+
+-- import: design-system.fifthtry.site/site/footer as _
+export: site-footer
+
+-- import: design-system.fifthtry.site/site as _
+export: site-title, site-logo, site-name, copyright
+
+
+
+
+-- ftd.color-scheme colors: $dark-flame-cs.main
+
+-- ftd.type-data types: $fastn-typography.types
+
+;; Create consistent site titles
+;; eg.: Implementors could overwrite this function to get: "Home | Acme", "About | Acme"
+-- string title(a):
+string a:
+
+a
+
+
+
+
+-- storybook: Design System
+fastn-badge: false
+list-of-files: $toc
+
+
+-- pr.toc-item list toc:
+$processor$: pr.toc
+
+- Introduction:
+  - Getting Started: introduction/getting-started/
+  - Storybook: introduction/storybook/
+
+- Foundation Elements:
+  - `ds.page`: foundation-elements/page/
+  - `ds.header`: foundation-elements/site-header/
+  - `ds.section-column`: foundation-elements/section-column/
+  - `ds.section-row`: foundation-elements/section-row/
+  - `ds.column`: foundation-elements/column/
+  - `ds.row`: foundation-elements/row/
+  - `ds.container`: foundation-elements/container/
+  - `borders`: foundation-elements/borders/
+  - `radius`: foundation-elements/radius/
+  - `shadow`: foundation-elements/shadow/
+  - `spaces`: foundation-elements/spaces/
+
+- Typography:
+  - `ds.heading-hero`: typography/heading-hero/
+  - `ds.heading-large`: typography/heading-large/
+  - `ds.heading-medium`: typography/heading-medium/
+  - `ds.heading-small`: typography/heading-small/
+  - `ds.heading-tiny`: typography/heading-tiny/
+  - `ds.copy-large`: typography/copy-large/
+  - `ds.copy-regular`: typography/copy-regular/
+  - `ds.copy-small`: typography/copy-small/
+  - `ds.fine-print`: typography/fine-print/
+
+- Components:
+  - `ds.button`: components/button/
+  - `ds.icon-button`: components/icon-button/
+  - `ds.tab-button`: components/tab-button/
+  - `ds.toggle`: components/toggle/
+  - `ds.code`: components/code/
+  - `ds.text-input`: components/input/
+  - `ds.text-area`: components/text-area/
+  - `ds.search`: components/search/
+  ;;- `ds.checkbox`: components/checkbox/
+  - `ds.hero`: components/hero/
+  - `ds.image`: components/image/
+  - `ds.iframe`: components/iframe/
+  - `ds.video`: components/video/
+  - `ds.expander`: components/expander/
+  - `ds.clipboard`: components/clipboard/
+  - `ds.tags`: components/tag/
+  - `ds.alert`: components/alert/
+  - `ds.avatar`: components/avatar/
+  - `ds.band`: components/band/
+  - `ds.drawer`: components/drawer/
+  - `ds.dropdown`: components/dropdown/
+  - `ds.modal`: components/modal/
+  - `ds.toast`: components/toast/
+  - `ds.divider`: components/divider/
+  - `ds.pagination`: components/pagination/
+  - `ds.floating-banner`: components/floating-banner/
+  - `ds.icon-banner`: components/icon-banner/
+  - `ds.label-text`: components/label-text/
+  - `ds.rating`: components/rating/
+  - `ds.scroll-area`: components/scroll-area/
+
+- More Components:
+  - `ds.timeline`: components/timeline/
+  - `ds.skeleton`: components/skeleton/
+  - `ds.person-card`: components/person-card/
+  - `ds.card`: components/card/
+  - `ds.empty-page`: components/empty-page/
+  - `ds.image-card`: components/image-card/
+  - `ds.spinner`: components/spinner/
+  - `ds.action-button`: components/action-button/
+
+- Demo:
+  - ft(old): demos/ft-old/
+  - Code Together: https://nandhinidevie.github.io/code/
+
+
+
+
+
+
+
+
+
+-- web-components.source-updater:	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

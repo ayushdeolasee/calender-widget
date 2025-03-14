@@ -1,0 +1,107 @@
+-- import: design-system.fifthtry.site/foundation-elements/radius
+
+-- component iframe:
+optional caption title:
+optional body body:
+string src:
+optional ftd.resizing width:
+optional ftd.resizing height:
+ds.element-radius radius: $ds.radius.zero
+ds.border-data border: $ds.borders.uniform.zero
+ftd.color border-color: $ds.colors.border
+
+-- ftd.column:
+spacing.fixed.px: 8
+align-content: left
+
+-- ftd.column:
+align-content: center
+
+-- ftd.iframe:
+src: $iframe.src
+height: $iframe.height
+width: $iframe.width
+min-height.fixed.px: 800
+margin-bottom.px: 24
+border-color: $iframe.border-color
+height: $iframe.height
+border-top-left-radius.px if { iframe.radius.top-left != $radius.HACK-RADIUS-ROUND }: $iframe.radius.top-left
+border-top-right-radius.px if { iframe.radius.top-right != $radius.HACK-RADIUS-ROUND }: $iframe.radius.top-right
+border-bottom-left-radius.px if { iframe.radius.bottom-left != $radius.HACK-RADIUS-ROUND }: $iframe.radius.bottom-left
+border-bottom-right-radius.px if { iframe.radius.bottom-right != $radius.HACK-RADIUS-ROUND }: $iframe.radius.bottom-right
+border-top-left-radius.percent if { iframe.radius.top-left == $radius.HACK-RADIUS-ROUND }: 50
+border-top-right-radius.percent if { iframe.radius.top-right == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-left-radius.percent if { iframe.radius.bottom-left == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-right-radius.percent if { iframe.radius.bottom-right == $radius.HACK-RADIUS-ROUND }: 50
+border-top-width.px: $iframe.border.top
+border-bottom-width.px: $iframe.border.bottom
+border-left-width.px: $iframe.border.left
+border-right-width.px: $iframe.border.right
+
+-- ftd.text: $iframe.title
+if: { iframe.title != NULL }
+color: $ds.colors.text
+role: $ds.types.copy-small
+border-bottom-left-radius.px: 5
+border-bottom-right-radius.px: 5
+background.solid: $inherited.colors.background.step-1
+padding-vertical.px: 8
+padding-horizontal.px: 20
+text-align: center
+
+-- end: ftd.column
+
+-- ds.copy-regular:
+if: { iframe.body != NULL }
+
+$iframe.body
+
+-- end: ftd.column
+
+-- end: iframe
+
+
+
+
+
+
+
+-- ds.page: Iframe
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Iframe
+	
+	The `ds.iframe` component creates a rectangular region where the
+    embedded content will be displayed in your page. You specify the 
+    source of the content using the src property, which can be a URL 
+    to another web page, an image, a video, or any other web resource.
+
+	-- ds.rendered:
+	
+	\-- ds.iframe: Title
+	src: https://www.fifthtry.com/
+   	width.fixed.px: 800
+
+   Body area..
+	
+		-- iframe: Title
+		src: https://www.fifthtry.com/
+        width.fixed.px: 800
+
+        Body area..
+		
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

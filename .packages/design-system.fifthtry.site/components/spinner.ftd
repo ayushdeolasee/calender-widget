@@ -1,0 +1,38 @@
+-- component spinner:
+
+-- ftd.column:
+classes: loading
+css: [$assets.files.assets.style.css]
+
+-- end: ftd.column
+
+-- end: spinner
+
+
+
+-- ds.page: spinner
+
+-- ftd.column:
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+ align-content: center
+
+	-- ds.detail: spinner Component
+	
+	The spinner component in our design system provides a visual representation
+	of loading.
+
+		-- ds.rendered:
+		
+		\-- ds.spinner:
+
+		-- spinner:
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

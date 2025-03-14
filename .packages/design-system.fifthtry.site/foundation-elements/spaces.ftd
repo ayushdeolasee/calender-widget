@@ -1,0 +1,1766 @@
+;; https://medium.com/eightshapes-llc/space-in-design-systems-188bcbae0d62
+
+-- integer HACK-SPACE-BETWEEN-MAGIC-NUMBER: -4321
+
+-- record hv:
+caption integer horizontal:
+integer vertical:
+
+-- record insets:
+hv zero:
+hv extra-small:
+hv small:
+hv medium:
+hv large:
+hv extra-large:
+
+
+;; for buttons and cell-like containers like a data table or list item.
+-- record wides:
+hv small:
+hv medium:
+hv large:
+hv small-zero:
+hv medium-zero:
+hv large-zero:
+
+;; for text-boxes, text-area, and other form elements.
+-- record talls:
+hv small:
+hv medium:
+hv large:
+hv zero-small:
+hv zero-medium:
+
+
+-- record gap:
+caption integer gap:
+
+-- record gaps:
+gap extra-extra-small: ;; the largest name
+gap extra-small:
+gap small:
+gap medium:
+gap large:
+gap extra-large:
+gap extra-extra-large:
+gap space-between:
+gap zero:
+
+
+;; $ds.spaces.inset-square.small
+-- record space-data:
+insets inset-square:
+wides inset-wide:
+talls inset-tall:
+gaps vertical-gap:
+gaps horizontal-gap:
+
+
+-- space-data spaces:
+inset-square: $insets_
+inset-wide: $wides_
+inset-tall: $talls_
+vertical-gap: $gaps_
+horizontal-gap: $gaps_
+
+
+-- hv insets_zero:
+horizontal: 0
+vertical: 0
+
+-- hv insets_xs:
+horizontal: 4
+vertical: 4
+
+-- hv insets_s:
+horizontal: 8
+vertical: 8
+
+-- hv insets_m:
+horizontal: 16
+vertical: 16
+
+-- hv insets_l:
+horizontal: 32
+vertical: 32
+
+-- hv insets_xl:
+horizontal: 64
+vertical: 64
+
+-- insets insets_:
+zero: $insets_zero
+extra-small: $insets_xs
+small: $insets_s
+medium: $insets_m
+large: $insets_l
+extra-large: $insets_xl
+
+-- hv wides_s:
+horizontal: 8
+vertical: 4
+
+-- hv wides_m:
+horizontal: 16
+vertical: 8
+
+-- hv wides_l:
+horizontal: 32
+vertical: 16
+
+
+-- hv wides_sz:
+horizontal: 8
+vertical: 0
+
+-- hv wides_mz:
+horizontal: 16
+vertical: 0
+
+-- hv wides_lz:
+horizontal: 32
+vertical: 0
+
+-- wides wides_:
+small: $wides_s
+medium: $wides_m
+large: $wides_l
+small-zero: $wides_sz
+medium-zero: $wides_mz
+large-zero: $wides_lz
+
+
+-- hv talls_s:
+horizontal: 8
+vertical: 12
+
+-- hv talls_m:
+horizontal: 16
+vertical: 24
+
+-- hv talls_l:
+horizontal: 24
+vertical: 36
+
+-- hv talls_zs:
+horizontal: 0
+vertical: 12
+
+-- hv talls_zm:
+horizontal: 0
+vertical: 24
+
+-- talls talls_:
+small: $talls_s
+medium: $talls_m
+large: $talls_l
+zero-small: $talls_zs
+zero-medium: $talls_zm
+
+-- gaps gaps_:
+extra-extra-small: 2
+extra-small: 4
+small: 8
+medium: 16
+large: 32
+extra-large: 64
+extra-extra-large: 128
+space-between: $HACK-SPACE-BETWEEN-MAGIC-NUMBER
+zero: 0
+
+
+
+
+
+
+
+
+
+
+-- ds.page: `spaces`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: left
+
+-- ds.detail: `inset`, `gap`, and `margin`
+
+`inset` attribute used as padding, there are different inset values, they are: `inset-square`, `inset-wide`, and `inset-tall`. The `inset-square` helps to give padding to all side of the container. The `inset-wide` helps to give padding more to horizontal and less to vertical. The `inset-tall` helps to give more padding to vertical and less to horizontal. Then there is `gap`, the `gap` takes two different types: first if you want to provide gap to column in that case you use `vertical-gap` and if you want to give gap to row then you can use `horizontal-gap`. And last margin it allows you to give margin to the bottom of the container.
+
+Below we have explain all the attributes value in detail.
+
+-- ds.heading-medium: `spacing`
+
+The spacing takes two type:
+
+- Vertical
+- Horizontal
+
+-- ds.heading-medium: `vertical-gap`
+
+We use vertical value when we have to give spacing to column. So the
+pre-defined values for `vertical-gap` are:
+
+- $ds.spaces.vertical-gap.zero
+- $ds.spaces.vertical-gap.extra-extra-small
+- $ds.spaces.vertical-gap.extra-small
+- $ds.spaces.vertical-gap.small
+- $ds.spaces.vertical-gap.medium
+- $ds.spaces.vertical-gap.large
+- $ds.spaces.vertical-gap.extra-large
+- $ds.spaces.vertical-gap.extra-extra-large
+- $ds.spaces.vertical-gap.space-between
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.zero`	
+
+If the spacing value is `$ds.spaces.vertical-gap.zero` it will take `0px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-extra-small` it will take `2px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-small` it will take `4px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.small` it will take `8px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.medium`	
+
+If the spacing value is `$ds.spaces.vertical-gap.medium` it will take `16px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.large` it will take `32px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-large` it will take `64px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-extra-large` it will take `128px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.space-between`	
+
+If the spacing value is `$ds.spaces.vertical-gap.space-between` it will take
+the `equal space between the two sections by calculating the height of the
+page` spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.column:
+spacing: $ds.spaces.vertical-gap.space-between ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+spacing: $ds.spaces.vertical-gap.space-between
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `horizontal-gap`
+
+We use horizontal value when we have to give spacing to row. So the
+pre-defined values for `horizontal-gap` are:
+
+- $ds.spaces.horizontal-gap.zero
+- $ds.spaces.horizontal-gap.extra-extra-small
+- $ds.spaces.horizontal-gap.extra-small
+- $ds.spaces.horizontal-gap.small
+- $ds.spaces.horizontal-gap.medium
+- $ds.spaces.horizontal-gap.large
+- $ds.spaces.horizontal-gap.extra-large
+- $ds.spaces.horizontal-gap.extra-extra-large
+- $ds.spaces.horizontal-gap.space-between
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.zero`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.zero` it will take `0px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.extra-extra-small`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.extra-extra-small` it will take `2px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.extra-small`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.extra-small` it will take `4px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.small`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.small` it will take `8px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.medium`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.medium` it will take `16px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.large`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.large` it will take `32px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.extra-large`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.extra-large` it will take `64px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.extra-extra-large`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.extra-extra-large` it will take `128px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.extra-extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.horizontal-gap.space-between`	
+
+If the spacing value is `$ds.spaces.horizontal-gap.space-between` it will take
+the `equal space between the two sections by calculating the height of the
+page` spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.row:
+spacing: $ds.spaces.horizontal-gap.space-between ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.row
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.space-between
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `inset`
+
+-- ds.copy-regular:
+
+This attribute provide padding to the content inside the container. You can
+choose from pre-defined inset values like:
+
+If you want to give equal padding to all the side then you can choose for the
+values below:
+
+- $ds.spaces.inset-square.zero
+- $ds.spaces.inset-square.extra-small
+- $ds.spaces.inset-square.small
+- $ds.spaces.inset-square.medium
+- $ds.spaces.inset-square.large
+- $ds.spaces.inset-square.extra-large
+
+-- ds.copy-regular:
+
+If you want to give padding more to vertically then horizontally then you can
+choose from the values below:
+
+- $ds.spaces.inset-tall.small
+- $ds.spaces.inset-tall.medium
+- $ds.spaces.inset-tall.large
+- $ds.spaces.inset-tall.zero-small
+- $ds.spaces.inset-tall.zero-medium
+
+-- ds.copy-regular:
+
+If you want to give padding more to horizontally then vertically then you can
+choose from the values below:
+
+- $ds.spaces.inset-wide.small
+- $ds.spaces.inset-wide.medium
+- $ds.spaces.inset-wide.large
+- $ds.spaces.inset-wide.small-zero
+- $ds.spaces.inset-wide.medium-zero
+- $ds.spaces.inset-wide.large-zero
+
+-- ds.heading-small: `$ds.spaces.inset-square.zero`	
+
+If the inset value is `$ds.spaces.inset-square.zero` it will take `0px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.extra-small`	
+
+If the inset value is `$ds.spaces.inset-square.extra-small` it will take `4px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.small`	
+
+If the inset value is `$ds.spaces.inset-square.small` it will take `8px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.medium`	
+
+If the inset value is `$ds.spaces.inset-square.medium` it will take `16px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.large`	
+
+If the inset value is `$ds.spaces.inset-square.large` it will take `32px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.extra-large`	
+
+If the inset value is `$ds.spaces.inset-square.extra-large` it will take `64px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-square.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.small`	
+
+If the inset value is `$ds.spaces.inset-tall.small` it will take `8px` value
+horizontally and `12px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.medium`	
+
+If the inset value is `$ds.spaces.inset-tall.medium` it will take `16px` value
+horizontally and `24px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.large`	
+
+If the inset value is `$ds.spaces.inset-tall.large` it will take `24px` value
+horizontally and `36px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.zero-small`	
+
+If the inset value is `$ds.spaces.inset-tall.zero-small` it will take `0px` value
+horizontally and `12px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.zero-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.zero-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.zero-medium`	
+
+If the inset value is `$ds.spaces.inset-tall.zero-medium` it will take `0px` value
+horizontally and `24px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.zero-medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.small`	
+
+If the inset value is `$ds.spaces.inset-wide.small` it will take `8px` value
+horizontally and `4px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.medium`	
+
+If the inset value is `$ds.spaces.inset-wide.medium` it will take `16px` value
+horizontally and `8px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.large`	
+
+If the inset value is `$ds.spaces.inset-wide.large` it will take `32px` value
+horizontally and `16px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.small-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.small-zero` it will take `8px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.small-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.small-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.medium-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.medium-zero` it will take `16px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.medium-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.medium-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.large-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.large-zero` it will take `32px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.large-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+-- ds.column:
+width: hug-content
+background.solid: $ds.colors.background.step-1
+inset: $ds.spaces.inset-wide.large-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `margin`
+
+-- ds.copy-regular:
+
+This attribute provide margin to the bottom of the container. You can choose
+from pre-defined margin values like:
+
+- $ds.spaces.vertical-gap.zero
+- $ds.spaces.vertical-gap.extra-extra-small
+- $ds.spaces.vertical-gap.extra-small
+- $ds.spaces.vertical-gap.small
+- $ds.spaces.vertical-gap.medium
+- $ds.spaces.vertical-gap.large
+- $ds.spaces.vertical-gap.extra-large
+- $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.zero`	
+
+If the margin value is `$ds.spaces.vertical-gap.zero` it will take `0px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-small`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-extra-small` it will take `2px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-small`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-small` it will take `4px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.small`	
+
+If the margin value is `$ds.spaces.vertical-gap.small` it will take `8px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.medium`	
+
+If the margin value is `$ds.spaces.vertical-gap.medium` it will take `16px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.large`	
+
+If the margin value is `$ds.spaces.vertical-gap.large` it will take `32px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-large`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-large` it will take `64px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-large`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-extra-large` it will take `128px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+\-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: Margin
+inset: $ds.spaces.inset-square.zero
+background.solid: $ds.colors.background.step-1
+
+-- ds.column:
+margin: $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

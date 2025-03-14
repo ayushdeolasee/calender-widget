@@ -1,0 +1,156 @@
+-- import: design-system.fifthtry.site/record as r
+
+-- string $selected-item: Select 
+
+-- boolean $show-options: false
+
+
+
+
+
+
+-- component dropdown:
+caption title: $selected-item
+r.dropdowns list dropdown-item:
+
+-- ds.column:
+align-content: left
+spacing: $ds.spaces.vertical-gap.small
+
+-- ds.row:
+background.solid: $ds.colors.background.base
+inset: $ds.spaces.inset-wide.medium
+radius: $ds.radius.medium
+width.fixed.px: 160
+$on-click$: $ftd.toggle($a = $show-options)
+border-color: $ds.colors.border
+border: $ds.borders.uniform.small
+spacing: $ds.spaces.horizontal-gap.space-between
+
+-- ds.copy-regular: $selected-item
+color: $ds.colors.text-strong
+
+-- ftd.image:
+src: $assets.files.assets.expand-more.svg
+src if { show-options }: $assets.files.assets.expand-less.svg
+width.fixed.px: 18
+height: auto
+align-self: center
+
+-- end: ds.row
+
+-- ftd.column:
+if: { $show-options }
+border-width.px: 1
+border-color: $ds.colors.border
+border-radius.px: 8
+min-width.fixed.px: 160
+
+-- dropdown-changer: $dropdown.title
+for: $obj in $dropdown.dropdown-item
+option: $obj.option
+
+-- end: ftd.column
+
+-- end: ds.column
+
+-- end: dropdown
+
+
+
+
+
+
+
+
+
+
+-- component dropdown-changer:
+caption title:
+string option:
+boolean $mouse-in: false
+
+-- ds.column:
+inset: $ds.spaces.inset-wide.medium
+spacing: $ds.spaces.vertical-gap.small
+align-content: left
+
+-- ds.copy-regular: $dropdown-changer.option
+color: $ds.colors.text-strong
+$on-click$: $ftd.set-string( $a = $selected-item, v = $dropdown-changer.option )
+$on-click$: $ftd.toggle($a = $show-options)
+
+-- end: ds.column
+
+-- end: dropdown-changer
+
+
+
+
+
+
+
+-- r.dropdowns list dropdown-list:
+
+-- r.dropdowns: Option 1
+option: Option 1
+
+-- r.dropdowns: Option 2
+option: Option 2
+
+-- r.dropdowns: Option 3
+option: Option 3
+
+-- end: dropdown-list
+
+
+
+
+
+
+-- ds.page: Dropdown
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Dropdown
+
+	The dropdown component in our design system offers a versatile way to
+	present a list of options in a compact and accessible format. With its
+	intuitive interface, users can easily select from a range of choices,
+	enhancing usability and interaction efficiency.
+	
+	-- ds.rendered:
+		
+		\-- ds.dropdown:
+		dropdown-item: $dropdown-list
+
+		\-- r.dropdowns list dropdown-list:
+
+		\-- r.dropdowns: Option 1
+		option: Option 1
+
+		\-- r.dropdowns: Option 2
+		option: Option 2
+
+		\-- r.dropdowns: Option 3
+		option: Option 3
+
+		\-- end: dropdown-list
+
+		-- dropdown:
+		dropdown-item: $dropdown-list
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

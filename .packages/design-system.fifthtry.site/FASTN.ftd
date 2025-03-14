@@ -1,0 +1,19 @@
+-- import: fastn
+
+-- fastn.package: design-system.fifthtry.site
+favicon: /favicon.ico
+system: ds
+system-is-confidential: false
+
+-- fastn.dependency: dark-mode-switcher.fifthtry.site
+-- fastn.dependency: fastn-typography.fifthtry.site
+-- fastn.dependency: code-block.fifthtry.site
+-- fastn.dependency: svg-icons.fifthtry.site
+-- fastn.dependency: dark-flame-cs.fifthtry.site
+
+-- fastn.auto-import: design-system.fifthtry.site/assets
+-- fastn.auto-import: design-system.fifthtry.site as ds
+
+-- fastn.sitemap:
+
+# Home: /foundation-elements/site-header/

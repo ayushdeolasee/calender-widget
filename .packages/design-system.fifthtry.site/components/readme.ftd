@@ -1,0 +1,8 @@
+-- component readme:
+
+-- ds.copy-regular:
+color: $ds.colors.text-strong
+
+This is a FifthTry package.
+
+-- end: readme

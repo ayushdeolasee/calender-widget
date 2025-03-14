@@ -1,0 +1,1092 @@
+-- import: fastn/processors as pr
+
+-- string site-url: /
+
+-- string site-name: Design System
+
+-- ftd.image-src site-logo: $assets.files.assets.logo.svg
+
+-- pr.sitemap-data sitemap:
+$processor$: pr.sitemap
+
+
+
+
+
+
+
+
+
+-- component header:
+optional caption title:
+optional ftd.image-src site-logo:
+string site-url: /
+optional string site-name:
+pr.toc-item list sections: 
+pr.toc-item list sub-sections: 
+pr.toc-item list toc:
+ftd.image-src menu-icon: $assets.files.assets.menu.svg
+optional pr.toc-item current-section: 
+optional pr.toc-item current-subsection: 
+optional pr.toc-item current-page: 
+integer logo-width: 140
+integer logo-height: 70
+boolean $sidebar-open: false
+boolean breadcrumb: true
+
+-- ftd.column:
+width: fill-container
+ 
+-- ftd.column:
+if: { header.sidebar-open }
+width: fill-container
+background.solid: $inherited.colors.background.overlay
+height.fixed.calc: 100vh
+z-index: 10
+
+-- mobile-sidebar:
+if: { header.sidebar-open }
+$sidebar-open: $header.sidebar-open
+
+-- end: ftd.column
+
+-- menu-mobile:
+if: { header.sidebar-open }
+site-logo: $header.site-logo
+menu-icon: $header.menu-icon
+site-url: $header.site-url 
+site-name: $header.site-name
+sections: $header.sections
+sub-sections: $header.sub-sections
+logo-width: $header.logo-width 
+logo-height: $header.logo-height 
+
+-- ftd.mobile:
+
+-- header-mobile: $header.title
+site-logo: $header.site-logo
+$sidebar-open: $header.sidebar-open
+menu-icon: $header.menu-icon
+site-url: $header.site-url 
+site-name: $header.site-name
+sections: $header.sections
+sub-sections: $header.sub-sections
+toc: $header.toc
+current-section: $header.current-section
+current-page: $header.current-page
+current-subsection: $header.current-subsection
+logo-width: $header.logo-width 
+logo-height: $header.logo-height 
+breadcrumb: $header.breadcrumb
+
+-- end: ftd.mobile
+
+-- ftd.desktop:
+
+-- header-desktop: $header.title
+site-logo: $header.site-logo
+site-url: $header.site-url 
+site-name: $header.site-name
+sections: $header.sections
+current-section: $header.current-section
+current-page: $header.current-page
+current-subsection: $header.current-subsection
+sub-sections: $header.sub-sections
+logo-width: $header.logo-width 
+logo-height: $header.logo-height
+breadcrumb: $header.breadcrumb
+
+-- end: ftd.desktop
+
+-- end: ftd.column
+
+-- end: header
+
+
+
+
+
+
+
+
+
+
+-- component header-desktop:
+optional caption title:
+optional ftd.image-src site-logo:
+string site-url: 
+optional string site-name:
+pr.toc-item list sections:
+optional pr.toc-item current-subsection: 
+pr.toc-item list sub-sections:
+optional pr.toc-item current-section: 
+optional pr.toc-item current-page:
+integer logo-width: 140
+integer logo-height: 70
+boolean breadcrumb: false
+boolean social-link: false
+
+-- ds.section-column:
+inner-background.solid: $ds.colors.background.base
+align-content: left
+radius: $ds.radius.zero
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.row:
+spacing: $ds.spaces.horizontal-gap.space-between
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.row:
+link: $header-desktop.site-url
+align-content: left
+width: hug-content
+
+-- ds.image:
+if: { header-desktop.site-logo != NULL }
+src: $header-desktop.site-logo
+width.fixed.px: $header-desktop.logo-width
+height.fixed.px: $header-desktop.logo-height
+
+-- ds.heading-small: $header-desktop.site-name
+if: { header-desktop.site-name != NULL && header-desktop.site-logo == NULL }
+
+-- fallback-title:
+if: { header-desktop.site-logo == NULL }
+site-name: $header-desktop.site-name
+
+-- end: ds.row
+
+-- ds.row: 
+spacing: $ds.spaces.horizontal-gap.large
+align-content: left
+width: hug-content
+
+-- header-item: $obj.title
+for: $obj in $header-desktop.sections
+link: $obj.url
+is-active: $obj.is-active
+
+-- end: ds.row
+
+-- ds.row:
+align-content: left
+width: hug-content
+
+-- social-links:
+if: { header-desktop.social-link }
+
+-- dark-mode-toggle:
+
+-- end: ds.row
+
+-- end: ds.row
+
+-- ds.row:
+if: { header-desktop.title != NULL }
+radius: $ds.radius.zero
+align-content: left
+inset: $ds.spaces.inset-square.medium
+background.solid: $ds.colors.background.step-1
+
+-- ds.heading-small: $header-desktop.title
+if: { header-desktop.title != NULL }
+link: $header-desktop.site-url
+
+-- end: ds.row
+
+-- ds.row:
+if: { header-desktop.breadcrumb }
+align-content: left
+
+-- ds.row:
+if: { header-desktop.current-section != NULL }
+align-content: left
+
+-- ds.copy-small: $header-desktop.current-section.title
+if: { header-desktop.current-section.title != NULL }
+color: $ds.colors.text-strong
+color if { header-desktop.current-subsection == NULL }: $ds.colors.accent.primary
+link: $header-desktop.current-section.url
+
+-- ds.image:
+if: { header-desktop.current-subsection != NULL }
+src: $assets.files.assets.storybook.arrow-right.svg
+
+-- ds.copy-regular: $header-desktop.current-subsection.title
+if: { header-desktop.current-subsection != NULL }
+color: $inherited.colors.text-strong
+link: $header-desktop.current-subsection.url
+
+-- ds.image:
+if: { header-desktop.current-page != NULL }
+src: $assets.files.assets.storybook.arrow-right.svg
+
+-- ds.copy-regular: $header-desktop.current-page.title 
+if: { header-desktop.current-page != NULL }
+color: $inherited.colors.shadow
+link: $header-desktop.current-page.url
+
+-- end: ds.row
+
+-- ds.row:
+width: hug-content
+align-content: left
+
+-- subsections-links: $obj.title
+for: $obj in $header-desktop.sub-sections
+is-active: $obj.is-active
+url: $obj.url
+
+-- end: ds.row
+
+-- end: ds.row
+
+-- end: ds.section-column
+
+-- end: header-desktop
+
+
+
+
+
+
+
+
+-- component fallback-title:
+optional string site-name:
+
+-- ds.heading-large: LOGO
+if: { fallback-title.site-name == NULL }
+
+-- end: fallback-title
+
+
+
+
+
+
+
+-- component social-links:
+
+-- ds.row:
+align-content: right
+width: hug-content
+spacing: $ds.spaces.horizontal-gap.medium
+
+-- social-link: https://github.com/fastn-stack/fastn
+icon: $assets.files.assets.gh.svg
+
+-- end: ds.row
+
+-- end: social-links
+
+
+
+
+
+
+
+
+-- component social-link:
+ftd.image-src icon:
+caption link:
+
+-- ds.image:
+width.fixed.px: 24
+src: $social-link.icon
+link: $social-link.link
+
+-- end: social-link
+
+
+
+
+
+
+
+-- component header-item:
+caption title:
+optional ftd.image-src icon:
+optional string link:
+boolean is-active: 
+boolean $open: false
+
+-- ds.row: 
+width: hug-content
+
+-- ds.copy-regular: $header-item.title
+if: { !header-item.is-active }
+link if { header-item.link != NULL }: $header-item.link
+color: $ds.colors.text
+
+-- ds.copy-regular: $header-item.title
+if: { header-item.is-active }
+link if { header-item.link != NULL }: $header-item.link
+color: $ds.colors.text-strong
+style: bold
+
+-- end: ds.row
+
+-- end: header-item
+
+
+
+
+
+
+
+
+
+
+-- component subsections-links:
+caption title:
+optional boolean is-active:
+optional string url:
+pr.toc-item list item:
+
+-- ds.copy-regular: $subsections-links.title
+link if { subsections-links.url != NULL }: $subsections-links.url
+color if { subsections-links.is-active }: $ds.colors.text-strong
+style if { subsections-links.is-active }: bold
+
+-- end: subsections-links
+
+
+
+
+
+
+
+
+
+
+-- component header-mobile:
+optional caption title:
+ftd.image-src menu-icon:
+boolean $sidebar-open: false
+optional ftd.image-src site-logo:
+string site-url: 
+boolean $show-section: false
+optional string site-name:
+pr.toc-item list sections:
+pr.toc-item list sub-sections:
+pr.toc-item list toc:
+optional pr.toc-item current-subsection: 
+optional pr.toc-item current-section: 
+optional pr.toc-item current-page:
+integer logo-width: 120
+integer logo-height: 55
+boolean breadcrumb: false
+
+-- ds.section-column:
+align-content: left
+radius: $ds.radius.zero
+inner-background.solid: $ds.colors.background.step-1
+$on-click-outside$: $ftd.set-bool($a = $header-mobile.show-section, v = false)
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.column:
+align-content: left
+inset: $ds.spaces.inset-square.medium
+
+-- ds.row:
+align-content: left
+
+-- ftd.image:
+src: $header-mobile.menu-icon
+width.fixed.px: 24
+$on-click$: $ftd.toggle($a = $header-mobile.sidebar-open) 
+
+-- ds.image:
+src: $header-mobile.site-logo
+height.fixed.px: 38
+
+-- ds.copy-large: $header-mobile.site-name
+if: { header-mobile.site-name != NULL && header-mobile.site-logo == NULL }
+color: $ds.colors.text-strong
+
+-- fallback-title:
+if: { header-mobile.site-logo == NULL }
+site-name: $header-mobile.site-name
+
+-- end: ds.row
+
+-- ds.row:
+if: { header-mobile.title != NULL }
+radius: $ds.radius.zero
+align-content: left
+background.solid: $ds.colors.background.step-1
+
+-- ds.heading-small: $header-mobile.title
+if: { header-mobile.title != NULL }
+link: $header-mobile.site-url
+
+-- end: ds.row
+
+-- end: ds.column
+
+-- ds.row:
+if: { header-mobile.current-section != NULL }
+align-content: left
+background.solid: $ds.colors.background.step-1
+
+-- ds.row:
+align-content: left
+width: hug-content
+inset: $ds.spaces.inset-wide.medium-zero
+
+-- ftd.text: $header-mobile.current-section.title
+if: { header-mobile.current-section != NULL }
+role: $ds.types.copy-regular
+color: $inherited.colors.cta-primary.text
+link: $header-mobile.current-section.url
+background.solid: $inherited.colors.cta-primary.base
+padding-vertical.px: 8
+padding-horizontal.px: 8
+width: fill-container
+white-space: nowrap
+
+-- end: ds.row
+
+-- ftd.row:
+width: fill-container
+spacing.fixed.px: 8
+padding-top.px: 8
+overflow-x: auto
+
+-- header-item-mobile-view: $obj.title
+$loop$: $header-mobile.sub-sections as $obj
+children: $obj.children 
+is-active: $obj.is-active 
+link: $obj.url
+
+-- end: ftd.row
+
+-- end: ds.row
+
+-- ds.row:
+if: { !ftd.is_empty($header-mobile.toc) }
+align-content: left
+background.solid: $ds.colors.background.step-2
+$on-click$: $ftd.toggle($a = $header-mobile.show-section, v = true)
+
+-- ds.row:
+align-content: left
+
+-- ds.copy-regular: $header-mobile.current-subsection.title
+if: { header-mobile.current-subsection != NULL }
+color: $ds.colors.text-strong
+
+-- ds.copy-small: Menu
+if: { header-mobile.current-subsection == NULL && header-mobile.current-page == NULL }
+color: $inherited.colors.text-strong
+
+-- ds.row:
+if: { header-mobile.current-subsection != NULL }
+
+-- ds.row:
+if: { header-mobile.current-page != NULL }
+
+-- ds.image:
+src: $assets.files.assets.storybook.arrow-right.svg
+width.fixed.px: 18
+
+-- end: ds.row
+
+-- end: ds.row
+
+-- ds.copy-regular: $header-mobile.current-page.title 
+if: { header-mobile.current-page != NULL }
+color: $inherited.colors.text-strong
+
+-- end: ds.row
+
+-- ds.row:
+
+-- ds.image: 
+if: { !header-mobile.show-section }
+src: $assets.files.assets.down-arrow-dark.svg
+height: hug-content
+width.fixed.px: 12
+
+-- ds.image: 
+if: { header-mobile.show-section }
+src: $assets.files.assets.up-arrow-dark.svg
+width.fixed.px: 12
+
+-- end: ds.row
+
+-- ftd.column: 
+if: { header-mobile.show-section }
+width: fill-container
+anchor: parent
+background.solid: $inherited.colors.background.step-2
+top.px: 48
+left.px: 0
+z-index: 999
+max-height.fixed.px: 300
+overflow-y: auto
+spacing.fixed.px: 16
+
+-- ftd.column:
+width: fill-container
+spacing.fixed.px: 8
+padding-vertical.px: 12
+padding-horizontal.px: 24
+overflow-x: auto
+
+-- header-toc-item-mobile-view: $obj.title
+$loop$: $header-mobile.toc as $obj
+children: $obj.children 
+is-active: $obj.is-active
+link: $obj.url
+
+-- end: ftd.column
+
+-- social-links:
+
+-- end: ftd.column
+
+-- end: ds.row
+
+-- end: ds.section-column
+
+-- end: header-mobile
+
+
+
+
+
+
+
+
+
+
+-- component header-toc-item-mobile-view:
+caption title:
+optional string link:
+pr.toc-item list children: 
+optional ftd.image-src icon:
+boolean is-active: 
+boolean $open: false
+
+-- ds.column: 
+width: hug-content
+align-content: left
+$on-click$: $ftd.toggle($a = $header-toc-item-mobile-view.open)
+$on-click-outside$: $ftd.set-bool($a = $header-toc-item-mobile-view.open, v = false)
+
+-- ftd.text: $header-toc-item-mobile-view.title
+link if { header-toc-item-mobile-view.link != NULL }: $header-toc-item-mobile-view.link
+role: $inherited.types.copy-small
+white-space: nowrap
+padding-left.px: 10
+color: $inherited.colors.text
+color if { header-toc-item-mobile-view.is-active }: $inherited.colors.cta-primary.base 
+
+-- show-children-mobile:
+if: { !ftd.is_empty(header-toc-item-mobile-view.children) }
+children: $header-toc-item-mobile-view.children
+
+-- end: ds.column
+
+-- end: header-toc-item-mobile-view
+
+
+
+
+
+
+
+
+
+
+-- component show-children-mobile:
+pr.toc-item list children:
+
+-- ftd.column:
+if: { !ftd.is_empty(show-children-mobile.children) }
+padding.px: 5
+padding-left.px: 15
+
+-- links-mobile:
+obj: $obj
+for: $obj in $show-children-mobile.children
+
+-- end: ftd.column
+
+-- end: show-children-mobile
+
+
+
+
+
+
+
+
+
+
+-- component links-mobile:
+pr.toc-item obj:
+
+-- ds.column:
+align-content: left
+
+-- ftd.text: $links-mobile.obj.title
+link if { links-mobile.obj.url != NULL }: $links-mobile.obj.url
+color: $inherited.colors.text
+padding-vertical.px: 8
+padding-horizontal.px: 10
+role: $inherited.types.copy-small
+width: fill-container
+opacity if { !links-mobile.obj.is-active }: 0.6
+
+-- end: ds.column
+
+-- end: links-mobile
+
+
+
+
+
+
+
+
+
+
+-- component mobile-sidebar:
+boolean $sidebar-open:
+
+-- ftd.column:
+anchor: window
+top.px: 0
+bottom.px: 0
+left.px: 0
+right.px: 0
+background.solid: $inherited.colors.background.overlay
+z-index: 1
+$on-click$: $ftd.toggle($a = $mobile-sidebar.sidebar-open)
+
+-- ftd.image:
+src: $assets.files.assets.cross.svg
+height.fixed.px: 24
+width: hug-content
+anchor: window
+right.px: 16
+top.px: 20
+
+-- end: ftd.column
+
+-- end: mobile-sidebar
+
+
+
+
+
+
+
+
+
+
+-- component menu-mobile:
+optional ftd.image-src site-logo:
+optional string site-name:
+ftd.image-src menu-icon:
+string site-url: 
+pr.toc-item list sections:
+boolean $show-section: false
+pr.toc-item list sub-sections:
+integer logo-width: 120
+integer logo-height: 44
+
+-- ftd.column:
+width.fixed.calc: 100% - 48px
+height.fixed.calc: 100vh - 0px
+anchor: window
+left.px: 0
+top.px: 0
+overflow-y: auto
+padding-top.px: 20
+padding-horizontal.px: 24
+background.solid: $inherited.colors.background.step-1
+z-index: 14
+
+-- ftd.column:
+if: { !ftd.is_empty(menu-mobile.sections) }
+width: fill-container
+padding-bottom.px: 24
+
+-- header-item-mobile: $obj.title
+$loop$: $menu-mobile.sections as $obj
+children: $obj.children 
+is-active: $obj.is-active
+link: $obj.url
+$show-section: $menu-mobile.show-section
+
+-- end: ftd.column
+
+-- end: ftd.column
+
+-- end: menu-mobile
+
+
+
+
+
+
+
+
+
+
+-- component header-item-mobile-view: 
+caption title:
+optional string link:
+pr.toc-item list children:
+boolean is-active: 
+boolean $open: false
+
+-- ftd.column:
+$on-click$: $ftd.toggle($a = $header-item-mobile-view.open)
+$on-click-outside$: $ftd.set-bool($a = $header-item-mobile-view.open, v = false)
+
+-- ftd.text: $header-item-mobile-view.title
+if: { $header-item-mobile-view.title != NULL }
+role: $inherited.types.fine-print
+link: $header-item-mobile-view.link
+white-space: nowrap
+padding-left.px: 10
+color: $inherited.colors.text-strong
+color if { header-item-mobile-view.is-active }: $inherited.colors.cta-primary.base
+margin-left.px: 10
+
+-- end: ftd.column
+
+-- end: header-item-mobile-view
+
+
+
+
+
+
+
+
+
+
+-- component header-item-mobile:
+caption title:
+optional string link:
+pr.toc-item list children:
+boolean is-active:
+boolean $show-section:
+boolean $open: false
+
+-- ftd.column: 
+width: fill-container
+align-self: start
+$on-click$: $ftd.toggle($a = $header-item-mobile.open)
+$on-click-outside$: $ftd.set-bool($a = $header-item-mobile.open, v = false)
+
+-- ftd.row:
+width: fill-container
+
+-- ftd.text: $header-item-mobile.title 
+role: $inherited.types.copy-regular
+link: $header-item-mobile.link
+color: $inherited.colors.text-strong
+color if { header-item-mobile.is-active }: $inherited.colors.cta-primary.base
+$on-click$: $ftd.set-bool($a = $header-item-mobile.show-section, v = true)
+padding-top.px: 24
+
+-- ftd.column:
+if: { ftd.is_empty(header-item-mobile.children) }
+padding-bottom.px: 15
+
+-- show-children-mobile:
+if: { !ftd.is_empty(header-item-mobile.children) }
+children: $header-item-mobile.children
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: header-item-mobile
+
+
+
+
+
+
+
+-- component dark-mode-toggle:
+
+-- ds.row:
+height.fixed.px: 24
+width.fixed.px: 24
+
+	-- ds.row:
+	if: { ftd.follow-system-dark-mode }
+	$on-click$: $ftd.enable-light-mode()
+	
+		-- ftd.image:
+		src: $assets.files.assets.auto-mode.svg
+		
+	-- end: ds.row
+
+	-- ds.row:
+	if: { !ftd.dark-mode && !ftd.follow-system-dark-mode }
+	$on-click$: $ftd.enable-dark-mode()
+	
+		-- ftd.image:
+		src: $assets.files.assets.light-mode.svg
+		
+	-- end: ds.row
+
+	-- ds.row:
+	if: { ftd.dark-mode && !ftd.follow-system-dark-mode }
+	$on-click$: $ftd.enable-system-mode()
+	
+		-- ftd.image:
+		src: $assets.files.assets.dark-mode-dark.svg
+		
+	-- end: ds.row
+
+-- end: ds.row
+
+-- end: dark-mode-toggle
+
+
+
+
+
+
+
+-- ds.page: Site Header
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+ -- ds.section-column:
+ align-content: left
+
+	-- ds.detail: Site Header
+
+	`ds.header` is the foundational element used to create a header
+	inside the page component of the design system package. 
+
+	It acts as a basic header component that structures all the sections,
+	sub-sections, current section, logo, site-name of your website. You
+	can specify attributes like site-logo, site-name, site-url,
+	sections, sub-sections, current-section, current-subsection,
+	current-page, toc. The design system header always starts with
+	`ds.header`.
+
+	-- ds.heading-large: How to use
+
+	-- ds.copy-regular:
+
+	To use the `ds.header` component, you must define it with a
+	`sitemap` and first import the `fastn processor` and then
+	optionally, you can include other attributes like site-logo,
+	site-name, site-url, sections, sub-sections, current-section,
+	current-subsection, current-page, toc.
+
+	Everything placed inside the `ds.header` component will be rendered
+	within the header. As show below:
+
+	-- ds.heading-small: Example Code
+
+
+	-- ds.rendered:
+    
+    \-- import: fastn/processors as pr
+    
+\-- string site-url: /
+
+\-- string site-name: Design System
+
+\-- ftd.image-src site-logo: $assets.files.assets.logo.svg
+
+\-- pr.sitemap-data sitemap:
+$processor$: pr.sitemap
+    
+   	\-- ds.header:
+	  sections: $sitemap.sections
+	  sub-sections: $sitemap.subsections
+	  current-section: $sitemap.current-section
+	  current-subsection: $sitemap.current-subsection
+	  current-page: $sitemap.current-page
+	  toc: $sitemap.toc
+	  site-logo: $site-logo
+	  site-url: $site-url
+	  site-name: $site-name
+    
+    -- header:
+	sections: $sitemap.sections
+	sub-sections: $sitemap.subsections
+	current-section: $sitemap.current-section
+	current-subsection: $sitemap.current-subsection
+	current-page: $sitemap.current-page
+	toc: $sitemap.toc
+	site-logo: $site-logo
+	site-url: $site-url
+	site-name: $site-name
+    
+    -- end: ds.rendered
+
+ -- ds.copy-regular:
+
+ And in you `FASTN.ftd` file you have to define you sitemap. As shown in the below code:
+
+ 	-- ds.rendered:
+    
+    \-- fastn.sitemap:
+
+	# Home: /foundation-elements/header/
+
+	-- header:
+	sections: $sitemap.sections
+	sub-sections: $sitemap.subsections
+	current-section: $sitemap.current-section
+	current-subsection: $sitemap.current-subsection
+	current-page: $sitemap.current-page
+	toc: $sitemap.toc
+	site-logo: $site-logo
+	site-url: $site-url
+	site-name: $site-name
+    
+    -- end: ds.rendered
+
+
+-- ds.heading-large: Attributes and Their Values in `ds.header`
+
+-- ds.heading-medium: `sections`
+
+-- ds.copy-regular:
+
+The sections attribute in header helps us to show the website sections like
+home, about, features etc. To define the sections value you have to go to you
+`FASTN.ftd` file and inside the `-- fastn.sitemap:` you provide the value
+like `# Section Name: /`. You can refer to the above output there the `Home`
+is the section.
+
+-- ds.code: sections
+lang: ftd
+
+\-- fastn.sitemap:
+
+# Home: /foundation-elements/header/
+
+-- ds.heading-medium: `sub-sections`
+
+-- ds.copy-regular:
+
+The sub-sections attribute in header helps us to show the website sections
+sub-section like inside home you have more sections. To define the sub-sections
+value you have to go to you `FASTN.ftd` file and follow the below code example: 
+
+-- ds.code: sub-sections
+lang: ftd
+
+\-- fastn.sitemap:
+
+# Home: /foundation-elements/header/
+
+## Sub Section: /
+
+-- ds.heading-medium: `current-section`
+
+-- ds.copy-regular:
+
+The current-section attribute in header helps us to show the current
+active section.
+
+-- ds.heading-medium: `current-subsection`
+
+-- ds.copy-regular:
+
+The current-subsection attribute in header helps us to show the current
+active sub-section.
+    
+-- ds.heading-medium: `current-page`
+
+-- ds.copy-regular:
+
+The current-page attribute in header helps us to show the current
+active page.
+
+-- ds.heading-medium: `toc`
+
+-- ds.copy-regular:
+
+The toc attribute in header helps us to show the website table of content
+like what contents you have inside your home section. To define the toc value
+you have to go to you `FASTN.ftd` file and follow the below code example: 
+
+-- ds.code: toc
+lang: ftd
+
+\-- fastn.sitemap:
+
+# Home: /foundation-elements/header/
+
+- toc: /
+- toc: /
+- toc: /
+
+-- ds.heading-medium: `site-logo`
+
+-- ds.copy-regular:
+
+The site-logo attribute in header helps us to show the website logo.
+
+-- ds.code: site-logo
+lang: ftd
+
+\-- ds.header:
+site-logo: $assets.files.assets.logo.svg ;; <hl>
+
+-- header:
+site-logo: $site-logo
+
+-- ds.heading-medium: `site-name`
+
+-- ds.copy-regular:
+
+The site-name attribute in header helps us to show the website name.
+
+-- ds.code: site-name
+lang: ftd
+
+\-- ds.header:
+site-name: Website Name;; <hl>
+
+-- header:
+site-name: Website Name
+
+-- ds.heading-medium: `site-url`
+
+-- ds.copy-regular:
+
+The site-url attribute in header helps us to show the website url.
+
+-- ds.code: site-url
+lang: ftd
+
+\-- ds.header:
+site-logo: $assets.files.assets.logo.svg
+site-url: /;; <hl>
+
+-- header:
+site-logo: $site-logo
+site-url: /
+
+ -- end: ds.section-column
+
+ -- end: ftd.column
+    
+-- end: ds.page

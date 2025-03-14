@@ -1,0 +1,830 @@
+-- import: design-system.fifthtry.site/foundation-elements/spaces
+-- import: design-system.fifthtry.site/foundation-elements/borders
+-- import: design-system.fifthtry.site/foundation-elements/radius
+
+
+-- component section-row:
+optional caption title:
+ds.flush flush: to-header
+children content:
+ds.gap spacing: $ds.spaces.horizontal-gap.medium
+optional ftd.background outer-background:
+optional ftd.background inner-background:
+ds.hv inset: $ds.spaces.inset-square.zero
+ds.gap margin: $ds.spaces.vertical-gap.extra-extra-large
+boolean wrap: false
+ftd.align align-content: center
+ds.border-data border: $ds.borders.uniform.zero
+ds.element-radius radius: $ds.radius.medium
+ftd.color border-color: $ds.colors.border
+optional string link:
+optional ftd.shadow shadow:
+
+-- ftd.column:
+width: fill-container
+align-content: center
+background: $section-row.outer-background
+margin-bottom.px: $section-row.margin.gap
+shadow: $section-row.shadow
+
+	-- ftd.row:
+	width if { section-row.flush == full }: fill-container
+	max-width.fixed if { section-row.flush == narrow }: $ds.widths.narrow
+	max-width.fixed if { section-row.flush == wide }: $ds.widths.wide
+	max-width.fixed: $ds.widths.regular
+	width: fill-container
+	children: $section-row.content
+	align-content: $section-row.align-content
+	link: $section-row.link
+	spacing if { section-row.spacing.gap == $spaces.HACK-SPACE-BETWEEN-MAGIC-NUMBER }: space-between
+	spacing.fixed.px: $section-row.spacing.gap
+	wrap: $section-row.wrap
+	padding-vertical.px: $section-row.inset.vertical
+	padding-horizontal.px: $section-row.inset.horizontal
+	background: $section-row.inner-background
+	border-top-width.px: $section-row.border.top
+	border-bottom-width.px: $section-row.border.bottom
+	border-left-width.px: $section-row.border.left
+	border-right-width.px: $section-row.border.right
+	border-color: $section-row.border-color
+	border-top-left-radius.px if { section-row.radius.top-left != $radius.HACK-RADIUS-ROUND }: $section-row.radius.top-left
+	border-top-right-radius.px if { section-row.radius.top-right != $radius.HACK-RADIUS-ROUND }: $section-row.radius.top-right
+	border-bottom-left-radius.px if { section-row.radius.bottom-left != $radius.HACK-RADIUS-ROUND }: $section-row.radius.bottom-left
+	border-bottom-right-radius.px if { section-row.radius.bottom-right != $radius.HACK-RADIUS-ROUND }: $section-row.radius.bottom-right
+	border-top-left-radius.percent if { section-row.radius.top-left == $radius.HACK-RADIUS-ROUND }: 50
+	border-top-right-radius.percent if { section-row.radius.top-right == $radius.HACK-RADIUS-ROUND }: 50
+	border-bottom-left-radius.percent if { section-row.radius.bottom-left == $radius.HACK-RADIUS-ROUND }: 50
+	border-bottom-right-radius.percent if { section-row.radius.bottom-right == $radius.HACK-RADIUS-ROUND }: 50
+	
+	-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: section-row
+
+
+
+
+-- ds.page: `ds.section-row`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: left
+
+-- ds.detail: `ds.section-row`
+
+The `ds.section-row` component is similar to `ds.section-column`,
+but instead of stacking elements vertically, it arranges
+them **horizontally** side-by-side. It allows you to easily
+organize content into a row format with customizable attributes
+for layout and style.
+
+The `section-row` can 
+include various child elements like text, images, rows, containers, etc.,
+and offers flexible layout options with customizable
+attributes such as spacing, background, alignment, and more.
+
+The `ds.section-row` always starts with
+`ds.section-row` and ends with `end: ds.section-row`.
+
+**Best Use:** Split layouts, like a hero section with text and an image side-by-side.
+
+Let's see an example:
+
+-- ds.rendered:
+
+\-- ds.section-row:   ;; <hl>
+inset: $ds.spaces.inset-square.large
+outer-background.solid: $ds.colors.background.step-1
+inner-background.solid: $ds.colors.background.overlay
+spacing: $ds.spaces.horizontal-gap.small
+margin: $ds.spaces.vertical-gap.zero
+radius: $ds.radius.medium
+link: https://www.fifthtry.com/
+border: $ds.borders.uniform.medium
+
+\-- ds.column:
+align-content: left
+width.fixed.percent: 90
+
+\-- ds.heading-large: Empower Your Workspace with AI
+
+\-- ds.heading-small: The #1 Choice for Business Owners
+
+\-- ds.copy-large:
+
+Transform your business efficiency with tools designed for
+productivity and growth.
+
+\-- ds.phosphor-icon-button: Get Started Today
+icon: arrow-right
+link: /
+
+\-- end: ds.column
+
+\-- ds.image: 
+src: $assets.files.assets.placeholder.jpg
+width.fixed.px: 500
+height.fixed.px: 350
+
+\-- end: ds.section-row ;; <hl>
+
+-- ds.section-row:
+inset: $ds.spaces.inset-square.large
+outer-background.solid: $ds.colors.background.step-1
+inner-background.solid: $ds.colors.background.overlay
+spacing: $ds.spaces.horizontal-gap.small
+margin: $ds.spaces.vertical-gap.zero
+radius: $ds.radius.medium
+link: https://www.fifthtry.com/
+border: $ds.borders.uniform.medium
+
+-- ds.column:
+align-content: left
+width.fixed.percent: 90
+
+-- ds.heading-large: Empower Your Workspace with AI
+
+-- ds.heading-small: The #1 Choice for Business Owners
+
+-- ds.copy-large:
+
+Transform your business efficiency with tools designed for
+productivity and growth.
+
+-- ds.phosphor-icon-button: Get Started Today
+icon: arrow-right
+link: /
+
+-- end: ds.column
+
+-- ds.image: 
+src: $assets.files.assets.placeholder.jpg
+width.fixed.px: 500
+height.fixed.px: 350
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Attributes and Their Values
+
+Attributes like `flush`, `spacing`, `inset`, `margin`, `align-content`,
+`radius`, `broder-color`, and `border` come with **default values**, so when you
+start with a `ds.section-row`, these properties are
+already set, giving you a solid foundation. You can customize
+them as needed to suit your design.
+
+Additionally, attributes like `outer-background`, `inner-background`,
+`link`, and `shadow` are optional—omitting them won't cause any 
+errors. This flexibility allows you to start simple and make adjustments as you go.
+
+-- ds.heading-medium: Flush
+
+`flush` defines how the section aligns with the header
+ of the page. 
+
+Values:
+- `flush: to-header` (default value) - Section is as wide as the header.
+- `flush: full` - Section extends from edge to edge of the screen.
+- `flush: wide` - Section is 20% wider than the header.
+- `flush: narrow` -  Section is 20% narrower than the header.
+
+-- ds.heading-medium: Spacing
+
+`spacing` defines the gap between elements inside the `ds.section-row`.
+
+Values:
+- `spacing: $ds.spaces.horizontal-gap.zero`
+- `spacing: $ds.spaces.horizontal-gap.extra-extra-small` 
+- `spacing: $ds.spaces.horizontal-gap.extra-small` 
+- `spacing: $ds.spaces.horizontal-gap.small` 
+- `spacing: $ds.spaces.horizontal-gap.medium` (this is the default value) 
+- `spacing: $ds.spaces.horizontal-gap.large` 
+- `spacing: $ds.spaces.horizontal-gap.extra-large` 
+- `spacing: $ds.spaces.horizontal-gap.extra-extra-large` 
+- `spacing: $ds.spaces.horizontal-gap.space-between` 
+
+Since it is a **section-row**, `vertical-gap` is used for
+spacing to maintain uniform gaps between stacked elements.
+
+-- ds.rendered: Spacing
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+spacing: $ds.spaces.horizontal-gap.large  ;; <hl>
+
+\-- ds.card: Card component title
+image: $assets.files.assets.placeholder.jpg
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+\-- ds.card: Card component title
+image: $assets.files.assets.placeholder.jpg
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+spacing: $ds.spaces.horizontal-gap.large
+
+-- ds.card: Card component title
+image: $assets.files.assets.placeholder.jpg
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+-- ds.card: Card component title
+image: $assets.files.assets.placeholder.jpg
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Background
+
+The background attribute allows you to set a background
+color or image for both the inner and outer areas of
+a section. It can be customized using `outer-background`
+or `inner-background`
+
+-- ds.heading-small: Solid Color
+
+To set a solid color background, use `outer-background.solid` or `inner-background.solid`
+for outer an dinner background respectively. You can choose values from predefined
+design system **background colors** like `step-1`, `step-2`, `base`, and `overlay`.
+
+-- ds.rendered: Example - 1
+
+\-- ds.section-row:
+outer-background.solid: $ds.colors.background.step-2 ;; <hl>
+inner-background.solid: $ds.colors.background.overlay ;; <hl>
+margin: $ds.spaces.vertical-gap.zero
+
+\-- ds.heading-small: Build your next web project faster with `fastn`
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+outer-background.solid: $ds.colors.background.step-2
+inner-background.solid: $ds.colors.background.overlay
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.heading-small: Build your next web project faster with `fastn`
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.rendered: Example - 2
+
+\-- ds.section-row:
+outer-background.solid: $ds.colors.custom.one ;; <hl>
+inner-background.solid: pink ;; <hl>
+margin: $ds.spaces.vertical-gap.zero
+
+\-- ds.heading-small: Build your next web project faster with `fastn`
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+outer-background.solid: $ds.colors.custom.one
+inner-background.solid: pink
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.heading-small: Build your next web project faster with `fastn`
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+In this example, `custom.one` is a color defined
+in the design system, while `pink` is a basic color
+name that can be used directly. This flexibility 
+allows you to choose from a wide range of colors,
+whether they're part of your design system or
+standard CSS color names.
+
+-- ds.heading-small: Image
+
+To use an image as the background, use
+`outer-background.image` or `inner-background.image`
+
+-- ds.rendered:
+
+\-- ds.section-row:
+outer-background.image:  $bg-image ;; <hl>
+margin: $ds.spaces.vertical-gap.zero
+
+\-- ds.heading-small: Build your next web project faster with `fastn`
+
+\-- end: ds.section-row
+
+\-- ftd.background-image bg-image: 
+src: https://bit.ly/4edhYZn
+repeat: no-repeat
+size: cover
+
+-- ds.section-row:
+outer-background.image: $bg-image 
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.heading-small: Build your next web project faster with `fastn`
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.copy-regular: 
+
+You can also apply a linear gradient background to the `section-row`.
+Use the `outer-background.linear-gradient` or `inner-background.linear-gradient` attribute.
+For further details on defining and using linear gradients,
+please refer to the [documentation on linear gradients.](https://fastn.com/built-in-types#ftd-linear-gradient-directions)
+
+-- ds.heading-medium: Inset
+
+`inset` defines the space between the section’s border and
+its content (similar to padding).
+`ds.section-row` takes `inset: $ds.spaces.inset-square.zero`
+as its default value. You can customize inset value according to your 
+requirement. 
+The available `inset` types
+and their corresponding values are as follows:
+
+-- ds.heading-small: `inset-square` - Equal values in both horizontal and vertical directions.
+
+Values: extra-small, small, medium, large, extra-large, zero
+Example: `inset: $ds.spaces.inset-square.large`
+
+-- ds.rendered: `inset-square`
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-square.large ;; <hl>
+
+\-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-square.large
+
+-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `inset-wide` - Greater horizontal padding than vertical padding.
+
+Values: small-zero, medium-zero, large-zero, large, medium, small
+Example: `inset: $ds.spaces.inset-wide.medium-zero`
+Here, the horizontal gap is small, and vertical gap is zero.
+
+-- ds.rendered: `inset-wide`
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-wide.medium-zero  ;; <hl>
+
+\-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-wide.medium-zero
+
+-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.heading-small: `inset-tall` - Higher vertical padding than horizontal padding.
+
+Values: small, medium, large, zero-small, zero-medium
+Example: inset: $ds.spaces.inset-tall.zero-medium
+Here, the horizontal gap is zero, and vertical gap is medium.
+
+-- ds.rendered: `inset-tall`
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-tall.zero-medium  ;; <hl>
+
+\-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.heading-small: `fastn` is the best choice to build your company’s website
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Align Content
+
+`align-content` attribute aligns the content 
+inside the `ds.section-row`. The default value is center.
+You can choose other pre-defined 
+align-content values like:
+
+- top-left
+- top-right
+- top-center
+- center
+- bottom-left
+- bottom-center
+- bottom-right
+
+-- ds.rendered:
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+align-content: right  ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+align-content: right
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Border
+
+-- ds.copy-regular:
+
+Defines the thickness of the section-row's border. 
+It can be applied uniformly or to specific sides. 
+`ds.section-row` takes `border: $ds.borders.uniform.zero`
+as its default value. To customize your border attribute, see the below available 
+values.
+
+-- ds.rendered: Uniform Border - Applies the same thickness to all sides.
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.uniform.medium  ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.uniform.medium
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+-- ds.rendered: Vertical Border - Applies to both left and right sides.
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.vertical.large ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.vertical.large
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+-- ds.rendered: Horizontal Border - Applies to the top and bottom sides.
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.horizontal.large ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.horizontal.large
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+-- ds.rendered: Top, Bottom, Left, Right Borders - Applies thickness to specific sides.
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.left.large ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.left.large
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+-- end: ds.section-row 
+
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+The values for border thickness can be: zero, small, medium and large.
+
+
+
+-- ds.heading-medium: Border Color
+
+-- ds.copy-regular:
+
+Sets the color of the section row's border.
+For the border color, you can use any predefined colors 
+available in the design system package, like `shadow` or even use color names like 
+orange, pink, etc. The default color assigned for border is `border-color: $ds.colors.border`
+
+You can also define any custom colors in the `themecolors.ftd` file.
+Check out this documentation to 
+[customize your `fastn` color scheme](https://www.fifthtry.com/blog/customize-cs/)
+to your liking!
+
+-- ds.rendered: Border Color
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.uniform.medium
+border-color: $ds.colors.shadow ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+border: $ds.borders.uniform.medium
+border-color: $ds.colors.shadow
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- ds.phosphor-icon-button: Learn More
+icon: arrow-right
+link: /
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Radius
+
+-- ds.copy-regular:
+
+`radius` defines the corner radius of the section-row.
+The values for `radius` can be: zero, small, medium, large and round.
+`ds.section-row` takes `radius: $ds.radius.medium`
+as its default value. 
+
+-- ds.rendered: Radius
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+radius: $ds.radius.large ;; <hl>
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+radius: $ds.radius.large
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: Link
+
+-- ds.copy-regular:
+
+`link` attribute makes the section clickable by adding a URL.
+
+-- ds.rendered: Link
+
+\-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+link: https://www.fifthtry.com/
+
+\-- ds.heading-small: Simple tools for smarter results.
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+margin: $ds.spaces.vertical-gap.zero
+link: https://www.fifthtry.com/
+
+-- ds.heading-small: Simple tools for smarter results.
+
+-- end: ds.section-row 
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: Wrap
+
+The `wrap` property in `ds.row` controls whether the 
+elements inside a row should move to the next line if
+there isn’t enough horizontal space. By default, `wrap`
+is set to **false**, meaning all items will stay on a 
+single line and may overflow the container. Setting 
+`wrap: true` allows the content to automatically wrap
+to the next line when space runs out, keeping everything
+neatly aligned within the available width.
+
+Example Use: If you have a row containing six product
+cards and you want them to be evenly distributed without
+squeezing.
+
+-- ds.rendered: Wrap
+
+\-- ds.section-row:
+spacing: $ds.spaces.vertical-gap.medium
+wrap: true
+
+\-- feature:  Brainstorming
+image: $assets.files.assets.placeholder.jpg
+
+\-- feature:  Content Creation
+image: $assets.files.assets.placeholder.jpg
+
+\-- feature:  Journaling
+image: $assets.files.assets.placeholder.jpg
+
+\-- feature:  Meetings
+image: $assets.files.assets.placeholder.jpg
+
+\-- feature:  Interviews
+image: $assets.files.assets.placeholder.jpg
+
+\-- end: ds.section-row
+
+-- ds.section-row:
+spacing: $ds.spaces.vertical-gap.medium
+wrap: true
+
+-- feature:  Brainstorming
+image: $assets.files.assets.placeholder.jpg
+
+-- feature:  Content Creation
+image: $assets.files.assets.placeholder.jpg
+
+-- feature:  Journaling
+image: $assets.files.assets.placeholder.jpg
+
+-- feature:  Meetings
+image: $assets.files.assets.placeholder.jpg
+
+-- feature:  Interviews
+image: $assets.files.assets.placeholder.jpg
+
+-- end: ds.section-row
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ftd.background-image bg-image: 
+src: https://bit.ly/4edhYZn
+repeat: no-repeat
+size: cover
+
+
+
+
+
+
+
+-- component feature:
+caption title:
+ftd.image-src image:
+
+-- ds.container:
+inset: $ds.spaces.inset-square.medium
+background.solid: $ds.colors.background.step-1
+width.fixed.percent: 30
+radius: $ds.radius.medium
+
+-- ds.column:
+spacing: $ds.spaces.horizontal-gap.space-between
+height.fixed.px: 120
+
+-- ftd.image:
+src: $feature.image
+width: fill-container
+border-radius.px: $ds.radius.uniform.small
+
+-- ds.heading-tiny: $feature.title
+color: $ds.colors.text-strong
+
+-- end: ds.column
+
+-- end: ds.container
+
+-- end: feature

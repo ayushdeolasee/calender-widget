@@ -1,0 +1,1667 @@
+-- import: dark-mode-switcher.fifthtry.site as dms
+-- import: design-system.fifthtry.site/demos
+
+
+-- or-type flush:
+
+-- constant integer to-header: 0 ;; as wide as header
+-- constant integer full: 1      ;; edge to edge
+-- constant integer wide: 2      ;; 20% wider than the header
+-- constant integer narrow: 3    ;; 20% narrower
+
+-- end: flush
+
+
+
+-- record page-widths:
+ftd.length regular:
+ftd.length narrow:
+ftd.length wide:
+
+-- page-widths widths:
+regular.px: 1200
+narrow.px: 1000
+wide.px: 1400
+
+-- ds.page-widths narrow-widths:
+regular.px: 800
+narrow.px: 600
+wide.px: 1000
+
+
+-- component page:
+optional caption title:
+optional string document-title:
+optional string document-description:
+optional ftd.raw-image-src document-image: 
+optional ftd.raw-image-src twitter-image: 
+optional body description:
+children content:
+ds.gap spacing: $ds.spaces.vertical-gap.zero
+ds.hv inset: $ds.spaces.inset-square.medium
+page-widths widths: $ds.widths
+;; todo: is the follow reference to `.gap` correct?
+ds.gap margin: $ds.spaces.vertical-gap.large
+ftd.background.solid background: $ds.colors.background.base
+boolean theme-switcher: false
+boolean fastn-badge: true
+ftd.align align-content: top-left
+
+-- ftd.document:
+title if { page.document-title != NULL }: $page.document-title
+title: $page.title
+og-title if { page.document-title != NULL }: $page.document-title
+og-title: $page.title
+og-description: $page.document-description
+description: $page.document-description
+description if { page.document-description == NULL }: $page.title
+og-image: $page.document-image
+colors: $ds.colors
+types: $ds.types
+
+	-- dms.dark-mode-switcher-float:
+	if: { page.theme-switcher }
+
+	-- ftd.image:
+	if: { page.fastn-badge }
+	src: $assets.files.assets.powered-by.svg
+	anchor: window
+	right.px: 0
+	bottom.px: 0
+	z-index: 99999999999999
+	link: https://fastn.com/
+	open-in-new-tab: true
+	
+	-- ds.column:
+	width: fill-container
+	height: fill-container
+	spacing: $page.spacing
+	color: $ds.colors.text
+	radius: $ds.radius.zero
+	background: $page.background
+	align-content: $page.align-content
+    margin: $page.margin
+    inset: $page.inset
+	
+		-- ui:
+		for: $ui in $page.content
+		
+	-- end: ds.column
+
+-- end: ftd.document
+
+-- end: page
+
+
+
+
+
+
+
+
+-- page-widths test-widths:
+regular.px: 400
+narrow.px: 300
+wide.px: 1200
+
+
+-- ds.page: `ds.page`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: left
+
+-- ds.detail: `ds.page`
+
+`ds.page` is the foundational 
+element used to create a web page in 
+the design system package. 
+
+It acts as the framework that 
+structures all the content and design 
+elements of the page.
+You can specify attributes 
+like page title, description, content 
+alignment, spacing, background color, 
+and more to customize the look and 
+feel of the page. The page always starts 
+with `ds.page` and ends with `end: ds.page`.
+
+-- ds.heading-large: How to use
+
+-- ds.copy-regular:
+
+To use the `ds.page` component, you must 
+define it with a `page title` and include 
+`children content` inside the page and 
+optionally, you can include other attributes 
+like description, page-width, background, and more.
+
+Everything placed inside the `ds.page` 
+component will be rendered within the page.
+
+
+-- ds.code: Example Code
+lang: ftd
+
+\-- ds.page: Nature Photography
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+
+;; add image of the output
+
+-- ds.copy-regular:
+
+In this example, 
+
+`ds.page: Nature Photography` creates a page 
+titled "Nature Photography" (visible in the browser tab).
+
+`ds.heading-medium: Welcome to Nature Photography` creates a
+large heading inside the page content.
+
+`end: ds.page` marks the end of the page.
+
+Both the title and the children content are 
+required for the `ds.page` to function correctly.
+
+-- ds.heading-large: Attributes and Their Values in `ds.page`
+
+-- ds.code: Default Configuration for `ds.page`
+lang: ftd
+
+\-- ds.page: Your Page title goes here 
+background.solid: $ds.colors.background.base
+theme-switcher: false 
+fastn-badge: true 
+align-content: top-left
+spacing: $ds.spaces.vertical-gap.zero
+inset: $ds.spaces.inset-square.medium
+margin: $ds.spaces.vertical-gap.large
+
+\;; This is the body part. Your page meta description goes here.
+
+\;; <-- Children Components Start -->
+
+\-- ds.heading-large: Welcome to Nature Photography
+
+\;; <-- Children Components End -->
+
+\-- end: ds.page
+
+-- ds.heading-medium: `Page Title`
+
+-- ds.copy-regular:
+
+The main title of the page, which 
+appears on the browser tab. It is a required attribute.
+
+-- ds.heading-medium: `Meta description`
+
+-- ds.copy-regular:
+
+The page description (meta description) 
+should be written after leaving a single blank line 
+following the `ds.page` attributes. This description is 
+placed directly below the attributes and before any child 
+components. While optional, it's good practice to provide 
+meta description for SEO and social sharing. 
+
+
+-- ds.heading-medium: `Background`
+
+-- ds.copy-regular:
+
+To set a background for your page, you 
+typically use the `background.solid`
+attribute to specify a solid background color. 
+
+However, you can also use background images 
+`(background.image)` or linear gradients 
+`(background.linear-gradient)` instead of 
+a solid color.
+
+
+-- ds.heading-medium: Solid Background Color
+
+-- ds.copy-regular:
+
+The `background.solid` attribute can take the following values:
+
+-- ds.heading-small: Predefined Design-System Colors: `base`, `step-1`, `step-2`
+
+-- ds.copy-regular:
+
+- `background.solid: $ds.colors.background.base`
+- `background.solid: $ds.colors.background.step-1`
+- `background.solid: $ds.colors.background.step-2`
+
+For example, you can set it like, 
+
+-- ds.rendered: `background.solid` set to `step-1`
+
+\-- ds.page: Nature Photography
+background.solid: $ds.colors.background.step-1  ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+background.solid: $ds.colors.background.step-1 
+
+-- ds.heading-medium: Welcome to Nature Photography
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: Hexadecimal Color Code
+
+-- ds.rendered: `background.solid` using Hex Code
+
+\-- ds.page: Nature Photography
+background.solid: #d0d0d0 ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+background.solid: #d0d0d0
+
+-- ds.heading-medium: Welcome to Nature Photography
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: RGB Color Value
+
+-- ds.rendered: `background.solid` using RGB Value
+
+\-- ds.page: Nature Photography
+background.solid: rgb(0,128,0) ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+background.solid: rgb(0,128,0)
+
+-- ds.heading-medium: Welcome to Nature Photography
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: Color Name
+
+-- ds.rendered: `background.solid` using Color Name
+
+\-- ds.page: Nature Photography
+background.solid: pink ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+background.solid: pink
+
+-- ds.heading-medium: Welcome to Nature Photography
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: Background Image
+
+-- ds.copy-regular:
+
+To set a background image, use the 
+`background.image` attribute and 
+provide the image URL.
+
+
+-- ds.rendered: `background.image`
+
+\-- ds.page: Nature Photography
+background.image: $bg-image ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+\-- ftd.background-image bg-image: 
+src: https://bit.ly/4edhYZn
+repeat: no-repeat
+size: cover
+
+-- ds.page: Nature Photography
+background.image: $bg-image
+
+-- ds.heading-medium: Welcome to Nature Photography
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+Here, instead of an URL, the background image is assigned 
+using the variable `bg-image`, which 
+contains the image source and its properties.
+
+-- ds.heading-medium: Linear Gradient Background
+
+-- ds.copy-regular:
+
+To apply a linear gradient background, use the 
+`background.linear-gradient` attribute. 
+The linear gradient is assigned 
+using the variable `lg`, which 
+contains the list of colors and the direction 
+of the gradient. 
+
+-- ds.code: 
+lang: ftd
+
+\-- ds.page: Nature Photography
+background.linear-gradient: $lg ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+
+\-- ftd.linear-gradient lg:
+direction: top-left
+colors: $color-values
+
+\-- ftd.linear-gradient-color list color-values:
+\-- ftd.linear-gradient-color: #09c0e8
+\-- ftd.linear-gradient-color: #1e0c9c
+\-- ftd.linear-gradient-color: #1458bb
+\-- end: color-values
+
+;; show output image
+
+-- ds.copy-regular:
+
+In this example,
+
+`$lg` is the variable representing the linear gradient.
+
+`direction` specifies the direction of the gradient (e.g., top-left).
+
+`colors` list holds the gradient's color stops.
+
+For further details on defining and using linear gradients, 
+please refer to the 
+[documentation on linear gradients.](https://fastn.com/built-in-types#ftd-linear-gradient-directions)
+
+
+-- ds.heading-medium: `theme-switcher`
+
+-- ds.copy-regular:
+
+This boolean attribute enables or 
+disables the theme switcher for your page. The default 
+value is false, meaning the theme switcher 
+(for dark and light mode) is hidden. To enable it, set it to true:
+
+-- ds.code:
+lang: ftd
+
+\-- ds.page: Nature Photography
+theme-switcher: true ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+;; show output image
+
+
+
+-- ds.heading-medium: `fastn-badge`
+
+-- ds.copy-regular:
+
+This controls whether the "Powered by Fastn" 
+badge appears at the bottom right of the page. By default, 
+it is set to true. To hide the badge, set it to false:
+
+-- ds.code:
+lang: ftd
+
+\-- ds.page: Nature Photography
+fastn-badge: false ;; <hl>
+
+\-- ds.heading-medium: Welcome to Nature Photography
+
+\-- end: ds.page
+
+;; show output image
+
+
+-- ds.heading-medium: `align-content`
+
+-- ds.copy-regular:
+
+This attribute aligns the content 
+inside the page. The default value is top-left, 
+which places the content at the top of the page, 
+centered horizontally. You can choose other pre-defined 
+align-content values like:
+
+- top-left
+- top-right
+- top-center
+- center
+- bottom-left
+- bottom-center
+- bottom-right
+
+
+-- ds.rendered:
+
+\-- ds.page: Nature Photography
+align-content: bottom-right ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+align-content: bottom-right
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: `spacing`
+
+-- ds.copy-regular:
+
+This attribute provide spacing to the content inside the page. The default
+value is `$ds.spaces.vertical-gap.zero`, which provide the zero spacing
+between the content vertically. You can choose other pre-defined spacing
+values like:
+
+- $ds.spaces.vertical-gap.zero
+- $ds.spaces.vertical-gap.extra-extra-small
+- $ds.spaces.vertical-gap.extra-small
+- $ds.spaces.vertical-gap.small
+- $ds.spaces.vertical-gap.medium
+- $ds.spaces.vertical-gap.large
+- $ds.spaces.vertical-gap.extra-large
+- $ds.spaces.vertical-gap.extra-extra-large
+- $ds.spaces.vertical-gap.space-between
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.zero`	
+
+If the spacing value is `$ds.spaces.vertical-gap.zero` it will take `0px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-extra-small` it will take `2px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-small` it will take `4px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.small`	
+
+If the spacing value is `$ds.spaces.vertical-gap.small` it will take `8px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.medium`	
+
+If the spacing value is `$ds.spaces.vertical-gap.medium` it will take `16px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.large` it will take `32px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-large` it will take `64px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-large`	
+
+If the spacing value is `$ds.spaces.vertical-gap.extra-extra-large` it will take `128px`
+spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.space-between`	
+
+If the spacing value is `$ds.spaces.vertical-gap.space-between` it will take
+the `equal space between the two sections by calculating the height of the
+page` spacing between the two sections.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.space-between ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+spacing: $ds.spaces.vertical-gap.space-between
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `inset`
+
+-- ds.copy-regular:
+
+This attribute provide padding to the content inside the page. The default
+value is `$ds.spaces.inset-square.medium`, which provides `16px` padding from
+all the sides (vertically and horizontally). You can choose other pre-defined
+inset values like:
+
+If you want to give equal padding to all the side then you can choose for the
+values below:
+
+- $ds.spaces.inset-square.zero
+- $ds.spaces.inset-square.extra-small
+- $ds.spaces.inset-square.small
+- $ds.spaces.inset-square.medium
+- $ds.spaces.inset-square.large
+- $ds.spaces.inset-square.extra-large
+
+If you want to give padding more to vertically then horizontally then you can
+choose from the values below:
+
+- $ds.spaces.inset-tall.small
+- $ds.spaces.inset-tall.medium
+- $ds.spaces.inset-tall.large
+- $ds.spaces.inset-tall.zero-small
+- $ds.spaces.inset-tall.zero-medium
+
+If you want to give padding more to horizontally then vertically then you can
+choose from the values below:
+
+- $ds.spaces.inset-wide.small
+- $ds.spaces.inset-wide.medium
+- $ds.spaces.inset-wide.large
+- $ds.spaces.inset-wide.small-zero
+- $ds.spaces.inset-wide.medium-zero
+- $ds.spaces.inset-wide.large-zero
+
+-- ds.heading-small: `$ds.spaces.inset-square.zero`	
+
+If the inset value is `$ds.spaces.inset-square.zero` it will take `0px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: Spacing
+inset: $ds.spaces.inset-square.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Spacing
+inset: $ds.spaces.inset-square.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.extra-small`	
+
+If the inset value is `$ds.spaces.inset-square.extra-small` it will take `4px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: inset-square
+inset: $ds.spaces.inset-square.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-square
+inset: $ds.spaces.inset-square.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.small`	
+
+If the inset value is `$ds.spaces.inset-square.small` it will take `8px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: inset-square
+inset: $ds.spaces.inset-square.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-square
+inset: $ds.spaces.inset-square.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.medium`	
+
+If the inset value is `$ds.spaces.inset-square.medium` it will take `16px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: inset-square
+inset: $ds.spaces.inset-square.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-square
+inset: $ds.spaces.inset-square.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.large`	
+
+If the inset value is `$ds.spaces.inset-square.large` it will take `32px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: inset-square
+inset: $ds.spaces.inset-square.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-square
+inset: $ds.spaces.inset-square.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-square.extra-large`	
+
+If the inset value is `$ds.spaces.inset-square.extra-large` it will take `64px`
+padding from all the sides.
+
+-- ds.rendered:
+
+\-- ds.page: inset-square
+inset: $ds.spaces.inset-square.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-square
+inset: $ds.spaces.inset-square.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: `$ds.spaces.inset-tall.small`	
+
+If the inset value is `$ds.spaces.inset-tall.small` it will take `8px` value
+horizontally and `12px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.medium`	
+
+If the inset value is `$ds.spaces.inset-tall.medium` it will take `16px` value
+horizontally and `24px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.large`	
+
+If the inset value is `$ds.spaces.inset-tall.large` it will take `24px` value
+horizontally and `36px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.zero-small`	
+
+If the inset value is `$ds.spaces.inset-tall.zero-small` it will take `0px` value
+horizontally and `12px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.zero-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.zero-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-tall.zero-medium`	
+
+If the inset value is `$ds.spaces.inset-tall.zero-medium` it will take `0px` value
+horizontally and `24px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.zero-medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-tall
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: `$ds.spaces.inset-wide.small`	
+
+If the inset value is `$ds.spaces.inset-wide.small` it will take `8px` value
+horizontally and `4px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.medium`	
+
+If the inset value is `$ds.spaces.inset-wide.medium` it will take `16px` value
+horizontally and `8px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.large`	
+
+If the inset value is `$ds.spaces.inset-wide.large` it will take `32px` value
+horizontally and `16px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.small-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.small-zero` it will take `8px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.small-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.small-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.inset-wide.medium-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.medium-zero` it will take `16px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.medium-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.medium-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: `$ds.spaces.inset-wide.large-zero`	
+
+If the inset value is `$ds.spaces.inset-wide.large-zero` it will take `32px` value
+horizontally and `0px` value vertically.
+
+-- ds.rendered:
+
+\-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.large-zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: inset-wide
+inset: $ds.spaces.inset-wide.large-zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: `margin`
+
+-- ds.copy-regular:
+
+This attribute provide margin to the bottom of the page. The default value is
+`$ds.spaces.vertical-gap.large`, which provide the margin-bottom value
+`32px`. You can choose other pre-defined margin values like:
+
+- $ds.spaces.vertical-gap.zero
+- $ds.spaces.vertical-gap.extra-extra-small
+- $ds.spaces.vertical-gap.extra-small
+- $ds.spaces.vertical-gap.small
+- $ds.spaces.vertical-gap.medium
+- $ds.spaces.vertical-gap.large
+- $ds.spaces.vertical-gap.extra-large
+- $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.zero`	
+
+If the margin value is `$ds.spaces.vertical-gap.zero` it will take `0px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.zero ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.zero
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-small`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-extra-small` it will take `2px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-small`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-small` it will take `4px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.small`	
+
+If the margin value is `$ds.spaces.vertical-gap.small` it will take `8px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.small ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.small
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.medium`	
+
+If the margin value is `$ds.spaces.vertical-gap.medium` it will take `16px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.medium ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.large`	
+
+If the margin value is `$ds.spaces.vertical-gap.large` it will take `32px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-large`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-large` it will take `64px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-small: `$ds.spaces.vertical-gap.extra-extra-large`	
+
+If the margin value is `$ds.spaces.vertical-gap.extra-extra-large` it will take `128px`
+margin to the bottom.
+
+-- ds.rendered:
+
+\-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-extra-large ;; <hl>
+
+\-- ds.primary-button: Book a Call
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: margin-bottom
+margin: $ds.spaces.vertical-gap.extra-extra-large
+
+-- ds.primary-button: Book a Call
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+
+-- ds.heading-large: Example of `ds.page`
+
+-- ds.rendered: Without changes to default values
+
+\-- ds.page: Nature Photography
+
+Best Photography Studio in Delhi for wildlife photography and outdoor photoshoots.
+
+\-- ds.hero: Welcome to Nature Photography
+image: $assets.files.assets.placeholder.jpg
+cta-text: button
+cta-link: /
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+molestie ante in luctus rutrum.
+
+
+\-- end: ds.page
+
+-- ds.page: Nature Photography
+
+Best Photography Studio in Delhi for wildlife photography and outdoor photoshoots.
+
+-- ds.hero: Welcome to Nature Photography
+image: $assets.files.assets.placeholder.jpg
+cta-text: button
+cta-link: /
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+molestie ante in luctus rutrum. 
+
+
+-- end: ds.page
+
+
+-- end: ds.rendered
+
+
+-- ds.rendered: With customized values
+
+\-- ds.page: Nature Photography
+background.solid: #abf7b1
+theme-switcher: true
+fastn-badge: false
+
+Best Photography Studio in Delhi for wildlife photography and outdoor photoshoots.
+
+\-- ds.hero: Welcome to Nature Photography
+image: $assets.files.assets.placeholder.jpg
+cta-text: button
+cta-link: /
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+molestie ante in luctus rutrum.
+
+\-- end: ds.page
+
+;; -- ds.page-widths widths:
+;; regular.px: 800
+;; narrow.px: 600
+;; wide.px: 1000
+
+-- ds.page: Nature Photography
+widths: $widths
+background.solid: #abf7b1
+theme-switcher: true
+fastn-badge: false
+
+Best Photography Studio in Delhi for wildlife photography and outdoor photoshoots.
+
+-- ds.hero: Welcome to Nature Photography
+image: $assets.files.assets.placeholder.jpg
+cta-text: button
+cta-link: /
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+molestie ante in luctus rutrum. 
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+
+
+-- ftd.background-image bg-image: 
+src: https://bit.ly/4edhYZn
+repeat: no-repeat
+size: cover

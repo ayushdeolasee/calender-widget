@@ -1,0 +1,88 @@
+-- component modal:
+caption title:
+body body:
+string cta-text:
+boolean $toggle: false
+
+-- ds.section-column:
+align-content: left
+
+-- ds.secondary-button: $modal.cta-text
+$on-click$: $ftd.toggle($a = $modal.toggle)
+
+-- ftd.column:
+if: { modal.toggle }
+anchor: window
+background.solid: $inherited.colors.background.step-1
+border-width.px: 1
+padding.px: 18
+border-radius.px: 8
+width.fixed.px: 420
+top.px: 6
+spacing.fixed.px: 16
+align-self: center
+align-content: left
+
+-- ds.heading-tiny: $modal.title
+
+-- ds.copy-small: $modal.body
+
+-- ds.row:
+align-content: right
+
+-- ds.secondary-button: Cancel
+$on-click$: $ftd.toggle($a = $modal.toggle)
+
+-- ds.primary-button: Ok
+
+-- end: ds.row
+
+-- end: ftd.column
+
+-- end: ds.section-column
+
+-- end: modal
+
+
+
+
+
+-- ds.page: Modal
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Modal
+
+	The modal component in our design system provides a versatile and
+	attention-grabbing way to present content or interactions that require
+	user attention or action. With its overlay and customizable layout, it
+	temporarily suspends the main interface to focus user attention on the
+	modal content.
+
+
+	-- ds.rendered:
+		
+		\-- ds.modal: This is title
+		cta-text: Open
+		
+		This is body part for the modal component.
+
+		-- modal: This is title
+		cta-text: Open
+		
+		This is body part for the modal component.
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

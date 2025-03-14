@@ -1,0 +1,11 @@
+-- ftd.image-src site-logo: $assets.files.assets.logo.svg
+
+-- string copyright: Copyright 2025 YourCompany, Inc.
+
+-- string site-name: Your Site
+
+-- string site-title(a):
+string a:
+string site_name: $ds.site-name
+
+site_name + a

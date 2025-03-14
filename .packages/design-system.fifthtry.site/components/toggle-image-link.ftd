@@ -1,0 +1,50 @@
+-- component toggle-image-link:
+caption link:
+ftd.image-src src:
+ftd.image-src hover-src:
+boolean $hovering: false
+boolean open-in-new-tab: false
+
+	-- ftd.image:
+	src if { toggle-image-link.hovering }: $toggle-image-link.hover-src
+	src: $toggle-image-link.src
+	$on-mouse-enter$: $ftd.set-bool($a = $toggle-image-link.hovering, v = true)
+	$on-mouse-leave$: $ftd.set-bool($a = $toggle-image-link.hovering, v = false)
+	link: $toggle-image-link.link
+	open-in-new-tab if { toggle-image-link.open-in-new-tab }: true
+
+-- end: toggle-image-link
+
+
+
+
+-- ds.page: Toggle Button
+
+-- ftd.column:
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+
+	-- ds.detail: Toggle Image Link
+
+    Toggle Image Link can be used to create an image that changes when hovered over.
+
+    -- ds.rendered:
+
+    \-- ds.toggle-image-link: https://google.com
+    src: $assets.files.assets.alert-info.svg
+    hover-src: $assets.files.assets.alert-warning.svg
+    open-in-new-tab: true \;; leave out this line if you want it to be false
+
+        -- toggle-image-link: https://google.com
+        src: $assets.files.assets.alert-info.svg
+        hover-src: $assets.files.assets.alert-warning.svg
+        open-in-new-tab: true
+
+    -- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

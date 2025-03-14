@@ -1,0 +1,37 @@
+-- import: svg-icons.fifthtry.site/helper
+
+
+
+-- component brand:
+caption string name:
+optional ftd.color color:
+integer size: 24
+
+-- helper.phosphor-icon: $svg-url(icon=$brand.name, prefix=brands)
+size: $brand.size
+color: $brand.color
+
+-- end: brand
+
+
+
+
+-- component regular:
+caption string name:
+optional ftd.color color:
+integer size: 24
+
+-- helper.phosphor-icon: $svg-url(icon=$regular.name, prefix=regular)
+size: $regular.size
+color: $regular.color
+
+-- end: regular
+
+
+
+
+-- string svg-url(icon, prefix):
+string icon:
+string prefix:
+
+"raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/" + prefix + "/" + icon + ".svg"

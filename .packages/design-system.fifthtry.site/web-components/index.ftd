@@ -1,0 +1,2 @@
+-- web-component source-updater:
+js: $assets.files.assets.js.update-source.js

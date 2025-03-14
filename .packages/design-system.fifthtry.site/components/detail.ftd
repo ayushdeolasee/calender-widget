@@ -1,0 +1,19 @@
+-- component detail:
+caption title:
+optional body body:
+
+	-- ds.column:
+	align-content: left
+    inset: $ds.spaces.inset-square.zero
+		
+		-- ds.heading-hero: $detail.title
+		width: hug-content
+
+			-- ds.copy-regular:
+			if: { detail.body != NULL }
+
+			$detail.body
+
+			-- end: ds.column
+
+-- end: detail

@@ -1,0 +1,13 @@
+-- optional string $active-file-preview-url: introduction/getting-started/
+-- optional string $active-file-content: content
+-- string $active-title: Introduction
+-- string $active-sub-title: Getting Started
+
+-- void submit(default_file, fileurl):
+string default_file:
+string fileurl:
+js: $assets.files.assets.js.update-source.js
+
+update_source_code(fileurl, "design-system.fifthtry.site/actions/navigate")
+
+;;callAlert("Navigating to file:" + fileurl + ", default file: " + default_file)

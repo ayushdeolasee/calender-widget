@@ -1,0 +1,372 @@
+-- record shadow-data:
+ftd.shadow extra-extra-small:
+ftd.shadow extra-small:
+ftd.shadow small:
+ftd.shadow medium:
+ftd.shadow large:
+ftd.shadow extra-large:
+ftd.shadow extra-extra-large:
+
+-- shadow-data shadow:
+extra-extra-small: $extra-extra-small
+extra-small: $extra-small
+small: $small
+medium: $medium
+large: $large
+extra-large: $extra-large
+extra-extra-large: $extra-extra-large
+
+
+
+
+
+-- ftd.shadow extra-extra-small:
+color: #303030
+blur.px: 0
+spread.px: 1
+x-offset.px: 0
+y-offset.px: 0
+
+
+
+
+
+-- ftd.shadow extra-small:
+color: #303030
+blur.px: 2
+spread.px: 0
+x-offset.px: 0
+y-offset.px: 1
+
+
+
+
+
+-- ftd.shadow small:
+color: #303030
+blur.px: 3
+spread.px: 0
+x-offset.px: 0
+y-offset.px: 1
+
+
+
+
+
+-- ftd.shadow medium:
+color: #303030
+blur.px: 6
+spread.px: -1
+x-offset.px: 0
+y-offset.px: 4
+
+
+
+
+
+-- ftd.shadow large:
+color: #303030
+blur.px: 15
+spread.px: -3
+x-offset.px: 0
+y-offset.px: 10
+
+
+
+
+
+-- ftd.shadow extra-large:
+color: #303030
+blur.px: 25
+spread.px: -5
+x-offset.px: 0
+y-offset.px: 20
+
+
+
+
+
+-- ftd.shadow extra-extra-large:
+color: #303030
+blur.px: 50
+spread.px: -12
+x-offset.px: 0
+y-offset.px: 25
+
+
+
+
+
+
+
+
+
+-- ds.page: `shadow`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: left
+
+-- ds.detail: `shadow`
+
+`shadow` is the foundational attribute used to create border-shadow for the
+components.
+
+-- ds.heading-large: How to use
+
+-- ds.copy-regular:
+
+The `shadow` attribute take different values. Lets learn how we can use the
+different borders-shadow in our components.
+
+If you want to give shadow to your component, you can choose for the values below:
+
+- $ds.shadow.extra-extra-small
+- $ds.shadow.extra-small
+- $ds.shadow.small
+- $ds.shadow.medium
+- $ds.shadow.large
+- $ds.shadow.extra-large
+- $ds.shadow.extra-extra-large
+
+-- ds.heading-medium: `$ds.shadow.extra-extra-small`
+
+If the shadow value is `$ds.shadow.extra-extra-small` it will give `0px`
+blur, `1px` spread, `0px` x-offset, and `0px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.extra-extra-small ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.extra-extra-small
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.extra-small`
+
+If the shadow value is `$ds.shadow.extra-small` it will give `2px`
+blur, `0px` spread, `0px` x-offset, and `1px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.extra-small ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.extra-small
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.small`
+
+If the shadow value is `$ds.shadow.small` it will give `3px`
+blur, `0px` spread, `0px` x-offset, and `1px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.small ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.small
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.medium`
+
+If the shadow value is `$ds.shadow.medium` it will give `6px`
+blur, `-1px` spread, `0px` x-offset, and `4px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.medium ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.medium
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.large`
+
+If the shadow value is `$ds.shadow.large` it will give `15px`
+blur, `-3px` spread, `0px` x-offset, and `10px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.large ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.large
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.extra-large`
+
+If the shadow value is `$ds.shadow.extra-large` it will give `25px`
+blur, `-5px` spread, `0px` x-offset, and `20px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.extra-large ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.extra-large
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- ds.heading-medium: `$ds.shadow.extra-extra-large`
+
+If the shadow value is `$ds.shadow.extra-extra-large` it will give `50px`
+blur, `-12px` spread, `0px` x-offset, and `25px` y-offset value.
+
+-- ds.rendered:
+
+\-- ds.page: shadow
+
+\-- ds.column: 
+shadow: $ds.shadow.extra-extra-large ;; <hl>
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+\-- end: ds.column
+
+\-- end: ds.page
+
+-- ds.page: border
+
+-- ds.column: 
+shadow: $ds.shadow.extra-extra-large
+height.fixed.px: 50
+width.fixed.px: 50
+background.solid: $ds.colors.background.step-1
+
+-- end: ds.column
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

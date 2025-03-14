@@ -1,0 +1,200 @@
+-- or-type divider-placement:
+
+-- string horizontal: 0
+-- string vertical: 1
+
+-- end: divider-placement
+
+
+-- or-type divider-border:
+
+-- string small: 0
+-- string medium: 1
+-- string large: 2
+
+-- end: divider-border
+
+
+
+
+
+-- component divider:
+divider-placement placement: horizontal
+divider-border thickness: small
+optional ftd.resizing height:
+ftd.color border-color: $ds.colors.border
+
+-- ds.container:
+
+-- ds.column:
+if: { divider.placement == horizontal }
+border if { divider.thickness == small }: $ds.borders.bottom.small
+border if { divider.thickness == medium }: $ds.borders.bottom.medium
+border if { divider.thickness == large }: $ds.borders.bottom.large
+border-color: $divider.border-color
+radius: $ds.radius.zero
+inset: $ds.spaces.inset-square.zero
+
+-- end: ds.column
+
+-- ds.column:
+if: { divider.placement == vertical }
+border if { divider.thickness == small }: $ds.borders.left.small
+border if { divider.thickness == medium }: $ds.borders.left.medium
+border if { divider.thickness == large }: $ds.borders.left.large
+border-color: $divider.border-color
+radius: $ds.radius.zero
+height: $divider.height
+
+-- end: ds.column
+
+-- end: ds.container
+
+-- end: divider
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Label Text
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Divider Component
+	
+	The divider component in our design system serves as a simple yet
+	effective way to visually separate content within interfaces. With
+	customizable styles for thickness, and color it enhances readability
+	and organization by creating clear delineations between sections or
+	elements.
+
+	-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: horizontal
+		thickness: small
+		border-color: $ds.colors.shadow 
+
+		-- ds.column:
+		width.fixed.px: 200
+		height.fixed.px: 200
+		
+			-- divider:
+			placement: horizontal
+			thickness: small
+			border-color: $ds.colors.shadow 
+			
+		-- end: ds.column
+
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: horizontal
+		thickness: medium 
+
+		-- ds.column:
+		width.fixed.px: 200
+		height.fixed.px: 200
+		
+			-- divider:
+			placement: horizontal
+			thickness: medium 
+			
+		-- end: ds.column
+
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: horizontal
+		thickness: large 
+
+		-- ds.column:
+		width.fixed.px: 200
+		height.fixed.px: 200
+		
+			-- divider:
+			placement: horizontal
+			thickness: large 
+			
+		-- end: ds.column
+
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: vertical
+		height.fixed.px: 100
+		thickness: small
+
+			-- ds.column:
+			height.fixed.px: 200
+
+			-- divider:
+			placement: vertical
+			height.fixed.px: 100
+			thickness: small
+			
+			-- end: ds.column
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: vertical
+		height.fixed.px: 100
+		thickness: medium
+
+			-- ds.column:
+			height.fixed.px: 200
+
+			-- divider:
+			placement: vertical
+			height.fixed.px: 100
+			thickness: medium
+			
+			-- end: ds.column
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.divider:
+		placement: vertical
+		height.fixed.px: 100
+		thickness: large
+		
+			-- ds.column:
+			height.fixed.px: 200
+
+			-- divider:
+			placement: vertical
+			height.fixed.px: 100
+			thickness: large
+			
+			-- end: ds.column
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

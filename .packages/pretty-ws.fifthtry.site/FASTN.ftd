@@ -1,0 +1,9 @@
+-- import: fastn
+
+-- fastn.package: pretty-ws.fifthtry.site
+
+-- fastn.dependency: ds-set1-typography.fifthtry.site
+-- fastn.dependency: winter-cs.fifthtry.site
+
+
+-- fastn.auto-import: pretty-ws.fifthtry.site/assets

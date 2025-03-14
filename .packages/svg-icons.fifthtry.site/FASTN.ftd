@@ -1,0 +1,10 @@
+-- import: fastn
+
+-- fastn.package: svg-icons.fifthtry.site
+
+-- fastn.dependency: design-system.fifthtry.site
+
+-- fastn.auto-import: svg-icons.fifthtry.site/assets
+
+
+

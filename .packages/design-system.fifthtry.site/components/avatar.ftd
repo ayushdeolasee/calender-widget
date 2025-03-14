@@ -1,0 +1,98 @@
+-- or-type avatar-size:
+
+-- constant integer large: 0
+-- constant integer medium: 1
+-- constant integer small: 2
+
+-- end: avatar-size
+
+
+
+
+
+-- component avatar:
+ftd.image-src avatar:
+avatar-size size: small
+
+-- ftd.image:
+src: $avatar.avatar
+width.fixed.px if { avatar.size == small }: 24
+height.fixed.px if { avatar.size == small }: 24
+width.fixed.px if { avatar.size == medium }: 28
+height.fixed.px if { avatar.size == medium }: 28
+width.fixed.px if { avatar.size == large }: 32
+height.fixed.px if { avatar.size == large }: 32
+
+-- end: avatar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Avatar
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+align-content: center
+
+	-- ds.detail: Avatar Component
+	
+	The avatar component in our design system provides a visual representation
+	of a user, typically in the form of a profile image or initials.
+
+		-- ds.rendered:
+		
+		\-- ds.avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: small
+
+		-- avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: small
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: medium
+
+		-- avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: medium
+			
+		-- end: ds.rendered
+
+		-- ds.rendered:
+		
+		\-- ds.avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: large
+
+		-- avatar:
+		avatar: $assets.files.assets.avatar.svg
+		size: large
+			
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

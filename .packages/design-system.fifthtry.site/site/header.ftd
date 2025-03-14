@@ -1,0 +1,20 @@
+-- component site-header:
+
+-- ds.section-row:
+align-content: left
+inset: $ds.spaces.inset-square.medium
+margin: $ds.spaces.vertical-gap.small
+border: $ds.borders.bottom.small
+radius: $ds.radius.zero
+
+    -- ftd.image:
+    src: $ds.site-logo
+    width.fixed.px: 120
+    width.fixed.px if { ftd.device == "mobile" }: 100
+
+    -- ds.copy-regular: Header
+    if: { ds.site-logo == NULL }
+
+-- end: ds.section-row
+
+-- end: site-header

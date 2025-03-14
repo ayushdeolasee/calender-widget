@@ -1,0 +1,170 @@
+-- import: design-system.fifthtry.site/record as r
+
+-- integer $current-slide: 1
+
+-- component tab-button:
+r.tab-button list tab:
+
+-- ds.row:
+inset: $ds.spaces.inset-wide.medium
+background.solid: $inherited.colors.background.step-1
+spacing: $ds.spaces.horizontal-gap.large
+width: hug-content
+
+-- tab-data:
+for: $obj in $tab-button.tab
+cta-text: $obj.cta-text
+cta-link: $obj.cta-link
+index: $obj.index
+length: $length(a = $tab-button.tab)
+text-color: $obj.text-color
+
+-- end: ds.row
+
+-- end: tab-button
+
+
+
+
+
+
+
+-- component tab-data:
+string cta-text:
+string cta-link:
+integer index: 1
+integer length: 1
+boolean $active: false
+ftd.color text-color: $ds.colors.text-strong
+
+-- ds.row:
+;;spacing: $ds.spaces.horizontal-gap.space-between
+background.solid if { tab-data.index == current-slide }: $ds.colors.background.base
+inset: $ds.spaces.inset-wide.medium
+width: hug-content
+
+-- ds.copy-small: $tab-data.cta-text
+color if { tab-data.index == current-slide }: $tab-data.text-color
+color: $tab-data.text-color
+$on-click$: $ftd.toggle($a = $tab-data.active)
+$on-click$: $ftd.set-integer($a = $current-slide, v = $tab-data.index)
+link: $tab-data.cta-link
+$on-mouse-enter$: $ftd.set-bool( $a = $tab-data.active, v = true )
+$on-mouse-leave$: $ftd.set-bool( $a = $tab-data.active, v = false )
+align: center
+
+/-- ds.column:
+if: { tab-data.index != tab-data.length }
+width: hug-content
+height.fixed.px: 20
+border: $ds.borders.right.small
+border-color: $ds.colors.border-strong
+radius: $ds.radius.zero
+inset: $ds.spaces.inset-square.small
+
+-- end: ds.column
+
+-- end: ds.row
+
+-- end: tab-data
+
+
+
+
+-- r.tab-button list tab-list:
+
+-- r.tab-button:
+cta-text: Tab 1
+cta-link: components/tab-button/
+active: true
+index: 1
+
+-- r.tab-button:
+cta-text: Tab 2
+cta-link: components/tab-button/
+index: 2
+
+-- r.tab-button:
+cta-text: Tab 3
+cta-link: components/tab-button/
+index: 3
+
+-- r.tab-button:
+cta-text: Tab 4
+cta-link: components/tab-button/
+index: 4
+
+-- end: tab-list
+
+
+
+
+
+
+-- ds.page: Tab button
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column: 
+ flush: full
+ align-content: center
+
+	-- ds.detail: Tab Button
+
+	The tab button component in our design system provides a sleek and
+	efficient way for users to toggle between different sections or
+	categories within interfaces.
+
+	-- ds.rendered:
+		
+		\-- ds.tab-button:
+		tab: $tab-list
+
+		\-- r.tab-button list tab-list:
+
+		\-- r.tab-button:
+		cta-text: Tab 1
+		cta-link: components/tab-button/
+		active: true
+		index: 1
+
+		\-- r.tab-button:
+		cta-text: Tab 2
+		cta-link: components/tab-button/
+		index: 2
+
+		\-- r.tab-button:
+		cta-text: Tab 3
+		cta-link: components/tab-button/
+		index: 3
+
+		\-- r.tab-button:
+		cta-text: Tab 4
+		cta-link: components/tab-button/
+		index: 4
+
+		\-- end: tab-list
+		
+			-- tab-button:
+			tab: $tab-list
+
+		-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+
+
+
+
+
+-- integer length(a):
+r.tab-button list a:
+
+ftd.len(a)

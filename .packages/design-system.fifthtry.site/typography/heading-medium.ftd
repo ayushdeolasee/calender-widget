@@ -1,0 +1,75 @@
+-- ds.page: `ds.heading-medium`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+
+-- ds.section-column:
+flush: full
+align-content: left
+
+-- ds.detail: `ds.heading-medium`
+
+`ds.heading-medium` is ideal for use in
+longer content formats like blog posts,
+articles, and tutorials. You can use it
+for each main section of the content.
+Body para is optional. 
+
+-- ds.heading-medium: Attributes
+
+-- ds.heading-small: `align`
+
+Aligns the heading within the page, section or container.
+
+-- ds.heading-small: `color`
+
+Sets the color of the heading. Accepts both predefined
+design system colors and CSS color names.
+
+-- ds.heading-small: `link`
+
+Allows the heading to be clickable by providing a URL.
+
+-- ds.heading-small: `style`
+
+Takes values from [`ftd.text-style`](https://fastn.com/built-in-types#ftd-text-style),
+such as bold, extra-bold, etc.
+
+-- ds.heading-small: `underline` 
+
+Adds underline below the heading. This is a boolean and takes either true or false. 
+The default value is set to `underline: false`
+
+-- ds.rendered:
+
+\-- ds.heading-medium: Why Good Lighting Makes All the Difference 
+align: left
+color: $ds.colors.text-strong
+style: extra-bold
+
+Lighting is one of the most essential elements in photography.
+It can transform an ordinary shot into something extraordinary,
+highlighting details, setting the mood, and creating depth.
+Let's dive into why choosing the right lighting is key to
+capturing memorable images.
+
+-- ds.heading-medium: Why Good Lighting Makes All the Difference
+align: left
+color: $ds.colors.text-strong
+style: extra-bold
+
+Lighting is one of the most essential elements in photography.
+It can transform an ordinary shot into something extraordinary,
+highlighting details, setting the mood, and creating depth.
+Let's dive into why choosing the right lighting is key to
+capturing memorable images.
+
+-- end: ds.rendered 
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

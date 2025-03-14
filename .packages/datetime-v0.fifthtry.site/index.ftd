@@ -1,0 +1,38 @@
+-- ftd.text: Documentation https://github.com/pypdeveloper/datetime-v0/tree/main/docs
+
+-- record datetime:
+integer timezone_offset:
+integer dt:
+
+-- record datetime-ex:
+integer dt:
+integer timezone_offset:
+integer year:
+integer month:
+integer day:
+integer hour:
+integer minute:
+integer second:
+integer millisecond:
+
+-- record datetime-delta:
+integer delta:
+
+-- datetime datetime-fn(diff):
+optional integer diff:
+js: $assets.files.js.functions.js
+
+datetime(diff)
+
+-- datetime-delta delta(start, end):
+datetime end:
+optional datetime start:
+js: $assets.files.js.functions.js
+
+delta(start, end)
+
+-- datetime-ex parts(dt):
+datetime dt:
+js: $assets.files.js.functions.js
+
+parts(dt)

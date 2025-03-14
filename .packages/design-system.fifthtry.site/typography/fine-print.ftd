@@ -1,0 +1,52 @@
+-- ds.page: `ds.fine-print`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+
+-- ds.section-column:
+flush: full
+align-content: left
+
+-- ds.detail: `ds.fine-print`
+
+`ds.fine-print` is a smaller body text
+style, ideal for less prominent content
+that still needs to be readable, such as
+disclaimers, notes, copright, or side information.
+
+-- ds.heading-medium: Attributes
+
+-- ds.heading-small: `align`
+
+Aligns the heading within the page, section or container.
+
+-- ds.heading-small: `color`
+
+Sets the color of the heading. Accepts both predefined
+design system colors and CSS color names.
+
+-- ds.heading-small: `link`
+
+Allows the heading to be clickable by providing a URL.
+
+-- ds.rendered:
+
+\-- ds.fine-print: 
+link: https://design-system.fifthtry.site/
+
+copyright @2024
+
+-- ds.fine-print:
+link: https://design-system.fifthtry.site/
+
+copyright @2024
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

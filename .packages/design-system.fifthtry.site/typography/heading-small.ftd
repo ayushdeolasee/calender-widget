@@ -1,0 +1,63 @@
+-- ds.page: `ds.heading-small`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+
+-- ds.section-column:
+flush: full
+align-content: left
+
+-- ds.detail: `ds.heading-small`
+
+`ds.heading-small` is a more compact
+heading, ideal for secondary sections
+or for titles of smaller modules or cards.
+Body para is optional. 
+
+-- ds.heading-medium: Attributes
+
+-- ds.heading-small: `align`
+
+Aligns the heading within the page, section or container.
+
+-- ds.heading-small: `color`
+
+Sets the color of the heading. Accepts both predefined
+design system colors and CSS color names.
+
+-- ds.heading-small: `link`
+
+Allows the heading to be clickable by providing a URL.
+
+-- ds.heading-small: `style`
+
+Takes values from [`ftd.text-style`](https://fastn.com/built-in-types#ftd-text-style),
+such as bold, extra-bold, etc.
+
+-- ds.heading-small: `underline` 
+
+Adds underline below the heading. This is a boolean and takes either true or false. 
+The default value is set to `underline: false`
+
+-- ds.rendered:
+
+\-- ds.heading-small: Eco-Friendly Packaging 
+align: left
+
+Every package is made from 100% recyclable materials to reduce environmental impact.
+
+-- ds.heading-small: Eco-Friendly Packaging
+align: left
+
+
+Every package is made from 100% recyclable materials to reduce environmental impact.
+
+-- end: ds.rendered 
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

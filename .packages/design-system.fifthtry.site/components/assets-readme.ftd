@@ -1,0 +1,8 @@
+-- component assets-readme:
+
+-- ds.copy-regular:
+color: $ds.colors.text-strong
+
+This folder contains all the assets required for your site, such as images, icons, logos, and background image.
+
+-- end: assets-readme

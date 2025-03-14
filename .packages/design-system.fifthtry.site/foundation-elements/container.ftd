@@ -1,0 +1,1006 @@
+-- import: design-system.fifthtry.site/foundation-elements/spaces
+-- import: design-system.fifthtry.site/foundation-elements/radius
+-- import: design-system.fifthtry.site/foundation-elements/borders
+
+-- component container:
+optional caption title:
+ds.hv inset: $ds.spaces.inset-square.zero
+ftd.resizing width: fill-container
+optional ftd.background background:
+ds.element-radius radius: $ds.radius.zero
+children content:
+optional ftd.resizing height:
+optional ftd.resizing max-height:
+ds.gap margin-vertical: $ds.spaces.vertical-gap.zero
+ds.gap margin-horizontal: $ds.spaces.vertical-gap.zero
+ds.border-data border: $ds.borders.uniform.zero
+ftd.color border-color: $ds.colors.border
+
+-- ftd.container:
+width: $container.width
+min-height.fixed.px: $container.height
+max-height.fixed.px: $container.max-height
+padding-vertical.px: $container.inset.vertical
+padding-horizontal.px: $container.inset.horizontal
+children: $container.content
+background: $container.background
+border-top-left-radius.px if { container.radius.top-left != $radius.HACK-RADIUS-ROUND }: $container.radius.top-left
+border-top-right-radius.px if { container.radius.top-right != $radius.HACK-RADIUS-ROUND }: $container.radius.top-right
+border-bottom-left-radius.px if { container.radius.bottom-left != $radius.HACK-RADIUS-ROUND }: $container.radius.bottom-left
+border-bottom-right-radius.px if { container.radius.bottom-right != $radius.HACK-RADIUS-ROUND }: $container.radius.bottom-right
+border-top-left-radius.percent if { container.radius.top-left == $radius.HACK-RADIUS-ROUND }: 50
+border-top-right-radius.percent if { container.radius.top-right == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-left-radius.percent if { container.radius.bottom-left == $radius.HACK-RADIUS-ROUND }: 50
+border-bottom-right-radius.percent if { container.radius.bottom-right == $radius.HACK-RADIUS-ROUND }: 50
+margin-vertical.px: $container.margin-vertical.gap
+margin-horizontal.px: $container.margin-horizontal.gap
+border-top-width.px: $container.border.top
+border-bottom-width.px: $container.border.bottom
+border-left-width.px: $container.border.left
+border-right-width.px: $container.border.right
+border-color: $container.border-color
+
+-- end: ftd.container
+
+-- end: container
+
+
+
+
+
+
+
+
+
+
+-- ds.page: `ds.container`
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: left
+
+-- ds.detail: `ds.container`
+
+The `ds.container` component serves as a wrapper that can
+hold various elements (children) such as rows, columns,
+text, images, and more. It's highly versatile and can be
+used to create a wide range of layouts, like card components,
+hero sections, banners, forms, content blocks and more. 
+
+The `ds.container` always starts with `ds.container` and ends with `end: ds.container`.
+
+-- ds.heading-medium: Attributes and Their Values
+
+Attributes like `width`, `inset`, `radius`, `margin-vertical`,
+`margin-horizontal`, `broder-color`, and `border` come with **default
+values**, so when you start with a `ds.container`, these properties are
+already set, giving you a solid foundation. You can customize them as needed
+to suit your design.
+
+Additionally, attributes like `background`, `height`, `max-height` are
+optional—omitting them won't cause any errors. This flexibility allows you to
+start simple and make adjustments as you go.
+
+Let's see an example:
+
+-- ds.code: `ds.container` Component
+lang: ftd
+
+\-- ds.container:  ;; <hl>
+width: fill-container
+height.fixed.px: 200
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+background.solid: $ds.colors.background.step-1
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.heading-large: Empower Your Workspace with AI
+
+\-- ds.heading-small: The #1 Choice for Business Owners
+
+\-- ds.phosphor-icon-button: Get Started Today
+icon: arrow-right
+link: /
+
+\-- end: ds.container  ;; <hl>
+
+
+-- ds.container:
+width.fixed.px: 800
+height.fixed.px: 200
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+background.solid: $ds.colors.background.step-1
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.heading-large: Empower Your Workspace with AI
+
+-- ds.heading-small: The #1 Choice for Business Owners
+
+-- ds.phosphor-icon-button: Get Started Today
+icon: arrow-right
+link: /
+
+-- end: ds.container
+
+-- ds.heading-medium: Attributes and Their Values
+
+-- ds.heading-medium: Width
+
+-- ds.copy-regular:
+
+Defines the **width** of the container. The width attribute
+can accept various types,
+
+-- ds.rendered: `width.fixed.px` - Specifies the width in pixels.
+
+\-- ds.container:
+width.fixed.px: 200  ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+The width is fixed pixel
+
+\-- end: ds.container
+
+-- ds.container:
+width.fixed.px: 200
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+The width is fixed pixel
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: `width.fixed.percent` -  Sets the width as a percentage of the parent element's height.
+
+\-- ds.container:
+width.fixed.percent: 90  ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+The width is fixed percent
+
+\-- end: ds.container
+
+-- ds.container:
+width.fixed.percent: 90
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+The width is fixed percent
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+
+-- ds.rendered: `width: hug-content` - Makes the container just wide enough to enclose the content 
+
+\-- ds.container:
+width: hug-content ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.row:
+
+\-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+\-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+\-- end: ds.row
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.row:
+
+-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+-- end: ds.row
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: `width: fill-container` - Makes the container take the full width available.
+
+\-- ds.container:
+width: fill-container ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.row:
+
+\-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+\-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+\-- end: ds.row
+
+\-- end: ds.container
+
+-- ds.container:
+width: fill-container
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.row:
+
+-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+-- end: ds.row
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+
+-- ds.heading-medium: Height
+
+-- ds.copy-regular:
+
+Defines the **height** of the container. The height attribute
+can accept various types,
+
+-- ds.rendered: `height.fixed.px` - Specifies the height in pixels.
+
+\-- ds.container:
+width: hug-content
+height.fixed.px: 200 ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+The height is fixed pixel
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+height.fixed.px: 200
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+The height is fixed pixel
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: `height.fixed.percent` -  Sets the height as a percentage of the parent element's height.
+
+\-- ds.container:
+width: hug-content
+height.fixed.percent: 80 ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+The height is fixed percent
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+height.fixed.percent: 80 
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+The height is fixed percent
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+
+-- ds.rendered: `height: hug-content` - Makes the container just tall enough to enclose the content 
+
+\-- ds.container:
+width: hug-content
+height: hug-content ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.column:
+
+\-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+\-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+\-- end: ds.column
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+height: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.column:
+
+-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+-- end: ds.column
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: `height: fill-container` - Makes the container take the full height available.
+
+\-- ds.container:
+width: hug-content
+height: fill-container ;; <hl>
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.column:
+
+\-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+\-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+\-- end: ds.column
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+height: fill-container
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.column:
+
+-- ds.copy-small:
+
+If this container could talk, it’d say,
+
+-- ds.copy-small:
+
+**“I hold everything together—kind of like duct tape, but prettier.”**
+
+-- end: ds.column
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Border
+
+-- ds.copy-regular:
+
+Defines the thickness of the container's border. 
+It can be applied uniformly or to specific sides.
+
+-- ds.rendered: Uniform Border - Applies the same thickness to all sides.
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.medium ;; <hl>
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Uniform Border: Keeps all sides equally happy.
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.medium
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Uniform Border: Keeps all sides equally happy.
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: Vertical Border - Applies to both left and right sides.
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.vertical.large ;; <hl>
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.vertical.large
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: Horizontal Border - Applies to the top and bottom sides.
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.horizontal.large ;; <hl>
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.horizontal.large
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.rendered: Top, Bottom, Left, Right Borders - Applies thickness to specific sides.
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.left.large ;; <hl>
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.left.large
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+The values for border thickness can be: zero, small, medium and large.
+
+-- ds.heading-medium: Border Color
+
+-- ds.copy-regular:
+
+Sets the color of the container's border.
+For the border color, you can use any predefined colors 
+available in the design system package, like `border`, `shadow` or even use color names like 
+orange, pink, etc.
+You can also define any custom colors in the `themecolors.ftd` file.
+Check out this documentation to 
+[customize your `fastn` color scheme](https://www.fifthtry.com/blog/customize-cs/)
+to your liking!
+
+-- ds.rendered: Border Color
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.large
+radius: $ds.radius.large
+border-color: pink ;; <hl>
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.large
+radius: $ds.radius.large
+border-color: pink
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+
+
+
+-- ds.heading-medium: Radius
+
+-- ds.copy-regular:
+
+Defines the corner radius of the container
+The values for `radius` can be: zero, small, medium, large and round.
+
+-- ds.rendered: Radius
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.large
+radius: $ds.radius.large ;; <hl>
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+\-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.large
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.small
+
+-- ds.copy-regular:
+
+Why did the scarecrow win an award? Because he was outstanding in his field!
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+
+
+-- ds.heading-medium: Inset
+
+The `inset` attribute defines the space between an
+element's border and its content, similar to padding
+in web or graphic design. The available `inset` types
+and their corresponding values are as follows:
+
+`inset-square`: Equal values in both horizontal and vertical directions.
+
+Values: extra-small, small, medium, large, extra-large, zero
+Example: `inset: $ds.spaces.inset-square.large`
+
+-- ds.rendered: `inset-square`
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.extra-large ;; <hl>
+
+\-- ds.copy-small:
+
+This container uses `inset-square` set to `extra-large`
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-square.extra-large
+
+-- ds.copy-small:
+
+This container uses `inset-square` set to `extra-large`
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+`inset-wide`: Greater horizontal padding than vertical padding.
+
+Values: small-zero, medium-zero, large-zero, large, medium, small
+Example: `inset: $ds.spaces.inset-wide.medium-zero`
+Here, the horizontal gap is small, and vertical gap is zero.
+
+-- ds.rendered: `inset-wide`
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-wide.medium-zero ;; <hl>
+
+\-- ds.copy-small:
+
+This container uses `inset-wide` set to `medium-zero`
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-wide.medium-zero
+
+-- ds.copy-small:
+
+This container uses `inset-wide` set to `medium-zero`
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.copy-regular:
+
+`inset-tall`: Higher vertical padding than horizontal padding.
+
+Values: small, medium, large, zero-small, zero-medium
+Example: inset: $ds.spaces.inset-tall.zero-medium
+Here, the horizontal gap is zero, and vertical gap is medium.
+
+-- ds.rendered: `inset-tall`
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-tall.zero-medium ;; <hl>
+
+\-- ds.copy-small:
+
+This container uses `inset-tall` set to `zero-medium`
+
+\-- end: ds.container
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.medium
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.copy-small:
+
+This container uses `inset-tall` set to `zero-medium`
+
+-- end: ds.container
+
+-- end: ds.rendered
+
+-- ds.heading-medium: Margin
+
+-- ds.copy-regular:
+
+Margin defines the space around the container’s border.
+Both vertical and horizontal margins are available.
+
+`margin-vertical`: Adds space above and below the container.
+
+Example: `margin-vertical: $ds.spaces.vertical-gap.zero`
+Values: extra-small, small, medium, large, extra-large, zero
+
+-- ds.rendered: `margin-vertical`
+
+\-- ds.page: Container
+background.solid: $ds.colors.background.step-2
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.zero  ;; <hl>
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-tall.zero-medium 
+
+\-- ds.copy-small:
+
+This container uses `margin-vertical` set to `zero`
+
+\-- end: ds.container
+
+\-- ds.primary-button: This is a button
+link: /
+size: small
+
+\-- end: ds.page
+
+-- ds.page: Container
+background.solid: $ds.colors.background.step-2
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.zero
+margin-horizontal: $ds.spaces.horizontal-gap.small
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.copy-small:
+
+This container uses `margin-vertical` set to `zero`
+
+-- end: ds.container
+
+-- ds.primary-button: This is a button
+link: /
+size: small
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+
+-- ds.copy-regular:
+
+`margin-horizontal`: Adds space to the left and right of the container.
+
+Example: `margin-horizontal: $ds.spaces.horizontal-gap.small`
+Values: extra-small, small, medium, large, extra-large, zero
+
+-- ds.rendered: `margin-horizontal`
+
+\-- ds.page: Container
+background.solid: $ds.colors.background.step-2
+
+\-- ds.row:
+
+\-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.small  
+margin-horizontal: $ds.spaces.horizontal-gap.large ;; <hl>
+inset: $ds.spaces.inset-tall.zero-medium 
+
+\-- ds.copy-small:
+
+This container uses `margin-horizontal` set to `large`
+
+\-- end: ds.container
+
+\-- ds.primary-button: This is a button
+link: /
+size: small
+
+\-- end: ds.row
+
+\-- end: ds.page
+
+-- ds.page: Container
+background.solid: $ds.colors.background.step-2
+
+-- ds.row:
+
+-- ds.container:
+width: hug-content
+border: $ds.borders.uniform.small
+radius: $ds.radius.large
+border-color: $ds.colors.border
+margin-vertical: $ds.spaces.vertical-gap.small
+margin-horizontal: $ds.spaces.horizontal-gap.large
+inset: $ds.spaces.inset-tall.zero-medium
+
+-- ds.copy-small:
+
+This container uses `margin-horizontal` set to `large`
+
+-- end: ds.container
+
+-- ds.primary-button: This is a button
+link: /
+size: small
+
+-- end: ds.row
+
+-- end: ds.page
+
+-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

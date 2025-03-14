@@ -1,0 +1,81 @@
+-- component empty-page:
+optional caption title:
+optional body body:
+ftd.image-src icon:
+
+-- ds.column:
+inset: $ds.spaces.inset-square.medium
+height: fill-container
+	
+		-- ftd.image:
+		src: $empty-page.icon
+		width.fixed.px: 100
+		
+			-- ds.heading-large: $empty-page.title
+			if: { empty-page.title != NULL }
+			color: $ds.colors.text-strong
+
+			-- ds.copy-regular:
+			if: { empty-page.body != NULL }
+			color: $ds.colors.text
+
+			$empty-page.body
+
+-- end: ds.column
+
+-- end: empty-page
+
+
+
+
+
+
+
+
+
+
+
+-- ds.page: Empty Page
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Empty Page
+	
+	The empty page component in our design system provides a clean and
+	visually appealing layout for instances where there is no content to
+	display. With its minimalist design and customizable elements, it
+	offers a clear canvas for users, guiding them toward relevant actions
+	or content creation.
+
+	-- ds.rendered:
+	
+	\-- ds.empty-page: No data
+	icon: $assets.files.assets.empty-box.png
+	
+	-- ds.empty-page: No data
+	icon: $assets.files.assets.empty-box.png
+		
+	-- end: ds.rendered
+
+	-- ds.rendered:
+	
+	\-- ds.empty-page: Coming soon
+	icon: $assets.files.assets.coming-soon.png
+	
+	-- ds.empty-page: Coming soon
+	icon: $assets.files.assets.coming-soon.png
+		
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page

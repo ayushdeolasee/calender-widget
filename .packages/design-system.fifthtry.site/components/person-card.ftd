@@ -1,0 +1,215 @@
+-- import: design-system.fifthtry.site/record as r
+
+-- component person-card:
+optional caption name:
+optional ftd.image-src avatar:
+optional string profile:
+optional string place:
+optional body desc:
+r.social-details list social-links:
+optional ftd.background background:
+boolean border: false
+ftd.color border-color: $ds.colors.border
+
+-- ds.container:
+inset: $ds.spaces.inset-square.medium
+radius: $ds.radius.small
+background: $person-card.background
+width.fixed.px: 460
+border if { person-card.border }: $ds.borders.uniform.small
+border-color: $person-card.border-color
+
+-- ds.row:
+align-content: top-left
+
+-- ftd.image:
+src: $person-card.avatar
+height.fixed.px: 40
+width.fixed.px: 40
+
+-- ds.column:
+align-content: left
+spacing: $ds.spaces.vertical-gap.extra-small
+
+-- ds.heading-tiny: $person-card.name
+color: $ds.colors.text-strong
+
+-- ds.copy-small: $person-card.profile
+if: { person-card.profile != NULL }
+
+-- ds.copy-small: $person-card.place
+if: { person-card.place != NULL }
+
+-- ds.copy-small: $person-card.desc
+if: { person-card.desc != NULL }
+
+-- ds.row:
+align-content: left
+inset: $ds.spaces.inset-tall.zero-small
+
+-- ftd.image:
+for: $obj in $person-card.social-links
+src: $obj.icon
+link: $obj.link
+
+-- end: ds.row
+
+-- end: ds.column
+
+-- end: ds.row
+
+-- end: ds.container
+
+-- end: person-card
+
+
+
+
+
+-- r.social-details list social-lists:
+
+-- r.social-details:
+icon: $assets.files.assets.fb.svg
+link: /
+
+-- r.social-details: 
+icon: $assets.files.assets.msg.svg
+link: /
+
+-- r.social-details:
+icon: $assets.files.assets.google.svg
+link: /
+
+-- end: social-lists
+
+
+
+
+
+-- ds.page: Person Card
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Person Card
+
+	The person card component in our design system offers a visually appealing
+	and informative representation of individuals within interfaces. With
+	customizable styles for profile images, names, titles, and contact
+	information, it provides a clear and concise overview of individuals'
+	identities and roles.
+
+	-- ds.rendered:
+		
+	\-- ds.person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+	background.solid: $ds.colors.background.step-1
+	border: true
+
+	\-- r.social-details list social-lists:
+
+	\-- r.social-details:
+	icon: $assets.files.assets.fb.svg
+	link: /
+
+	\-- r.social-details: 
+	icon: $assets.files.assets.msg.svg
+	link: /
+
+	\-- r.social-details:
+	icon: $assets.files.assets.google.svg
+	link: /
+
+	\-- end: social-lists
+		
+	-- person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+	background.solid: $ds.colors.background.step-1
+	border: true
+
+	-- end: ds.rendered
+
+		-- ds.rendered:
+		
+	\-- ds.person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+	border: true
+
+	\-- r.social-details list social-lists:
+
+	\-- r.social-details:
+	icon: $assets.files.assets.fb.svg
+	link: /
+
+	\-- r.social-details: 
+	icon: $assets.files.assets.msg.svg
+	link: /
+
+	\-- r.social-details:
+	icon: $assets.files.assets.google.svg
+	link: /
+
+	\-- end: social-lists
+		
+	-- person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+	border: true
+
+	-- end: ds.rendered
+	
+	-- ds.rendered:
+	
+	\-- ds.person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+
+	\-- r.social-details list social-lists:
+
+	\-- r.social-details:
+	icon: $assets.files.assets.fb.svg
+	link: /
+
+	\-- r.social-details: 
+	icon: $assets.files.assets.msg.svg
+	link: /
+
+	\-- r.social-details:
+	icon: $assets.files.assets.google.svg
+	link: /
+
+	\-- end: social-lists
+		
+	-- person-card: John Deo
+	avatar: $assets.files.assets.avatar.svg
+	place: London, UK
+	profile: Managing Director
+	social-links: $social-lists
+			
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+

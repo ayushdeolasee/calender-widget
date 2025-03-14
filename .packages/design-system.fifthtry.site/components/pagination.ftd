@@ -1,0 +1,186 @@
+-- integer $active-page: 1
+
+-- component pagination:
+children wrap:
+integer $current-slide:
+integer max: 10
+integer min: 1
+boolean adjust-position: false
+boolean $mouse-in-left: false
+boolean $mouse-in-right: false
+boolean $mouse-in-full: false
+
+-- ds.column:
+
+-- ftd.column:
+width: fill-container
+height.fixed.percent: 100
+min-height.fixed.px: 560
+left.px: 0
+top.px: 0
+z-index: 1
+
+-- ds.column:
+content: $pagination.wrap
+
+-- end: ds.column
+
+-- ftd.row:
+width.fixed.px: 212
+align-self: center
+background.solid: $inherited.colors.background.step-2
+align-content: center
+padding-vertical.px: 8
+margin-right.px: 24
+border-radius.px: 64
+anchor: window
+bottom.px: 24
+shadow: $s
+
+-- ds.column:
+
+-- ds.row:
+
+-- ftd.image:
+if: { pagination.current-slide != pagination.min }
+src: $assets.files.assets.left.svg
+src if { pagination.mouse-in-left }: $assets.files.assets.left-active.svg
+$on-click$: $decrement-and-clamp($a = $pagination.current-slide, by = 1, min = $pagination.min, max = $pagination.max)
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $pagination.mouse-in-left, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $pagination.mouse-in-left, v = false)
+
+-- ftd.image:
+if: { pagination.current-slide == pagination.min }
+src: $assets.files.assets.left.svg
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- ftd.integer: $pagination.current-slide
+color: $inherited.colors.text-strong
+role: $inherited.types.button-small
+style: medium
+padding-horizontal.px: 16
+padding-vertical.px: 4
+border-radius.px: 22
+background.solid: $inherited.colors.background.base
+
+-- ftd.image:
+if: { pagination.current-slide != pagination.max }
+src: $assets.files.assets.right.svg
+src if { pagination.mouse-in-right }: $assets.files.assets.right-active.svg
+$on-click$: $increment-and-clamp($a = $pagination.current-slide, by = 1, min = $pagination.min, max = $pagination.max)
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $pagination.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $pagination.mouse-in-right, v = false)
+
+-- ftd.image:
+if: { pagination.current-slide == pagination.max }
+src: $assets.files.assets.right.svg
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- end: ds.row
+
+-- end: ds.column
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: ds.column
+
+-- end: pagination
+
+
+
+
+
+
+
+
+
+-- ds.page: Pagination
+
+-- ftd.column:
+width: fill-container
+css: [$assets.files.assets.style.css]
+classes: scroll
+padding-horizontal.px if { ftd.device != "mobile" }: 150
+
+-- ds.section-column:
+align-content: center
+
+	-- ds.detail: Pagination Component
+	
+	A band component is content container with size, background, and content
+	alignment options.
+
+	-- ds.rendered:
+	
+	\-- ds.pagination:
+	$current-slide: $active-page
+	max: 10
+	
+		-- pagination:
+		$current-slide: $active-page
+		max: 10
+		
+	-- end: ds.rendered
+
+-- end: ds.section-column
+
+-- end: ftd.column
+
+-- end: ds.page
+
+
+
+
+
+
+
+
+
+
+
+
+-- void increment-and-clamp(a,by,min,max):
+integer $a:
+integer by: 1
+integer min: 0
+integer max: 10
+
+
+a = (((a - min) + by) % ((max+1)- min)) + min
+
+
+
+
+
+-- void decrement-and-clamp(a,by,min,max):
+integer $a:
+integer by: 1
+integer min: 0
+integer max: 10
+
+
+a = (((a - min) - by) % ((max+1)- min)) + min
+
+
+
+
+-- ftd.shadow s:
+color: #000000
+blur.px: 15
+spread.px: 2
+x-offset.px: 0
+y-offset.px: 10
