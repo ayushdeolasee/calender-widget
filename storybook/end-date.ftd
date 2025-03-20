@@ -1,0 +1,36 @@
+-- ftd.column:
+-- ftd.column:
+width.fixed.px: 175
+height.fixed.px: 200
+align-content: center
+background.solid: black
+padding.px: 20
+color: white
+border-width.px: 2
+	-- ftd.column:
+	   align-content: center
+		-- ftd.text: Start Date:
+		-- ftd.container:
+		     padding.px: 10
+		        margin.px: 10
+		     color: white
+		     border-width.px: 2
+			-- ftd.text: Date selector
+			 color: white
+		-- end: ftd.container
+	-- end: ftd.column
+	-- ftd.column:
+	   align-content: center
+		-- ftd.text: End Date:
+		-- ftd.container:
+		     padding.px: 10
+		        margin.px: 10
+		     color: white
+		     border-width.px: 2
+			-- ftd.text: Date selector
+			 color: white
+		-- end: ftd.container
+	-- end: ftd.column
+-- end: ftd.column
+
+-- end: ftd.column

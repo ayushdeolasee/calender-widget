@@ -29,5 +29,7 @@ $processor$: pr.toc
 - Dashboard:
   - Default calender: /storybook/calender/
   - Date only widget: /storybook/date-only/
-;;   - For Site Owner - feed: /storybook/feed/
-;;   - For Others: /storybook/others/
+  - Time only widget: /storybook/time-only/
+  - With end date and time: /storybook/end-datetime/
+  - With end date only: /storybook/end-date/
+  - with end time only: /storybook/end-time/
