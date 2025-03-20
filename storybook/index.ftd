@@ -26,7 +26,7 @@ navigate: storybook
 -- pr.toc-item list toc:
 $processor$: pr.toc
 
-- Dashboard:
+- Calender Widgets:
   - Default calender: /storybook/calender/
   - Date only widget: /storybook/date-only/
   - Time only widget: /storybook/time-only/
