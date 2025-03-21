@@ -1,0 +1,21 @@
+name: Upload www to FifthTry
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**'
+      - .github/workflows/www-to-ft.yml
+
+
+jobs:
+  upload-to-fifthtry:
+    runs-on: ubuntu-latest
+    env:
+      FIFTHTRY_SITE_WRITE_TOKEN: ${{ secrets.FT_CALENDER_WIDGET_WWW }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - run: sh -c "$(curl -fsSL https://fastn.com/install.sh)"
+      - name: Upload to FifthTry using fastn
+        run: fastn upload calender-widget 
