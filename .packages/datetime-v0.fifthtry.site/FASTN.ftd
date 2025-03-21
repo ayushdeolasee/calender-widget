@@ -1,3 +1,6 @@
 -- import: fastn
--- fastn.package: datetime.fifthtry.site
--- fastn.auto-import: datetime.fifthtry.site/assets
+-- fastn.package: datetime-v0.fifthtry.site
+-- fastn.auto-import: datetime-v0.fifthtry.site/assets
+
+-- fastn.dependency: design-system.fifthtry.site
+-- fastn.auto-import: design-system.fifthtry.site as ds

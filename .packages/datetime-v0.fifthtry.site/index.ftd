@@ -1,38 +1,88 @@
--- ftd.text: Documentation https://github.com/pypdeveloper/datetime-v0/tree/main/docs
-
 -- record datetime:
-integer timezone_offset:
 integer dt:
 
--- record datetime-ex:
-integer dt:
-integer timezone_offset:
-integer year:
-integer month:
-integer day:
-integer hour:
-integer minute:
-integer second:
-integer millisecond:
+-- datetime current: $now()
+-- string format-string: $fmt(dt = $current, ft = "datetime")
 
--- record datetime-delta:
-integer delta:
+-- ds.page: Datetime package
+margin: $ds.spaces.vertical-gap.zero
 
--- datetime datetime-fn(diff):
+-- ds.heading-large: Datetime
+
+-- ds.copy-regular: Package: `datetime-v0.fifthtry.site`
+margin: $ds.spaces.vertical-gap.small
+
+-- ds.copy-regular: $format-string
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.copy-large: Package that provides datetime functions. The package allows you to create a datetime record and provides functions to work with datetime records. It is an open-source package available on Github (https://github.com/pypdeveloper/datetime-v0), under the AGPL-3 Lisence.
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.heading-medium: `Records`
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.heading-small: datetime
+-- ds.column:
+align-content: left
+	-- ds.copy-regular: A datetime record is a record that represents a date and time. The record has the following fields:
+	-- ds.copy-regular: - dt: stores the datetime value
+	-- ds.code:
+	lang: ftd
+	
+	\-- record datetime:
+	\integer dt:
+	
+	-- end: ds.code
+
+-- end: ds.column
+-- ds.heading-medium: `Functions`
+margin: $ds.spaces.vertical-gap.medium
+
+-- ds.heading-small: now(diff) -> datetime:
+-- ds.column:
+align-content: left
+	-- ds.copy-regular: Returns the time as an i64 unix epoch string with nanoseconds precision in the UTC timezone. Optional parameter of `diff` which returns the time from now `diff` minutes later.
+	-- ds.code:
+	lang: ftd
+	
+	\-- datetime current: $now()
+	-- end: ds.code
+-- end: ds.column
+
+
+-- ds.heading-small: fmt(dt: datetime, ft: string) -> string:
+-- ds.column:
+align-content: left
+	-- ds.copy-regular:
+	
+	   Expects a `datetime` record and a `format` string. Returns a formatted string in the users timezone.
+	   The ft parameter can be either of the following:
+	
+	   - datetime:
+	       - E.g: Wednesday 19th March 2025 9:17:36:788 PM
+	   - date:
+	       - E.g: Wednesday 19th March 2025
+	   - time
+	      - E.g: 9:18:46:177 PM
+	-- end: ds.copy-regular
+	-- ds.code:
+	lang: ftd
+	
+	\-- string format-string: $fmt(dt = $current, ft = "datetime")
+	-- end: ds.code
+-- end: ds.column
+-- end: ds.page
+
+
+-- datetime now(diff):
 optional integer diff:
 js: $assets.files.js.functions.js
 
 datetime(diff)
 
--- datetime-delta delta(start, end):
-datetime end:
-optional datetime start:
-js: $assets.files.js.functions.js
-
-delta(start, end)
-
--- datetime-ex parts(dt):
+-- string fmt(dt, ft):
 datetime dt:
+string ft:
 js: $assets.files.js.functions.js
 
-parts(dt)
+fmt(dt, ft)

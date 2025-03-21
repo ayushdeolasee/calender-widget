@@ -28,6 +28,7 @@ optional integer right:
 optional integer z-index:
 optional boolean sticky:
 string list css:
+string list classes:
 string list js:
 optional ftd.shadow shadow:
 optional ftd.overflow overflow:
@@ -72,6 +73,7 @@ z-index: $row.z-index
 sticky: $row.sticky
 color: $row.color
 css: $row.css
+classes: $row.classes
 js: $row.js
 shadow: $row.shadow
 overflow: $row.overflow

@@ -20,6 +20,7 @@ ds.border-data border: $ds.borders.uniform.zero
 ftd.color border-color: $ds.colors.border
 optional ftd.color color:
 string list css:
+string list classes:
 optional string link:
 string list js:
 optional ftd.shadow shadow:
@@ -65,6 +66,7 @@ border-left-width.px: $column.border.left
 border-right-width.px: $column.border.right
 color: $column.color
 css: $column.css
+classes: $column.classes
 js: $column.js
 shadow: $column.shadow
 overflow: $column.overflow

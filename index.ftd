@@ -1,1 +1,6 @@
+-- calender-widget:
 
+-- web-component calender-widget:
+js: $assets.files.js.components.js
+
+-- end: calender-widget
