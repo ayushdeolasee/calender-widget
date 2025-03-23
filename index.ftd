@@ -1,6 +1,11 @@
+-- datetime.datetime $current: $datetime.now()
+-- ftd.integer: $current.dt
+
 -- calender-widget:
+dt: $current
 
 -- web-component calender-widget:
+datetime.datetime dt:
 js: $assets.files.js.components.js
 
 -- end: calender-widget

@@ -5,5 +5,5 @@
 -- fastn.dependency: datetime-v0.fifthtry.site
 
 -- fastn.auto-import: calender.fifthtry.site/assets
-;; -- fastn.auto-import: datetime-v0.fifthtry.site
+-- fastn.auto-import: datetime-v0.fifthtry.site as datetime
 -- fastn.auto-import: design-system.fifthtry.site as ds
