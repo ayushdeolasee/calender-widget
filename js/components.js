@@ -103,8 +103,6 @@ class Calender extends HTMLElement {
         const return_date = convert_to_return_format(this.local_date);
         this.data.dt.set(return_date);
 
-        console.log("Formatted Date:", return_date);
-
         if (this._onChangeCallback) {
             this._onChangeCallback(formattedDate);
         }
@@ -190,6 +188,27 @@ class Calender extends HTMLElement {
 
     onChange(callback) {
         this._onChangeCallback = callback;
+    }
+}
+
+class Test extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this.local_date = null;
+        this._onChangeCallback = null;
+    }
+    connectedCallback() {
+        let data = window.ftd.component_data(this);
+        let date_recrod = data.dt.get();
+        let date = Number(date_recrod.toObject().dt);
+        let milliseconds = Math.floor(date / 1000000);
+        const timezone_offset = new Date().getTimezoneOffset();
+        const local_time = milliseconds - timezone_offset * 60000;
+        this.data = data;
+        this.local_date = new Date(local_time);
+
+        this.render();
     }
 }
 
