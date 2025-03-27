@@ -121,16 +121,15 @@ class Calender extends HTMLElement {
         let formattedDate = this.formatDateToString(this.local_date);
         let returnDate = this.convert_to_return_format(this.local_date);
         const convert = new fastn.recordInstanceClass({
-            // dt: Number(returnDate),
-            dt: 12,
+            dt: returnDate,
         });
 
         this.data.dt.set(convert);
 
-        // const convert = new fastn.recordInstanceClass({
-        //     dt: 1,
-        // });
-        // this.data.number.set(convert);
+        const conver_number = new fastn.recordInstanceClass({
+            dt: 1,
+        });
+        this.data.number.set(conver_number);
 
         if (this._onChangeCallback) {
             this._onChangeCallback(formattedDate);
