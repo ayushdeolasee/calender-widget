@@ -13,6 +13,7 @@ class Calender extends HTMLElement {
         let milliseconds = Math.floor(date / 1000000);
         const timezone_offset = new Date().getTimezoneOffset();
         const local_time = milliseconds - timezone_offset * 60000;
+
         this.data = data;
         this.local_date = new Date(local_time);
 
@@ -37,8 +38,8 @@ class Calender extends HTMLElement {
                 const newDate = new Date();
                 newDate.setFullYear(year, month, day);
                 newDate.setHours(hour, minute, 0, 0);
-
-                this.setDateTime(newDate);
+                const return_date = newDate;
+                this.setDateTime(return_date);
             });
 
         // Time input
@@ -75,6 +76,25 @@ class Calender extends HTMLElement {
         return `${hours}:${minutes}`;
     }
 
+    convert_to_return_format(dt) {
+        const date = new Date(dt);
+        const utcTime = new Date(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+            date.getUTCHours(),
+            date.getUTCMinutes(),
+            date.getUTCSeconds(),
+            date.getUTCMilliseconds()
+        );
+        const formattedDate = Number(BigInt(utcTime) * BigInt(1000000));
+        console.log(formattedDate);
+        return formattedDate;
+        // return new fastn.recordInstanceClass({
+        //     dt: formattedDate,
+        // });
+    }
+
     getUTCISOString(date) {
         const year = date.getUTCFullYear();
         const month = String(date.getUTCMonth() + 1).padStart(2, "0");
@@ -98,10 +118,19 @@ class Calender extends HTMLElement {
     setDateTime(date) {
         this.local_date = date;
         this.updateInputs();
-        let formattedDate = this.local_date;
+        let formattedDate = this.formatDateToString(this.local_date);
+        let returnDate = this.convert_to_return_format(this.local_date);
+        const convert = new fastn.recordInstanceClass({
+            // dt: Number(returnDate),
+            dt: 12,
+        });
 
-        const return_date = convert_to_return_format(this.local_date);
-        this.data.dt.set(return_date);
+        this.data.dt.set(convert);
+
+        // const convert = new fastn.recordInstanceClass({
+        //     dt: 1,
+        // });
+        // this.data.number.set(convert);
 
         if (this._onChangeCallback) {
             this._onChangeCallback(formattedDate);
@@ -191,44 +220,8 @@ class Calender extends HTMLElement {
     }
 }
 
-class Test extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.local_date = null;
-        this._onChangeCallback = null;
-    }
-    connectedCallback() {
-        let data = window.ftd.component_data(this);
-        let date_recrod = data.dt.get();
-        let date = Number(date_recrod.toObject().dt);
-        let milliseconds = Math.floor(date / 1000000);
-        const timezone_offset = new Date().getTimezoneOffset();
-        const local_time = milliseconds - timezone_offset * 60000;
-        this.data = data;
-        this.local_date = new Date(local_time);
-
-        this.render();
-    }
+function numberToWords(num) {
+    return num.toString();
 }
 
 customElements.define("calender-widget", Calender);
-
-function convert_to_return_format(dt) {
-    const date = new Date(dt);
-
-    const utcTime = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        date.getUTCHours(),
-        date.getUTCMinutes(),
-        date.getUTCSeconds(),
-        date.getUTCMilliseconds()
-    );
-
-    const now = BigInt(utcTime) * BigInt(1000000);
-    return new fastn.recordInstanceClass({
-        dt: now,
-    });
-}
