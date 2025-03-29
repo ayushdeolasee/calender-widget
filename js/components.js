@@ -88,11 +88,9 @@ class Calender extends HTMLElement {
             date.getUTCMilliseconds()
         );
         const formattedDate = Number(BigInt(utcTime) * BigInt(1000000));
-        // console.log(formattedDate);
-        return formattedDate;
-        // return new fastn.recordInstanceClass({
-        //     dt: formattedDate,
-        // });
+        return new fastn.recordInstanceClass({
+            dt: formattedDate,
+        });
     }
 
     getUTCISOString(date) {
@@ -121,24 +119,7 @@ class Calender extends HTMLElement {
         let formattedDate = this.formatDateToString(this.local_date);
 
         let returnDate = this.convert_to_return_format(this.local_date);
-        console.log(returnDate);
-        const convert = new fastn.recordInstanceClass({
-            dt: returnDate,
-        });
-        // this.data.dt.set(convert);
         this.data.dt.set(returnDate);
-
-        let data = window.ftd.component_data(this);
-        console.log(data);
-
-        console.log(data.dt.get());
-        console.log(data.number.get());
-
-        // const convert_number = new fastn.recordInstanceClass({
-        //     dt: 3,
-        // });
-        // this.data.number.set("dt", 2);
-        // this.data.number.set(convert_number);
 
         if (this._onChangeCallback) {
             this._onChangeCallback(formattedDate);
