@@ -37,7 +37,7 @@ class Calender extends HTMLElement {
                         .split("-")
                         .map(Number);
 
-                    // Create a new date using the day directly without timezone adjustments
+                    // Create a date using the day directly without timezone adjustments
                     // This ensures we use exactly what the user entered
                     const newDate = new Date(this.local_date);
                     newDate.setFullYear(year);
@@ -125,7 +125,8 @@ class Calender extends HTMLElement {
         this.local_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.local_date);
-        this.data.dt.set(this.convert_to_return_format(this.local_date));
+        const recordInstance = this.data.dt.get();
+        recordInstance.set(this.convert_to_return_format(this.local_date));
 
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
 
@@ -292,7 +293,8 @@ class DateInput extends HTMLElement {
         this.local_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.local_date);
-        this.data.dt.set(this.convert_to_return_format(this.local_date));
+        const recordInstance = this.data.dt.get();
+        recordInstance.set(this.convert_to_return_format(this.local_date));
 
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
 
@@ -457,7 +459,8 @@ class TimeInput extends HTMLElement {
         this.local_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.local_date);
-        this.data.dt.set(this.convert_to_return_format(this.local_date));
+        const recordInstance = this.data.dt.get();
+        recordInstance.set(this.convert_to_return_format(this.local_date));
 
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
 
@@ -766,7 +769,8 @@ class CalenderRange extends HTMLElement {
         this.start_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.start_date);
-        this.data.start_dt.set(this.convert_to_return_format(this.start_date));
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.start_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
@@ -797,7 +801,8 @@ class CalenderRange extends HTMLElement {
         this.end_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.end_date);
-        this.data.end_dt.set(this.convert_to_return_format(this.end_date));
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.end_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
@@ -1053,6 +1058,8 @@ class DateRange extends HTMLElement {
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.start_date);
         this.data.start_dt.set(this.convert_to_return_format(this.start_date));
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.start_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
@@ -1083,7 +1090,8 @@ class DateRange extends HTMLElement {
         this.end_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.end_date);
-        this.data.end_dt.set(this.convert_to_return_format(this.end_date));
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.end_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
@@ -1340,7 +1348,8 @@ class TimeRange extends HTMLElement {
         this.start_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.start_date);
-        this.data.start_dt.set(this.convert_to_return_format(this.start_date));
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.start_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
@@ -1371,7 +1380,8 @@ class TimeRange extends HTMLElement {
         this.end_date = date;
         this.updateInputs();
         const formattedDate = this.formatDateToString(this.end_date);
-        this.data.end_dt.set(this.convert_to_return_format(this.end_date));
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(this.convert_to_return_format(this.end_date));
 
         if (this._onChangeCallback)
             this._onChangeCallback({
