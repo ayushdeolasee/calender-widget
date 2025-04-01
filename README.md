@@ -1,72 +1,38 @@
-# calender-widget
+# Calender Widget
+
+A versatile calendar widget for the FASTN language. 
+
+## Overview
+
+This package offers calendar functionality for FASTN applications. Visit [calender-widget.fifthtry.site](https://calender-widget.fifthtry.site) for detailed documentation and examples.
 
 
-Code: 
--- datetime.datetime $current: $datetime.now()
--- ftd.integer: $current.dt
 
--- datetime.datetime $start: $datetime.now()
--- ftd.integer: $start.dt
+## Installation
 
--- datetime.datetime $end: $datetime.now()
--- ftd.integer: $end.dt
+Add the following to your `FASTN.ftd` file:
 
--- calender-widget:
-dt: $current
+```ftd
+-- fastn.dependency: datetime-v0.fifthtry.site
+-- fastn.dependency: calender-widget.fifthtry.site
+-- fastn.auto-import: datetime-v0.fifthtry.site as datetime
+-- fastn.auto-import: calender-widget.fifthtry.site as calender
+```
 
--- web-component calender-widget:
-datetime.datetime dt:
-js: $assets.files.js.components.js
+## Quick Start
 
--- end: calender-widget
+Here's a simple example of how to use the calendar widget:
 
--- date-input:
-dt: $current
+```ftd
+-- datetime.datetime $dt: $datetime.now()
+-- calender:
+   dt: $dt
+```
 
--- web-component date-input:
-datetime.datetime dt:
-js: $assets.files.js.components.js
+## Documentation
 
--- end: date-input
+For complete documentation, examples, and API reference, visit our [documentation site](https://calender-widget.fifthtry.site).
 
--- time-input:
-dt: $current
+## License
 
--- web-component time-input:
-datetime.datetime dt:
-js: $assets.files.js.components.js
-
--- end: time-input
-
--- calender-range:
-start_dt: $start
-end_dt: $end
-
--- web-component calender-range:
-datetime.datetime start_dt:
-datetime.datetime end_dt:
-js: $assets.files.js.components.js
-
--- end: calender-range
-
--- date-range:
-start_dt: $start
-end_dt: $end
-
--- web-component date-range:
-datetime.datetime start_dt:
-datetime.datetime end_dt:
-js: $assets.files.js.components.js
-
--- end: date-range
-
--- time-range:
-start_dt: $start
-end_dt: $end
-
--- web-component time-range:
-datetime.datetime start_dt:
-datetime.datetime end_dt:
-js: $assets.files.js.components.js
-
--- end: time-range
+AGPL-3
