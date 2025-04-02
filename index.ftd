@@ -100,6 +100,7 @@ align-content: left
 
 -- ds.heading-medium: `Web Components`:
 -- ds.column:
+align-content: left
 	-- ds.copy-regular: There is one additional package that need be imported to use the calender widget. The datetime package provides functions to deal with datetime objects. Find the documenation for the datetime package [here](https://datetime-v0.fifthtry.site).
 	-- ds.code:
 	lang: ftd
