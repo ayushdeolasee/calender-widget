@@ -1,9 +1,9 @@
 -- import: fastn
--- fastn.package: calender-widget.fifthtry.site
+-- fastn.package: calendar-widget.fifthtry.site
 
 -- fastn.dependency: design-system.fifthtry.site
 -- fastn.dependency: datetime-v0.fifthtry.site
 
--- fastn.auto-import: calender-widget.fifthtry.site/assets
+-- fastn.auto-import: calendar-widget.fifthtry.site/assets
 -- fastn.auto-import: datetime-v0.fifthtry.site as datetime
 -- fastn.auto-import: design-system.fifthtry.site as ds
