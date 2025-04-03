@@ -2,7 +2,7 @@
 margin: $ds.spaces.vertical-gap.zero
 
 -- ds.heading-large: Calender Widget Package
--- ds.copy-regular: Package: `calender.fifthtry.site`
+-- ds.copy-regular: Package: `calender-widget.fifthtry.site`
 margin: $ds.spaces.vertical-gap.small
 
 -- ds.copy-regular: This package provides multiple web-components for date and time selection, and workes hand in hand with the [datetime package](https://datetime-v0.fifthtry.site). The source code for this package is available in the [Github](https://github.com/ayushdeolasee/calender-widget), under the AGPL-3 Lisence.
@@ -106,9 +106,9 @@ align-content: left
 	lang: ftd
 	
 	\-- fastn.dependency: datetime-v0.fifthtry.site
-	\-- fastn.dependency: calender-widget.fifthtry.site
+	\-- fastn.dependency: calendar-widget.fifthtry.site
 	\-- fastn.auto-import: datetime-v0.fifthtry.site as datetime
-	\-- fastn.auto-import: calender-widget.fifthtry.site as calender
+	\-- fastn.auto-import: calendar-widget.fifthtry.site as calender
 	
 	-- end: ds.code
 	;; TODO: add github link for the package source code
