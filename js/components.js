@@ -11,6 +11,8 @@ class Calender extends HTMLElement {
     }
 
     connectedCallback() {
+        console.log("Calender web-componenet called");
+
         const data = window.ftd.component_data(this);
         const date = Number(data.dt.get().toObject().dt);
         const milliseconds = Math.floor(date / 1000000);
@@ -1518,8 +1520,8 @@ class TimeRange extends HTMLElement {
 }
 
 customElements.define("calender-widget", Calender);
-customElements.define("date-input", DateInput);
-customElements.define("time-input", TimeInput);
+customElements.define("date-widget", DateInput);
+customElements.define("time-widget", TimeInput);
 customElements.define("calender-range", CalenderRange);
 customElements.define("date-range", DateRange);
 customElements.define("time-range", TimeRange);
