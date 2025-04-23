@@ -1,3 +1,11 @@
+-- datetime.datetime current: $datetime.now()
+
+-- calender-widget:
+dt: $current
+
+-- ftd.integer: $current.date
+-- ftd.integer: $current.time
+
 -- ds.page: Calender-widget
 margin: $ds.spaces.vertical-gap.zero
 

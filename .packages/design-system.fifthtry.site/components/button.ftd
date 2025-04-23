@@ -4,7 +4,7 @@
 -- constant integer secondary: 2
 -- constant integer tertiary: 3
 -- constant integer danger: 4
--- constant integer link: 4
+-- constant integer link: 5
 
 -- end: button-kind
 

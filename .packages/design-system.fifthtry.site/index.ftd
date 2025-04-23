@@ -5,6 +5,7 @@
 -- import: design-system.fifthtry.site/web-components
 -- import: design-system.fifthtry.site/style
 
+
 -- import: design-system.fifthtry.site/foundation-elements/borders as _
 export: border-data, border-thickness, borders
 exposing: border-data, border-thickness, borders
@@ -24,6 +25,9 @@ exposing: code
 
 -- import: design-system.fifthtry.site/components/newsletter as _
 export: newsletter
+
+-- import: design-system.fifthtry.site/components/quote as _
+export: quote
 
 -- import: design-system.fifthtry.site/components/tag as _
 export: tag
@@ -296,6 +300,7 @@ $processor$: pr.toc
   - `ds.drawer`: components/drawer/
   - `ds.dropdown`: components/dropdown/
   - `ds.modal`: components/modal/
+  - `ds.quote`: components/quote/
   - `ds.toast`: components/toast/
   - `ds.divider`: components/divider/
   - `ds.pagination`: components/pagination/

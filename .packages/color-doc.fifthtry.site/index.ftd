@@ -1,7 +1,7 @@
 -- import: fastn
 -- import: fastn/processors as pr
 -- import: color-doc.fifthtry.site/assets
--- import: color-doc.fifthtry.site/colors
+-- import: color-doc.fifthtry.site/color
 -- import: color-doc.fifthtry.site/components as cp
 -- import: footer.fifthtry.site as footer
 -- import: inter-typography.fifthtry.site as typo

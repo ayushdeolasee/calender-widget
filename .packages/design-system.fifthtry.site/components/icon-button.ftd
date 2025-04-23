@@ -162,6 +162,7 @@ button.button-width width: default
 button.button-size size: medium
 button.button-kind kind: primary
 button.button-radius radius: curved
+integer icon-size: 16
 boolean rounded: false
 ;; private stuff
 boolean $hover: false
@@ -178,27 +179,27 @@ radius: $phosphor-icon-button.radius
 rounded: $phosphor-icon-button.rounded
 
 	-- phosphor.regular: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == regular }
 	
 	-- phosphor.bold: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == bold }
 	
 	-- phosphor.duotone: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == duotone }
 	
 	-- phosphor.fill: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == fill }
 	
 	-- phosphor.light: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == light }
 	
 	-- phosphor.thin: $phosphor-icon-button.icon
-	size: 16
+	size: $phosphor-icon-button.icon-size
 	if: { phosphor-icon-button.phosphor-variant == thin }
 	
 -- end: button-wrapper
@@ -337,15 +338,17 @@ boolean open-in-new-tab: false
 -- ds.row:
 background.solid if { button-wrapper.kind == primary && button-wrapper.kind != link && button-wrapper.variant == solid}: $ds.colors.cta-primary.base
 background.solid if { button-wrapper.kind == secondary && button-wrapper.kind != link && button-wrapper.variant == solid}: $ds.colors.cta-secondary.base
-background.solid if { button-wrapper.kind == danger || button-wrapper.kind != link || button-wrapper.variant == solid}: $inherited.colors.cta-danger.base
+background.solid if { button-wrapper.kind == danger && button-wrapper.kind != link  && button-wrapper.variant == solid}: $inherited.colors.cta-danger.base
+background.solid if { button-wrapper.kind == link }: transparent
+background.solid if { button-wrapper.kind == tertiary }: transparent
 radius if { button-wrapper.rounded }: $ds.radius.large
 radius if { button-wrapper.radius == none }: $ds.radius.zero
 radius if { button-wrapper.radius == curved }: $ds.radius.medium
 border if { button-wrapper.kind == secondary }: $ds.borders.uniform.small
 border-color if { button-wrapper.kind == secondary }: $ds.colors.cta-secondary.border
-inset if { button-wrapper.size == small && button-wrapper.kind != tertiary }: $ds.spaces.inset-wide.small
-inset if { button-wrapper.size == medium && button-wrapper.kind != tertiary }: $ds.spaces.inset-wide.medium
-inset if { button-wrapper.size == large && button-wrapper.kind != tertiary }: $ds.spaces.inset-wide.large
+inset if { button-wrapper.size == small && button-wrapper.kind != tertiary && button-wrapper.kind != link }: $ds.spaces.inset-wide.small
+inset if { button-wrapper.size == medium && button-wrapper.kind != tertiary && button-wrapper.kind != link }: $ds.spaces.inset-wide.medium
+inset if { button-wrapper.size == large && button-wrapper.kind != tertiary && button-wrapper.kind != link }: $ds.spaces.inset-wide.large
 align-content: center
 background.solid if { button-wrapper.hover }: $ds.colors.background.step-2
 $on-mouse-enter$: $ftd.set-bool($a = $button-wrapper.hover, v = true)
@@ -354,12 +357,12 @@ spacing: $ds.spaces.horizontal-gap.small
 width if { button-wrapper.width == default }: hug-content
 width.fixed.px if { button-wrapper.width == wide }: 200
 width if { button-wrapper.width == full }: fill-container
-color if { button-wrapper.kind == link }: $ds.colors.accent.primary
 color if { button-wrapper.kind == primary }: $ds.colors.cta-primary.text
 color if { button-wrapper.kind == secondary }: $ds.colors.cta-secondary.text
-color if { button-wrapper.kind == tertiary }: $ds.colors.cta-tertiary.text
+color if { button-wrapper.kind == tertiary }: $ds.colors.accent.primary
+color if { button-wrapper.kind == link }: $ds.colors.text-strong
 color if { button-wrapper.kind == danger }: $ds.colors.cta-danger.text
-color if { button-wrapper.kind == secondary && button-wrapper.variant == outline }: $ds.colors.text-strong
+color if { button-wrapper.kind == secondary && button-wrapper.variant == outline }: white
 link: $button-wrapper.link
 wrap: true
 open-in-new-tab: $button-wrapper.open-in-new-tab

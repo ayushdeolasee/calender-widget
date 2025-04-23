@@ -185,7 +185,7 @@ show-line-number if { code.line-numbers }: true
 if: { code.lang != NULL }
 anchor: parent
 right.px: 12
-bottom.px: 26
+bottom.px: 8
 bottom.px if { ftd.device == "mobile" }: 12
 z-index: 999
 padding.px: 6
