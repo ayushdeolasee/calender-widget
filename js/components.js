@@ -61,10 +61,35 @@ function to_timestamp_millis(dt) {
     return dateObj; // Number, ms since epoch
 }
 
+function debug_to_timestamp_millis(date, time) {
+    const dateStr = date.toString();
+    const year = parseInt(dateStr.slice(0, 4));
+    const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
+    const day = parseInt(dateStr.slice(6, 8));
+
+    // Parse time: HHMMSSmmmnnnnnnnnn (always 17 digits)
+    const timeStr = time.toString().padStart(17, "0");
+    const hour = parseInt(timeStr.slice(0, 2));
+    const minute = parseInt(timeStr.slice(2, 4));
+    const second = parseInt(timeStr.slice(4, 6));
+    const millisecond = parseInt(timeStr.slice(6, 9));
+
+    // Construct JS Date (ms precision)
+    const dateObj = Date.UTC(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        millisecond
+    );
+    return dateObj; // Number, ms since epoch
+}
+
 function convertToReturnFormat(dt, withTime = true) {
     console.log(dt);
     let date = new Date(dt);
-    console.log("Date:", date.getUTCHours());
     // let date;
     // if (withTime) {
     //     date = new Date(
@@ -91,12 +116,19 @@ function convertToReturnFormat(dt, withTime = true) {
     const day = date.getUTCDate().toString().padStart(2, "0");
     const datePart = parseInt(`${year}${month}${day}`);
 
+    console.log("Date part:", datePart);
+
     const hours = date.getUTCHours().toString().padStart(2, "0");
     const minutes = date.getUTCMinutes().toString().padStart(2, "0");
     const seconds = date.getUTCSeconds().toString().padStart(2, "0");
     const milliseconds = date.getUTCMilliseconds().toString().padStart(3, "0");
     const nanoseconds = "000000000";
     const timePart = `${hours}${minutes}${seconds}${milliseconds}${nanoseconds}`;
+
+    console.log("Time part:", timePart);
+
+    const debug_value = debug_to_timestamp_millis(datePart, timePart);
+    console.log("Debug value:", debug_value);
 
     return new fastn.recordInstanceClass({
         date: datePart,
@@ -138,11 +170,9 @@ class Calender extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log("Calender web-componenet called");
         const data = window.ftd.component_data(this);
         this.data = data;
         const dt = to_timestamp_millis(data.dt);
-        console.log(dt);
         this.local_date = new Date(dt - new Date().getTimezoneOffset());
         this.render();
         this.setupEventListeners();
@@ -198,7 +228,6 @@ class Calender extends HTMLElement {
     }
 
     setDateTime(date) {
-        console.log("setDateTime called");
         if (!isValidDate(date)) {
             console.warn("Invalid date detected, keeping previous value");
             return;
@@ -206,10 +235,6 @@ class Calender extends HTMLElement {
         this.local_date = date;
         this.updateInputs();
         const formattedDate = formatDateToString(this.local_date);
-        // console.log("formatted date:", formattedDate);
-        console.log("Debug", this.data.dt.get());
-        // const recordInstance = this.data.dt.get();
-        // console.log("record instance:", recordInstance);
         this.data.dt.get().set(convertToReturnFormat(this.local_date, true));
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(

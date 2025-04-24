@@ -7,7 +7,7 @@ dt: $current
 -- ftd.integer: $current.time
 
 -- datetime.datetime $debug:
-date: 20250424
+date: 20250422
 time: 090300000000000000
 
 -- ftd.integer: $datetime.to-timestamp-millis(dt=*$debug)

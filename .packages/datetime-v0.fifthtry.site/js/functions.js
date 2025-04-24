@@ -76,6 +76,9 @@
             date = dt.get().toObject().date;
             time = dt.get().toObject().time;
         }
+        console.log("function.js date", date);
+        console.log("function.js time", time);
+
         // const { date, time } = dt.get().toObject();
         const dateStr = date.toString();
         const year = parseInt(dateStr.slice(0, 4));
@@ -99,6 +102,7 @@
             second,
             millisecond
         );
+        console.log("function.js dateObj", dateObj);
         return dateObj; // Number, ms since epoch
     }
 
