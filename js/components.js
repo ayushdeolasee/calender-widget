@@ -26,28 +26,85 @@ function formatDateToString(date) {
     return date.toISOString().replace(/[-:.]/g, "");
 }
 
-function convertToReturnFormat(dt, withTime = true) {
-    let utcTime;
-    if (withTime) {
-        utcTime = new Date(
-            Date.UTC(
-                dt.getFullYear(),
-                dt.getMonth(),
-                dt.getDate(),
-                dt.getHours(),
-                dt.getMinutes(),
-                dt.getSeconds(),
-                dt.getMilliseconds()
-            )
-        );
+function to_timestamp_millis(dt) {
+    let date, time;
+    if (dt instanceof fastn.recordInstanceClass) {
+        date = dt.toObject().date;
+        time = dt.toObject().time;
     } else {
-        utcTime = new Date(
-            Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), 0, 0, 0, 0)
-        );
+        date = dt.get().toObject().date;
+        time = dt.get().toObject().time;
     }
+    // const { date, time } = dt.get().toObject();
+    const dateStr = date.toString();
+    const year = parseInt(dateStr.slice(0, 4));
+    const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
+    const day = parseInt(dateStr.slice(6, 8));
+
+    // Parse time: HHMMSSmmmnnnnnnnnn (always 17 digits)
+    const timeStr = time.toString().padStart(17, "0");
+    const hour = parseInt(timeStr.slice(0, 2));
+    const minute = parseInt(timeStr.slice(2, 4));
+    const second = parseInt(timeStr.slice(4, 6));
+    const millisecond = parseInt(timeStr.slice(6, 9));
+
+    // Construct JS Date (ms precision)
+    const dateObj = Date.UTC(
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        millisecond
+    );
+    return dateObj; // Number, ms since epoch
+}
+
+function convertToReturnFormat(dt, withTime = true) {
+    console.log(dt);
+    let date = new Date(dt);
+    console.log("Date:", date.getUTCHours());
+    // let date;
+    // if (withTime) {
+    //     date = new Date(
+    //         Date.UTC(
+    //             dt.getFullYear(),
+    //             dt.getMonth(),
+    //             dt.getDate(),
+    //             dt.getHours(),
+    //             dt.getMinutes(),
+    //             dt.getSeconds(),
+    //             dt.getMilliseconds()
+    //         )
+    //     );
+    // } else {
+    //     date = new Date(
+    //         Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), 0, 0, 0, 0)
+    //     );
+    // }
+
+    // console.log("UTC Time:", utcTime);
+
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = date.getUTCDate().toString().padStart(2, "0");
+    const datePart = parseInt(`${year}${month}${day}`);
+
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+    const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+    const milliseconds = date.getUTCMilliseconds().toString().padStart(3, "0");
+    const nanoseconds = "000000000";
+    const timePart = `${hours}${minutes}${seconds}${milliseconds}${nanoseconds}`;
+
     return new fastn.recordInstanceClass({
-        dt: Number(BigInt(utcTime) * BigInt(1000000)),
+        date: datePart,
+        time: timePart,
     });
+    // return new fastn.recordInstanceClass({
+    //     dt: Number(BigInt(utcTime) * BigInt(1000000)),
+    // });
 }
 
 function parseDateInput(input, baseDate = null) {
@@ -71,51 +128,6 @@ function parseTimeInput(input, baseDate = null) {
     return date;
 }
 
-function toTimestampNanos(dateInt, timeInt) {
-    // dateInt: YYYYMMDD, timeInt: HHMMSSmmmnnnnnnnnn
-    const dateStr = dateInt.toString();
-    const year = parseInt(dateStr.slice(0, 4));
-    const month = parseInt(dateStr.slice(4, 6)) - 1;
-    const day = parseInt(dateStr.slice(6, 8));
-    const timeStr = timeInt.toString().padStart(17, "0");
-    const hour = parseInt(timeStr.slice(0, 2));
-    const minute = parseInt(timeStr.slice(2, 4));
-    const second = parseInt(timeStr.slice(4, 6));
-    const millisecond = parseInt(timeStr.slice(6, 9));
-    const nanosecond = parseInt(timeStr.slice(9, 18));
-    const dateObj = Date.UTC(
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        second,
-        millisecond
-    );
-    const epochNs = BigInt(dateObj) * 1000000n + BigInt(nanosecond);
-    return epochNs;
-}
-
-function fromTimestampNanos(epochNs) {
-    // Returns { date: YYYYMMDD, time: HHMMSSmmmnnnnnnnnn }
-    const ms = Number(BigInt(epochNs) / 1000000n);
-    const nanosecond = Number(BigInt(epochNs) % 1000000000n);
-    const date = new Date(ms);
-    const year = date.getUTCFullYear();
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-    const day = date.getUTCDate().toString().padStart(2, "0");
-    const datePart = parseInt(`${year}${month}${day}`);
-    const hours = date.getUTCHours().toString().padStart(2, "0");
-    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-    const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-    const milliseconds = date.getUTCMilliseconds().toString().padStart(3, "0");
-    const nanoStr = nanosecond.toString().padStart(9, "0");
-    const timePart = parseInt(
-        `${hours}${minutes}${seconds}${milliseconds}${nanoStr}`
-    );
-    return { date: datePart, time: timePart };
-}
-
 // --- Classes ---
 class Calender extends HTMLElement {
     constructor() {
@@ -128,12 +140,10 @@ class Calender extends HTMLElement {
     connectedCallback() {
         console.log("Calender web-componenet called");
         const data = window.ftd.component_data(this);
-        const date = Number(data.date.get().toObject().date);
-        const time = Number(data.time.get().toObject().time);
-        const epochNs = toTimestampNanos(date, time);
-        const ms = Number(BigInt(epochNs) / 1000000n);
         this.data = data;
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        const dt = to_timestamp_millis(data.dt);
+        console.log(dt);
+        this.local_date = new Date(dt - new Date().getTimezoneOffset());
         this.render();
         this.setupEventListeners();
     }
@@ -188,50 +198,23 @@ class Calender extends HTMLElement {
     }
 
     setDateTime(date) {
+        console.log("setDateTime called");
         if (!isValidDate(date)) {
             console.warn("Invalid date detected, keeping previous value");
             return;
         }
         this.local_date = date;
         this.updateInputs();
-        // Convert to UTC and then to timestamp nanos
-        const utcDate = new Date(
-            Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                date.getMilliseconds()
-            )
-        );
-        const year = utcDate.getUTCFullYear();
-        const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = utcDate.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
-        const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-        const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-        const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
-        const milliseconds = utcDate
-            .getUTCMilliseconds()
-            .toString()
-            .padStart(3, "0");
-        const nanoStr = "000000000"; // JS Date has no ns
-        const timePart = parseInt(
-            `${hours}${minutes}${seconds}${milliseconds}${nanoStr}`
-        );
-        // Set back as two variables
-        this.data.date.get().set({ date: datePart });
-        this.data.time.get().set({ time: timePart });
-        if (this._onChangeCallback)
-            this._onChangeCallback({ date: datePart, time: timePart });
+        const formattedDate = formatDateToString(this.local_date);
+        // console.log("formatted date:", formattedDate);
+        console.log("Debug", this.data.dt.get());
+        // const recordInstance = this.data.dt.get();
+        // console.log("record instance:", recordInstance);
+        this.data.dt.get().set(convertToReturnFormat(this.local_date, true));
+        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(
             new CustomEvent("change", {
-                detail: {
-                    value: { date: datePart, time: timePart },
-                    rawDate: this.local_date,
-                },
+                detail: { value: formattedDate, rawDate: this.local_date },
                 bubbles: true,
             })
         );
@@ -291,41 +274,11 @@ class Calender extends HTMLElement {
     }
 
     get value() {
-        // Return {date, time} split from local_date
-        const utcDate = new Date(
-            Date.UTC(
-                this.local_date.getFullYear(),
-                this.local_date.getMonth(),
-                this.local_date.getDate(),
-                this.local_date.getHours(),
-                this.local_date.getMinutes(),
-                this.local_date.getSeconds(),
-                this.local_date.getMilliseconds()
-            )
-        );
-        const year = utcDate.getUTCFullYear();
-        const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = utcDate.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
-        const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-        const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-        const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
-        const milliseconds = utcDate
-            .getUTCMilliseconds()
-            .toString()
-            .padStart(3, "0");
-        const nanoStr = "000000000";
-        const timePart = parseInt(
-            `${hours}${minutes}${seconds}${milliseconds}${nanoStr}`
-        );
-        return { date: datePart, time: timePart };
+        return formatDateToString(this.local_date);
     }
 
     set value(newValue) {
-        // newValue: {date, time}
-        const epochNs = toTimestampNanos(newValue.date, newValue.time);
-        const ms = Number(BigInt(epochNs) / 1000000n);
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(newValue);
         this.updateInputs();
     }
 
@@ -344,12 +297,12 @@ class DateInput extends HTMLElement {
 
     connectedCallback() {
         const data = window.ftd.component_data(this);
-        const date = Number(data.date.get().toObject().date);
-        const time = 0; // Default time for DateInput
-        const epochNs = toTimestampNanos(date, time);
-        const ms = Number(BigInt(epochNs) / 1000000n);
+        const date = Number(data.dt.get().toObject().dt);
+        const milliseconds = Math.floor(date / 1000000);
         this.data = data;
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(
+            milliseconds - new Date().getTimezoneOffset() * 60000
+        );
         this.render();
         this.setupEventListeners();
     }
@@ -381,26 +334,13 @@ class DateInput extends HTMLElement {
     setDateTime(date) {
         this.local_date = date;
         this.updateInputs();
-        const utcDate = new Date(
-            Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                0,
-                0,
-                0,
-                0
-            )
-        );
-        const year = utcDate.getUTCFullYear();
-        const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = utcDate.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
-        this.data.date.get().set({ date: datePart });
-        if (this._onChangeCallback) this._onChangeCallback({ date: datePart });
+        const formattedDate = formatDateToString(this.local_date);
+        const recordInstance = this.data.dt.get();
+        recordInstance.set(convertToReturnFormat(this.local_date, false));
+        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(
             new CustomEvent("change", {
-                detail: { value: { date: datePart }, rawDate: this.local_date },
+                detail: { value: formattedDate, rawDate: this.local_date },
                 bubbles: true,
             })
         );
@@ -454,28 +394,11 @@ class DateInput extends HTMLElement {
     }
 
     get value() {
-        const utcDate = new Date(
-            Date.UTC(
-                this.local_date.getFullYear(),
-                this.local_date.getMonth(),
-                this.local_date.getDate(),
-                0,
-                0,
-                0,
-                0
-            )
-        );
-        const year = utcDate.getUTCFullYear();
-        const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = utcDate.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
-        return { date: datePart };
+        return formatDateToString(this.local_date);
     }
 
     set value(newValue) {
-        const epochNs = toTimestampNanos(newValue.date, 0);
-        const ms = Number(BigInt(epochNs) / 1000000n);
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(newValue);
         this.updateInputs();
     }
 
@@ -494,12 +417,12 @@ class TimeInput extends HTMLElement {
 
     connectedCallback() {
         const data = window.ftd.component_data(this);
-        const date = 19700101; // Default date for TimeInput
-        const time = Number(data.time.get().toObject().time);
-        const epochNs = toTimestampNanos(date, time);
-        const ms = Number(BigInt(epochNs) / 1000000n);
+        const date = Number(data.dt.get().toObject().dt);
+        const milliseconds = Math.floor(date / 1000000);
         this.data = data;
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(
+            milliseconds - new Date().getTimezoneOffset() * 60000
+        );
         this.render();
         this.setupEventListeners();
     }
@@ -531,33 +454,13 @@ class TimeInput extends HTMLElement {
     setDateTime(date) {
         this.local_date = date;
         this.updateInputs();
-        const utcDate = new Date(
-            Date.UTC(
-                1970,
-                0,
-                1,
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                date.getMilliseconds()
-            )
-        );
-        const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-        const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-        const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
-        const milliseconds = utcDate
-            .getUTCMilliseconds()
-            .toString()
-            .padStart(3, "0");
-        const nanoStr = "000000000"; // JS Date has no ns
-        const timePart = parseInt(
-            `${hours}${minutes}${seconds}${milliseconds}${nanoStr}`
-        );
-        this.data.time.get().set({ time: timePart });
-        if (this._onChangeCallback) this._onChangeCallback({ time: timePart });
+        const formattedDate = formatDateToString(this.local_date);
+        const recordInstance = this.data.dt.get();
+        recordInstance.set(convertToReturnFormat(this.local_date, true));
+        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(
             new CustomEvent("change", {
-                detail: { value: { time: timePart }, rawDate: this.local_date },
+                detail: { value: formattedDate, rawDate: this.local_date },
                 bubbles: true,
             })
         );
@@ -611,35 +514,735 @@ class TimeInput extends HTMLElement {
     }
 
     get value() {
-        const utcDate = new Date(
-            Date.UTC(
-                1970,
-                0,
-                1,
-                this.local_date.getHours(),
-                this.local_date.getMinutes(),
-                this.local_date.getSeconds(),
-                this.local_date.getMilliseconds()
-            )
-        );
-        const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-        const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-        const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
-        const milliseconds = utcDate
-            .getUTCMilliseconds()
-            .toString()
-            .padStart(3, "0");
-        const nanoStr = "000000000";
-        const timePart = parseInt(
-            `${hours}${minutes}${seconds}${milliseconds}${nanoStr}`
-        );
-        return { time: timePart };
+        return formatDateToString(this.local_date);
     }
 
     set value(newValue) {
-        const epochNs = toTimestampNanos(19700101, newValue.time);
-        const ms = Number(BigInt(epochNs) / 1000000n);
-        this.local_date = new Date(ms - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(newValue);
+        this.updateInputs();
+    }
+
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+}
+
+class CalenderRange extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this.start_date = null;
+        this.end_date = null;
+        this._onChangeCallback = null;
+    }
+
+    connectedCallback() {
+        const data = window.ftd.component_data(this);
+        const startDate = Number(data.start_dt.get().toObject().dt);
+        const endDate = Number(data.end_dt.get().toObject().dt);
+        const startMilliseconds = Math.floor(startDate / 1000000);
+        const endMilliseconds = Math.floor(endDate / 1000000);
+
+        this.data = data;
+        this.start_date = new Date(
+            startMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.end_date = new Date(
+            endMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.render();
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const selectedDate = e.target.value;
+                    const newDate = parseDateInput(
+                        selectedDate,
+                        this.start_date
+                    );
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid date input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setStartDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling date input:", error);
+                    this.updateInputs();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const selectedDate = e.target.value;
+                    const newDate = parseDateInput(selectedDate, this.end_date);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid date input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setEndDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling date input:", error);
+                    this.updateInputs();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".start-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const timeValue = e.target.value;
+                    const newDate = parseTimeInput(timeValue, this.start_date);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid time input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setStartDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.updateInputs();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const timeValue = e.target.value;
+                    const newDate = parseTimeInput(timeValue, this.end_date);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid time input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setEndDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.updateInputs();
+                }
+            });
+    }
+
+    getDateString(date) {
+        return formatDateForInput(date);
+    }
+
+    getTimeString(date) {
+        return formatTimeForInput(date);
+    }
+
+    setStartDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid start date detected, keeping previous value");
+            return;
+        }
+
+        this.start_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.start_date);
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(convertToReturnFormat(this.start_date, true));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formattedDate,
+                end: formatDateToString(this.end_date),
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: { value: formattedDate, rawDate: this.start_date },
+                    end: {
+                        value: formatDateToString(this.end_date),
+                        rawDate: this.end_date,
+                    },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    setEndDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid end date detected, keeping previous value");
+            return;
+        }
+
+        this.end_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.end_date);
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(convertToReturnFormat(this.end_date, true));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formatDateToString(this.start_date),
+                end: formattedDate,
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: {
+                        value: formatDateToString(this.start_date),
+                        rawDate: this.start_date,
+                    },
+                    end: { value: formattedDate, rawDate: this.end_date },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    updateInputs() {
+        const startDateInput =
+            this.shadowRoot.querySelector(".start-date-input");
+        const endDateInput = this.shadowRoot.querySelector(".end-date-input");
+        const startTimeInput =
+            this.shadowRoot.querySelector(".start-time-input");
+        const endTimeInput = this.shadowRoot.querySelector(".end-time-input");
+
+        if (startDateInput)
+            startDateInput.value = this.getDateString(this.start_date);
+        if (endDateInput)
+            endDateInput.value = this.getDateString(this.end_date);
+        if (startTimeInput)
+            startTimeInput.value = this.getTimeString(this.start_date);
+        if (endTimeInput)
+            endTimeInput.value = this.getTimeString(this.end_date);
+    }
+
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: inline-block;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f5f5f5;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                .range-group {
+                    display: flex;
+                    gap: 20px;
+                    margin-bottom: 10px;
+                }
+                .date-time-group {
+                    flex: 1;
+                }
+                input {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #333;
+                }
+                .input-group {
+                    margin-bottom: 8px;
+                }
+            </style>
+            <div class="container">
+                <div class="range-group">
+                    <div class="date-time-group">
+                        <label>Start Date</label>
+                        <input type="date" class="start-date-input" value="${this.getDateString(
+                            this.start_date
+                        )}">
+                        <label>Start Time</label>
+                        <input type="time" class="start-time-input" value="${this.getTimeString(
+                            this.start_date
+                        )}">
+                    </div>
+                    <div class="date-time-group">
+                        <label>End Date</label>
+                        <input type="date" class="end-date-input" value="${this.getDateString(
+                            this.end_date
+                        )}">
+                        <label>End Time</label>
+                        <input type="time" class="end-time-input" value="${this.getTimeString(
+                            this.end_date
+                        )}">
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    get value() {
+        return {
+            start: formatDateToString(this.start_date),
+            end: formatDateToString(this.end_date),
+        };
+    }
+
+    set value(newValue) {
+        this.start_date = new Date(newValue.start);
+        this.end_date = new Date(newValue.end);
+        this.updateInputs();
+    }
+
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+}
+
+class DateRange extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this.start_date = null;
+        this.end_date = null;
+        this._onChangeCallback = null;
+    }
+
+    connectedCallback() {
+        const data = window.ftd.component_data(this);
+        const startDate = Number(data.start_dt.get().toObject().dt);
+        const endDate = Number(data.end_dt.get().toObject().dt);
+        const startMilliseconds = Math.floor(startDate / 1000000);
+        const endMilliseconds = Math.floor(endDate / 1000000);
+
+        this.data = data;
+        this.start_date = new Date(
+            startMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.end_date = new Date(
+            endMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.render();
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const selectedDate = e.target.value;
+                    const newDate = parseDateInput(selectedDate);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid date input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setStartDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling date input:", error);
+                    this.updateInputs();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const selectedDate = e.target.value;
+                    const newDate = parseDateInput(selectedDate);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid date input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setEndDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling date input:", error);
+                    this.updateInputs();
+                }
+            });
+    }
+
+    getDateString(date) {
+        return formatDateForInput(date);
+    }
+
+    setStartDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid start date detected, keeping previous value");
+            return;
+        }
+
+        this.start_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.start_date);
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(convertToReturnFormat(this.start_date, false));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formattedDate,
+                end: formatDateToString(this.end_date),
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: { value: formattedDate, rawDate: this.start_date },
+                    end: {
+                        value: formatDateToString(this.end_date),
+                        rawDate: this.end_date,
+                    },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    setEndDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid end date detected, keeping previous value");
+            return;
+        }
+
+        this.end_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.end_date);
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(convertToReturnFormat(this.end_date, false));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formatDateToString(this.start_date),
+                end: formattedDate,
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: {
+                        value: formatDateToString(this.start_date),
+                        rawDate: this.start_date,
+                    },
+                    end: { value: formattedDate, rawDate: this.end_date },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    updateInputs() {
+        const startDateInput =
+            this.shadowRoot.querySelector(".start-date-input");
+        const endDateInput = this.shadowRoot.querySelector(".end-date-input");
+
+        if (startDateInput)
+            startDateInput.value = this.getDateString(this.start_date);
+        if (endDateInput)
+            endDateInput.value = this.getDateString(this.end_date);
+    }
+
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: inline-block;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f5f5f5;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                .range-group {
+                    display: flex;
+                    gap: 20px;
+                    margin-bottom: 10px;
+                }
+                .date-group {
+                    flex: 1;
+                }
+                input {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #333;
+                }
+                .input-group {
+                    margin-bottom: 8px;
+                }
+            </style>
+            <div class="container">
+                <div class="range-group">
+                    <div class="date-group">
+                        <label>Start Date</label>
+                        <input type="date" class="start-date-input" value="${this.getDateString(
+                            this.start_date
+                        )}">
+                    </div>
+                    <div class="date-group">
+                        <label>End Date</label>
+                        <input type="date" class="end-date-input" value="${this.getDateString(
+                            this.end_date
+                        )}">
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    get value() {
+        return {
+            start: formatDateToString(this.start_date),
+            end: formatDateToString(this.end_date),
+        };
+    }
+
+    set value(newValue) {
+        this.start_date = new Date(newValue.start);
+        this.end_date = new Date(newValue.end);
+        this.updateInputs();
+    }
+
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+}
+
+class TimeRange extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+        this.start_date = null;
+        this.end_date = null;
+        this._onChangeCallback = null;
+    }
+
+    connectedCallback() {
+        const data = window.ftd.component_data(this);
+        const startDate = Number(data.start_dt.get().toObject().dt);
+        const endDate = Number(data.end_dt.get().toObject().dt);
+        const startMilliseconds = Math.floor(startDate / 1000000);
+        const endMilliseconds = Math.floor(endDate / 1000000);
+
+        this.data = data;
+        this.start_date = new Date(
+            startMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.end_date = new Date(
+            endMilliseconds - new Date().getTimezoneOffset() * 60000
+        );
+        this.render();
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const timeValue = e.target.value;
+                    const newDate = parseTimeInput(timeValue, this.start_date);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid time input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setStartDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.updateInputs();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    const timeValue = e.target.value;
+                    const newDate = parseTimeInput(timeValue, this.end_date);
+                    if (!isValidDate(newDate)) {
+                        console.warn("Invalid time input detected");
+                        this.updateInputs();
+                        return;
+                    }
+                    this.setEndDateTime(newDate);
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.updateInputs();
+                }
+            });
+    }
+
+    getTimeString(date) {
+        return formatTimeForInput(date);
+    }
+
+    setStartDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid start date detected, keeping previous value");
+            return;
+        }
+
+        this.start_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.start_date);
+        const recordInstance = this.data.start_dt.get();
+        recordInstance.set(convertToReturnFormat(this.start_date, true));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formattedDate,
+                end: formatDateToString(this.end_date),
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: { value: formattedDate, rawDate: this.start_date },
+                    end: {
+                        value: formatDateToString(this.end_date),
+                        rawDate: this.end_date,
+                    },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    setEndDateTime(date) {
+        if (!isValidDate(date)) {
+            console.warn("Invalid end date detected, keeping previous value");
+            return;
+        }
+
+        this.end_date = date;
+        this.updateInputs();
+        const formattedDate = formatDateToString(this.end_date);
+        const recordInstance = this.data.end_dt.get();
+        recordInstance.set(convertToReturnFormat(this.end_date, true));
+
+        if (this._onChangeCallback)
+            this._onChangeCallback({
+                start: formatDateToString(this.start_date),
+                end: formattedDate,
+            });
+
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: {
+                    start: {
+                        value: formatDateToString(this.start_date),
+                        rawDate: this.start_date,
+                    },
+                    end: { value: formattedDate, rawDate: this.end_date },
+                },
+                bubbles: true,
+            })
+        );
+    }
+
+    updateInputs() {
+        const startTimeInput =
+            this.shadowRoot.querySelector(".start-time-input");
+        const endTimeInput = this.shadowRoot.querySelector(".end-time-input");
+
+        if (startTimeInput)
+            startTimeInput.value = this.getTimeString(this.start_date);
+        if (endTimeInput)
+            endTimeInput.value = this.getTimeString(this.end_date);
+    }
+
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: inline-block;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f5f5f5;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                .range-group {
+                    display: flex;
+                    gap: 20px;
+                    margin-bottom: 10px;
+                }
+                .time-group {
+                    flex: 1;
+                }
+                input {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #333;
+                }
+                .input-group {
+                    margin-bottom: 8px;
+                }
+            </style>
+            <div class="container">
+                <div class="range-group">
+                    <div class="time-group">
+                        <label>Start Time</label>
+                        <input type="time" class="start-time-input" value="${this.getTimeString(
+                            this.start_date
+                        )}">
+                    </div>
+                    <div class="time-group">
+                        <label>End Time</label>
+                        <input type="time" class="end-time-input" value="${this.getTimeString(
+                            this.end_date
+                        )}">
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    get value() {
+        return {
+            start: formatDateToString(this.start_date),
+            end: formatDateToString(this.end_date),
+        };
+    }
+
+    set value(newValue) {
+        this.start_date = new Date(newValue.start);
+        this.end_date = new Date(newValue.end);
         this.updateInputs();
     }
 
@@ -651,3 +1254,6 @@ class TimeInput extends HTMLElement {
 customElements.define("calender-widget", Calender);
 customElements.define("date-widget", DateInput);
 customElements.define("time-widget", TimeInput);
+customElements.define("calender-range", CalenderRange);
+customElements.define("date-range", DateRange);
+customElements.define("time-range", TimeRange);

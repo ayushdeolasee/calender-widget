@@ -6,6 +6,12 @@ dt: $current
 -- ftd.integer: $current.date
 -- ftd.integer: $current.time
 
+-- datetime.datetime $debug:
+date: 20250424
+time: 090300000000000000
+
+-- ftd.integer: $datetime.to-timestamp-millis(dt=*$debug)
+
 -- ds.page: Calender-widget
 margin: $ds.spaces.vertical-gap.zero
 
