@@ -69,6 +69,7 @@
 
     function to_timestamp_millis(dt) {
         let date, time;
+        console.log(dt);
         if (dt instanceof fastn.recordInstanceClass) {
             date = dt.toObject().date;
             time = dt.toObject().time;

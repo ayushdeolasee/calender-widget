@@ -1,6 +1,6 @@
 -- datetime.datetime current: $datetime.now()
 
--- calender-widget:
+-- date-widget:
 dt: $current
 
 -- ftd.integer: $current.date

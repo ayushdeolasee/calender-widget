@@ -110,33 +110,41 @@ function convertToReturnFormat(dt, withTime = true) {
     // }
 
     // console.log("UTC Time:", utcTime);
+    if (withTime == true) {
+        const year = date.getUTCFullYear();
+        const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+        const day = date.getUTCDate().toString().padStart(2, "0");
+        const datePart = parseInt(`${year}${month}${day}`);
 
-    const year = date.getUTCFullYear();
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-    const day = date.getUTCDate().toString().padStart(2, "0");
-    const datePart = parseInt(`${year}${month}${day}`);
+        const hours = date.getUTCHours().toString().padStart(2, "0");
+        const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+        const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+        const milliseconds = date
+            .getUTCMilliseconds()
+            .toString()
+            .padStart(3, "0");
+        const nanoseconds = "000000000";
+        const timePart = `${hours}${minutes}${seconds}${milliseconds}${nanoseconds}`;
 
-    console.log("Date part:", datePart);
-
-    const hours = date.getUTCHours().toString().padStart(2, "0");
-    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-    const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-    const milliseconds = date.getUTCMilliseconds().toString().padStart(3, "0");
-    const nanoseconds = "000000000";
-    const timePart = `${hours}${minutes}${seconds}${milliseconds}${nanoseconds}`;
-
-    console.log("Time part:", timePart);
-
-    const debug_value = debug_to_timestamp_millis(datePart, timePart);
-    console.log("Debug value:", debug_value);
-
-    return new fastn.recordInstanceClass({
-        date: datePart,
-        time: timePart,
-    });
-    // return new fastn.recordInstanceClass({
-    //     dt: Number(BigInt(utcTime) * BigInt(1000000)),
-    // });
+        return new fastn.recordInstanceClass({
+            date: datePart,
+            time: timePart,
+        });
+    } else {
+        console.log("withTime = false");
+        const year = date.getUTCFullYear();
+        const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+        const day = date.getUTCDate().toString().padStart(2, "0");
+        const datePart = parseInt(`${year}${month}${day}`);
+        // fix this issue
+        const timePart = new Date(Utc(0, 0, 0, 0));
+        console.log(timePart);
+        console.log(debug_to_timestamp_millis(datePart, timePart));
+        return new fastn.recordInstanceClass({
+            date: datePart,
+            time: timePart,
+        });
+    }
 }
 
 function parseDateInput(input, baseDate = null) {
@@ -322,12 +330,11 @@ class DateInput extends HTMLElement {
 
     connectedCallback() {
         const data = window.ftd.component_data(this);
-        const date = Number(data.dt.get().toObject().dt);
-        const milliseconds = Math.floor(date / 1000000);
         this.data = data;
-        this.local_date = new Date(
-            milliseconds - new Date().getTimezoneOffset() * 60000
-        );
+        const dt = to_timestamp_millis(data.dt);
+        // const date = Number(data.dt.get().toObject().dt);
+        // const milliseconds = Math.floor(date / 1000000);
+        this.local_date = new Date(dt - new Date().getTimezoneOffset() * 60000);
         this.render();
         this.setupEventListeners();
     }
@@ -361,7 +368,8 @@ class DateInput extends HTMLElement {
         this.updateInputs();
         const formattedDate = formatDateToString(this.local_date);
         const recordInstance = this.data.dt.get();
-        recordInstance.set(convertToReturnFormat(this.local_date, false));
+        const return_value = convertToReturnFormat(this.local_date, false);
+        recordInstance.set(return_value);
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(
             new CustomEvent("change", {
