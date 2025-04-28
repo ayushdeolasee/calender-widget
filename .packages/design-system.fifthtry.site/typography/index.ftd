@@ -158,12 +158,14 @@ optional ds.gap margin:
 ftd.text-style list style:
 optional body body:
 boolean underline: false
+optional string id:
 
 -- ftd.column:
 spacing.fixed.px: 16
 align-content if { heading-medium.align == center }: center
 
 -- ftd.text: $heading-medium.text
+id if { heading-medium.id != NULL }: $heading-medium.id
 width: $heading-medium.width
 color: $heading-medium.color
 role: $ds.types.heading-medium

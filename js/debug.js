@@ -35,18 +35,25 @@ function to_timestamp_millis(dt) {
         date = dt.get().toObject().date;
         time = dt.get().toObject().time;
     }
-    // const { date, time } = dt.get().toObject();
+
+    // Parse date: YYYYMMDD
     const dateStr = date.toString();
     const year = parseInt(dateStr.slice(0, 4));
-    const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
+    const month = parseInt(dateStr.slice(4, 6)) - 1;
     const day = parseInt(dateStr.slice(6, 8));
 
-    // Parse time: HHMMSSmmmnnnnnnnnn (always 17 digits)
-    const timeStr = time.toString().padStart(17, "0");
-    const hour = parseInt(timeStr.slice(0, 2));
-    const minute = parseInt(timeStr.slice(2, 4));
-    const second = parseInt(timeStr.slice(4, 6));
-    const millisecond = parseInt(timeStr.slice(6, 9));
+    // Parse time: nanoseconds since midnight
+    const nanosSinceMidnight = BigInt(time);
+
+    // Calculate hours, minutes, seconds and milliseconds
+    const nanosPerSecond = 1_000_000_000n;
+    const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
+    const hour = Math.floor(totalSeconds / 3600);
+    const minute = Math.floor((totalSeconds % 3600) / 60);
+    const second = totalSeconds % 60;
+    const millisecond = Math.floor(
+        Number(nanosSinceMidnight % nanosPerSecond) / 1_000_000
+    );
 
     // Construct JS Date (ms precision)
     const dateObj = Date.UTC(
@@ -58,35 +65,34 @@ function to_timestamp_millis(dt) {
         second,
         millisecond
     );
-    return dateObj; // Number, ms since epoch
+    return dateObj;
 }
 
 function convertToReturnFormat(dt, withTime = true) {
-    let utcTime;
+    // Construct date part as YYYYMMDD
+    const year = dt.getUTCFullYear();
+    const month = (dt.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = dt.getUTCDate().toString().padStart(2, "0");
+    const datePart = parseInt(`${year}${month}${day}`);
+
+    // Compute nanoseconds since midnight
+    let nanosSinceMidnight = 0n;
     if (withTime) {
-        utcTime = new Date(
-            Date.UTC(
-                dt.getFullYear(),
-                dt.getMonth(),
-                dt.getDate(),
-                dt.getHours(),
-                dt.getMinutes(),
-                dt.getSeconds(),
-                dt.getMilliseconds()
-            )
-        );
-    } else {
-        utcTime = new Date(
-            Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), 0, 0, 0, 0)
-        );
+        const hours = dt.getUTCHours();
+        const minutes = dt.getUTCMinutes();
+        const seconds = dt.getUTCSeconds();
+        const milliseconds = dt.getUTCMilliseconds();
+        nanosSinceMidnight =
+            BigInt(hours) * 3600n * 1000000000n +
+            BigInt(minutes) * 60n * 1000000000n +
+            BigInt(seconds) * 1000000000n +
+            BigInt(milliseconds) * 1000000n;
     }
+
     return new fastn.recordInstanceClass({
-        date: date,
-        time: time,
+        date: datePart,
+        time: nanosSinceMidnight,
     });
-    // return new fastn.recordInstanceClass({
-    //     dt: Number(BigInt(utcTime) * BigInt(1000000)),
-    // });
 }
 
 function parseDateInput(input, baseDate = null) {
@@ -188,7 +194,7 @@ class Calender extends HTMLElement {
         this.updateInputs();
         const formattedDate = formatDateToString(this.local_date);
         console.log("formatted date:", formattedDate);
-        
+
         const recordInstance = this.data.dt.get();
 
         console.log("record instance:", recordInstance);

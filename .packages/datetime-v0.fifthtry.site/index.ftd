@@ -27,7 +27,7 @@ margin: $ds.spaces.vertical-gap.medium
 align-content: left
 	-- ds.copy-regular: A `datetime` record is a record that represents a date and time. The record has the following fields:
 	-- ds.copy-regular: - `date`: stores the date as an integer in the format YYYYMMDD (e.g., 20250418 for April 18, 2025)
-	-- ds.copy-regular: - `time`: stores the time as an integer in the format HHMMSSmmmnnnnnnnnn (e.g., 123008817000000000 for 12:30:08.817000000)
+	-- ds.copy-regular: - `time`: stores the time as an integer representing the total nanoseconds since midnight (e.g., 45008817000000000 for 12:30:08.817000000)
 	
 	-- ds.code:
 	lang: ftd
@@ -46,7 +46,7 @@ margin: $ds.spaces.vertical-gap.medium
 align-content: left
 	-- ds.copy-regular:
 	
-	Returns a `datetime` record with the current date and time in UTC. The date is stored as YYYYMMDD and the time as HHMMSSmmmnnnnnnnnn (to nanosecond precision, nanoseconds padded with zeros). Optional parameter `diff` returns the time from now `diff` minutes later.
+	Returns a `datetime` record with the current date and time in UTC. The date is stored as YYYYMMDD and the time as total nanoseconds since midnight (to nanosecond precision). Optional parameter `diff` returns the time from now `diff` minutes later.
 	-- ds.code:
 	lang: ftd
 	

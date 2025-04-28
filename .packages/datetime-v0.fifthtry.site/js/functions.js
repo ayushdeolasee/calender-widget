@@ -10,22 +10,20 @@
         const day = date.getUTCDate().toString().padStart(2, "0");
         const datePart = parseInt(`${year}${month}${day}`);
 
-        // Time part: HHMMSSmmmnnnnnnnnn (always 17 digits, zero-padded)
-        const hours = date.getUTCHours().toString().padStart(2, "0");
-        const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-        const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-        const milliseconds = date
-            .getUTCMilliseconds()
-            .toString()
-            .padStart(3, "0");
-        // JS Date does not provide nanosecond precision, so pad with zeros
-        const nanoseconds = "000000000";
-        const timeStr = `${hours}${minutes}${seconds}${milliseconds}${nanoseconds}`;
-        // Store as string to preserve leading zeros
+        // Time part: nanoseconds since midnight (like Rust's chrono NaiveTime)
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const seconds = date.getUTCSeconds();
+        const milliseconds = date.getUTCMilliseconds();
+
+        // Calculate total nanoseconds since midnight
+        const nanosSinceMidnight =
+            (hours * 3600 + minutes * 60 + seconds) * 1_000_000_000 +
+            milliseconds * 1_000_000;
 
         return new fastn.recordInstanceClass({
             date: datePart,
-            time: timeStr,
+            time: nanosSinceMidnight,
         });
     }
 
@@ -38,19 +36,26 @@
             date = dt.get().toObject().date;
             time = dt.get().toObject().time;
         }
+
         // Parse date: YYYYMMDD
         const dateStr = date.toString();
         const year = parseInt(dateStr.slice(0, 4));
         const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
         const day = parseInt(dateStr.slice(6, 8));
 
-        // Parse time: HHMMSSmmmnnnnnnnnn (always 17 digits)
-        const timeStr = time.toString().padStart(17, "0");
-        const hour = parseInt(timeStr.slice(0, 2));
-        const minute = parseInt(timeStr.slice(2, 4));
-        const second = parseInt(timeStr.slice(4, 6));
-        const millisecond = parseInt(timeStr.slice(6, 9));
-        const nanosecond = parseInt(timeStr.slice(9, 18));
+        // Parse time: nanoseconds since midnight
+        const nanosSinceMidnight = BigInt(time);
+
+        // Calculate hours, minutes, seconds and nanoseconds
+        const nanosPerSecond = 1_000_000_000n;
+        const nanosPerMinute = nanosPerSecond * 60n;
+        const nanosPerHour = nanosPerMinute * 60n;
+
+        const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
+        const hour = Math.floor(totalSeconds / 3600);
+        const minute = Math.floor((totalSeconds % 3600) / 60);
+        const second = totalSeconds % 60;
+        const nanosecond = Number(nanosSinceMidnight % nanosPerSecond);
 
         // Construct JS Date (ms precision)
         const dateObj = Date.UTC(
@@ -60,16 +65,17 @@
             hour,
             minute,
             second,
-            millisecond
+            Math.floor(nanosecond / 1_000_000)
         );
+
         // Convert to ns
-        const epochNs = BigInt(dateObj) * 1_000_000n + BigInt(nanosecond);
+        const epochNs =
+            BigInt(dateObj) * 1_000_000n + BigInt(nanosecond % 1_000_000n);
         return epochNs;
     }
 
     function to_timestamp_millis(dt) {
         let date, time;
-        console.log(dt);
         if (dt instanceof fastn.recordInstanceClass) {
             date = dt.toObject().date;
             time = dt.toObject().time;
@@ -77,21 +83,28 @@
             date = dt.get().toObject().date;
             time = dt.get().toObject().time;
         }
-        console.log("function.js date", date);
-        console.log("function.js time", time);
 
-        // const { date, time } = dt.get().toObject();
+        // Parse date: YYYYMMDD
         const dateStr = date.toString();
         const year = parseInt(dateStr.slice(0, 4));
         const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
         const day = parseInt(dateStr.slice(6, 8));
 
-        // Parse time: HHMMSSmmmnnnnnnnnn (always 17 digits)
-        const timeStr = time.toString().padStart(17, "0");
-        const hour = parseInt(timeStr.slice(0, 2));
-        const minute = parseInt(timeStr.slice(2, 4));
-        const second = parseInt(timeStr.slice(4, 6));
-        const millisecond = parseInt(timeStr.slice(6, 9));
+        // Parse time: nanoseconds since midnight
+        const nanosSinceMidnight = BigInt(time);
+
+        // Calculate hours, minutes, seconds and milliseconds
+        const nanosPerSecond = 1_000_000_000n;
+        const nanosPerMinute = nanosPerSecond * 60n;
+        const nanosPerHour = nanosPerMinute * 60n;
+
+        const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
+        const hour = Math.floor(totalSeconds / 3600);
+        const minute = Math.floor((totalSeconds % 3600) / 60);
+        const second = totalSeconds % 60;
+        const millisecond = Math.floor(
+            Number(nanosSinceMidnight % nanosPerSecond) / 1_000_000
+        );
 
         // Construct JS Date (ms precision)
         const dateObj = Date.UTC(
@@ -103,16 +116,49 @@
             second,
             millisecond
         );
-        console.log("function.js dateObj", dateObj);
+
         return dateObj; // Number, ms since epoch
     }
 
     function fmt(dt, ft) {
-        const i64 = Number(to_timestamp_nanos(dt));
-        const milliseconds = Math.floor(i64 / 1000000);
-        // Use JS Date's local time handling
-        const local_date = new Date(milliseconds);
+        let date, time;
+        if (dt instanceof fastn.recordInstanceClass) {
+            date = dt.toObject().date;
+            time = dt.toObject().time;
+        } else {
+            date = dt.get().toObject().date;
+            time = dt.get().toObject().time;
+        }
+
         const format = ft.replaceAll(`"`, "");
+
+        // Parse date: YYYYMMDD
+        const dateStr = date.toString();
+        const year = parseInt(dateStr.slice(0, 4));
+        const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
+        const day = parseInt(dateStr.slice(6, 8));
+
+        // Parse time: nanoseconds since midnight
+        const nanosSinceMidnight = BigInt(time);
+
+        // Calculate hours, minutes, seconds and nanoseconds
+        const nanosPerSecond = 1_000_000_000n;
+        const nanosPerMinute = nanosPerSecond * 60n;
+        const nanosPerHour = nanosPerMinute * 60n;
+
+        const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
+        const hour = Math.floor(totalSeconds / 3600);
+        const minute = Math.floor((totalSeconds % 3600) / 60);
+        const second = totalSeconds % 60;
+        const millisecond = Math.floor(
+            Number(nanosSinceMidnight % nanosPerSecond) / 1_000_000
+        );
+        const nanosecond = Number(nanosSinceMidnight % 1_000_000_000n);
+
+        // Construct a JS Date for locale handling (ms precision)
+        const local_date = new Date(
+            Date.UTC(year, month, day, hour, minute, second, millisecond)
+        );
 
         if (format == "datetime") {
             const weekdays = [
@@ -161,9 +207,7 @@
             hours = hours ? hours : 12; // Convert 0 to 12
 
             const minutes = local_date.getMinutes().toString().padStart(2, "0");
-
             const seconds = local_date.getSeconds().toString().padStart(2, "0");
-
             const ms = local_date.getMilliseconds().toString().padStart(3, "0");
 
             const formattedDate = `${weekday} ${dayWithSuffix} ${month} ${year} ${hours}:${minutes}:${seconds}:${ms} ${ampm}`;
@@ -219,13 +263,11 @@
             hours = hours ? hours : 12; // Convert 0 to 12
 
             const minutes = local_date.getMinutes().toString().padStart(2, "0");
-
             const seconds = local_date.getSeconds().toString().padStart(2, "0");
-
             const ms = local_date.getMilliseconds().toString().padStart(3, "0");
 
-            const formatedTime = `${hours}:${minutes}:${seconds}:${ms} ${ampm}`;
-            return formatedTime;
+            const formattedTime = `${hours}:${minutes}:${seconds}:${ms} ${ampm}`;
+            return formattedTime;
         } else {
             return "ft parameter not recognized, please select either: datetime, date or time";
         }
