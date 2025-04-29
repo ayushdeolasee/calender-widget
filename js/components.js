@@ -14,7 +14,7 @@ function formatDateForInput(date) {
 function formatTimeForInput(date) {
     // Format time as HH:MM for input value
     const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
+    es = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
 }
 
@@ -112,26 +112,7 @@ function debug_to_timestamp_millis(date, time) {
 function convertToReturnFormat(dt, withTime = true) {
     console.log(dt);
     let date = new Date(dt);
-    // let date;
-    // if (withTime) {
-    //     date = new Date(
-    //         Date.UTC(
-    //             dt.getFullYear(),
-    //             dt.getMonth(),
-    //             dt.getDate(),
-    //             dt.getHours(),
-    //             dt.getMinutes(),
-    //             dt.getSeconds(),
-    //             dt.getMilliseconds()
-    //         )
-    //     );
-    // } else {
-    //     date = new Date(
-    //         Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate(), 0, 0, 0, 0)
-    //     );
-    // }
 
-    // console.log("UTC Time:", utcTime);
     if (withTime == true) {
         const year = date.getUTCFullYear();
         const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -143,7 +124,6 @@ function convertToReturnFormat(dt, withTime = true) {
         const seconds = date.getUTCSeconds();
         const milliseconds = date.getUTCMilliseconds();
 
-        // calculate nanoseconds since midnight
         const nanosSinceMidnight =
             BigInt(hours) * 3600n * 1000000000n +
             BigInt(minutes) * 60n * 1000000000n +
@@ -159,17 +139,33 @@ function convertToReturnFormat(dt, withTime = true) {
         const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
         const day = date.getUTCDate().toString().padStart(2, "0");
         const datePart = parseInt(`${year}${month}${day}`);
-        // no time for date-only: nanoseconds since midnight is zero
-        const timePart = 0n;
+
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const seconds = date.getUTCSeconds();
+        const milliseconds = date.getUTCMilliseconds();
+
+        const nanosSinceMidnight =
+            Number(hours) * 3600 * 1000000000 +
+            Number(minutes) * 60 * 1000000000 +
+            Number(seconds) * 1000000000 +
+            Number(milliseconds) * 1000000n;
+
+        console.log("Nanos since midnight: ", nanosSinceMidnight);
+
+        const timePart = Number(date.getTime()) - nanosSinceMidnight;
+
+        console.log("timePart: ", timePart);
+        console.log("Combined:", debug_to_timestamp_millis(datePart, timePart));
+
         return new fastn.recordInstanceClass({
             date: datePart,
-            time: timePart,
+            time: 0,
         });
     }
 }
 
 function parseDateInput(input, baseDate = null) {
-    // input: 'YYYY-MM-DD', baseDate: Date or null
     const [year, month, day] = input.split("-").map(Number);
     let date = baseDate ? new Date(baseDate) : new Date();
     date.setFullYear(year);
@@ -179,7 +175,6 @@ function parseDateInput(input, baseDate = null) {
 }
 
 function parseTimeInput(input, baseDate = null) {
-    // input: 'HH:MM', baseDate: Date or null
     const [hours, minutes] = input.split(":").map(Number);
     let date = baseDate ? new Date(baseDate) : new Date();
     date.setHours(hours);
@@ -189,7 +184,6 @@ function parseTimeInput(input, baseDate = null) {
     return date;
 }
 
-// --- Classes ---
 class Calender extends HTMLElement {
     constructor() {
         super();
@@ -944,8 +938,11 @@ class DateRange extends HTMLElement {
 
         if (this._onChangeCallback)
             this._onChangeCallback({
-                start: formattedDate,
-                end: formatDateToString(this.end_date),
+                start: { value: formattedDate, rawDate: this.start_date },
+                end: {
+                    value: formatDateToString(this.end_date),
+                    rawDate: this.end_date,
+                },
             });
 
         this.dispatchEvent(
@@ -976,8 +973,11 @@ class DateRange extends HTMLElement {
 
         if (this._onChangeCallback)
             this._onChangeCallback({
-                start: formatDateToString(this.start_date),
-                end: formattedDate,
+                start: {
+                    value: formatDateToString(this.start_date),
+                    rawDate: this.start_date,
+                },
+                end: { value: formattedDate, rawDate: this.end_date },
             });
 
         this.dispatchEvent(
@@ -1148,8 +1148,8 @@ class TimeRange extends HTMLElement {
             });
     }
 
-    getTimeString(date) {
-        return formatTimeForInput(date);
+    getTimeString() {
+        return formatTimeForInput(this.start_date);
     }
 
     setStartDateTime(date) {
