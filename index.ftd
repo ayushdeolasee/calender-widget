@@ -1,14 +1,14 @@
 -- datetime.datetime current: $datetime.now()
 
--- date-widget:
+-- calender-widget:
 dt: $current
 
 -- ftd.integer: $current.date
 -- ftd.integer: $current.time
 
 -- datetime.datetime $debug:
-date: 20250423
-time: 19800000000000
+date: 20250430
+time: 25380000000000
 
 -- ftd.integer: $datetime.to-timestamp-millis(dt=*$debug)
 

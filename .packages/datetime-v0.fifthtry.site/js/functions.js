@@ -48,8 +48,6 @@
 
         // Calculate hours, minutes, seconds and nanoseconds
         const nanosPerSecond = 1_000_000_000n;
-        const nanosPerMinute = nanosPerSecond * 60n;
-        const nanosPerHour = nanosPerMinute * 60n;
 
         const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
         const hour = Math.floor(totalSeconds / 3600);
@@ -95,8 +93,6 @@
 
         // Calculate hours, minutes, seconds and milliseconds
         const nanosPerSecond = 1_000_000_000n;
-        const nanosPerMinute = nanosPerSecond * 60n;
-        const nanosPerHour = nanosPerMinute * 60n;
 
         const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
         const hour = Math.floor(totalSeconds / 3600);

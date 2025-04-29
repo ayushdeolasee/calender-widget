@@ -3,264 +3,177 @@ function isValidDate(date) {
     return date instanceof Date && !isNaN(date.getTime());
 }
 
-function formatDateForInput(date) {
-    // Format date as YYYY-MM-DD for input value
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-
-function formatTimeForInput(date) {
-    // Format time as HH:MM for input value
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-}
-
-function formatDateToString(date) {
-    if (!isValidDate(date)) {
-        console.warn("Invalid date detected, using current date instead");
-        return new Date().toISOString().replace(/[-:.]/g, "");
-    }
-    return date.toISOString().replace(/[-:.]/g, "");
-}
-
-function to_timestamp_millis(dt) {
-    let date, time;
-    if (dt instanceof fastn.recordInstanceClass) {
-        date = dt.toObject().date;
-        time = dt.toObject().time;
-    } else {
-        date = dt.get().toObject().date;
-        time = dt.get().toObject().time;
+// Unified DateTimeModel for handling date/time conversions
+class DateTimeModel {
+    constructor(fastnRecord = null) {
+        this._date = new Date();
+        if (fastnRecord) {
+            this.importFromFastn(fastnRecord);
+        }
     }
 
-    // Parse date: YYYYMMDD
-    const dateStr = date.toString();
-    const year = parseInt(dateStr.slice(0, 4));
-    const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
-    const day = parseInt(dateStr.slice(6, 8));
+    importFromFastn(record) {
+        const obj =
+            record instanceof fastn.recordInstanceClass
+                ? record.toObject()
+                : record.get().toObject();
+        const dateStr = obj.date.toString();
+        const year = parseInt(dateStr.slice(0, 4));
+        const month = parseInt(dateStr.slice(4, 6)) - 1;
+        const day = parseInt(dateStr.slice(6, 8));
+        const nanos = BigInt(obj.time);
+        const secs = Number(nanos / 1000000000n);
+        const hours = Math.floor(secs / 3600);
+        const minutes = Math.floor((secs % 3600) / 60);
+        const seconds = secs % 60;
+        const millis = Math.floor(Number(nanos % 1000000000n) / 1000000);
+        this._date = new Date(
+            Date.UTC(year, month, day, hours, minutes, seconds, millis)
+        );
+        return this;
+    }
 
-    // Parse time: nanoseconds since midnight
-    const nanosSinceMidnight = BigInt(time);
-
-    // Calculate hours, minutes, seconds and milliseconds
-    const nanosPerSecond = 1_000_000_000n;
-    const nanosPerMinute = nanosPerSecond * 60n;
-    const nanosPerHour = nanosPerMinute * 60n;
-
-    const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
-    const hour = Math.floor(totalSeconds / 3600);
-    const minute = Math.floor((totalSeconds % 3600) / 60);
-    const second = totalSeconds % 60;
-    const millisecond = Math.floor(
-        Number(nanosSinceMidnight % nanosPerSecond) / 1_000_000
-    );
-
-    // Construct JS Date (ms precision)
-    const dateObj = Date.UTC(
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        second,
-        millisecond
-    );
-
-    return dateObj; // Number, ms since epoch
-}
-
-function debug_to_timestamp_millis(date, time) {
-    // Parse date: YYYYMMDD
-    const dateStr = date.toString();
-    const year = parseInt(dateStr.slice(0, 4));
-    const month = parseInt(dateStr.slice(4, 6)) - 1; // JS months are 0-based
-    const day = parseInt(dateStr.slice(6, 8));
-
-    // Parse time: nanoseconds since midnight
-    const nanosSinceMidnight = BigInt(time);
-
-    // Calculate hours, minutes, seconds and milliseconds
-    const nanosPerSecond = 1_000_000_000n;
-    const nanosPerMinute = nanosPerSecond * 60n;
-    const nanosPerHour = nanosPerMinute * 60n;
-
-    const totalSeconds = Number(nanosSinceMidnight / nanosPerSecond);
-    const hour = Math.floor(totalSeconds / 3600);
-    const minute = Math.floor((totalSeconds % 3600) / 60);
-    const second = totalSeconds % 60;
-    const millisecond = Math.floor(
-        Number(nanosSinceMidnight % nanosPerSecond) / 1_000_000
-    );
-
-    // Construct JS Date (ms precision)
-    const dateObj = Date.UTC(
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        second,
-        millisecond
-    );
-
-    return dateObj; // Number, ms since epoch
-}
-
-function convertToReturnFormat(dt, withTime = true) {
-    let date = new Date(dt);
-
-    if (withTime == true) {
+    exportToFastn(withTime = true) {
+        const date = this._date;
         const year = date.getUTCFullYear();
         const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
         const day = date.getUTCDate().toString().padStart(2, "0");
         const datePart = parseInt(`${year}${month}${day}`);
-
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const seconds = date.getUTCSeconds();
-        const milliseconds = date.getUTCMilliseconds();
-
-        const nanosSinceMidnight =
-            BigInt(hours) * 3600n * 1000000000n +
-            BigInt(minutes) * 60n * 1000000000n +
-            BigInt(seconds) * 1000000000n +
-            BigInt(milliseconds) * 1000000n;
-
+        let timePart = 0n;
+        if (withTime) {
+            const hours = date.getUTCHours();
+            const minutes = date.getUTCMinutes();
+            const seconds = date.getUTCSeconds();
+            const millis = date.getUTCMilliseconds();
+            timePart =
+                BigInt(hours) * 3600n * 1000000000n +
+                BigInt(minutes) * 60n * 1000000000n +
+                BigInt(seconds) * 1000000000n +
+                BigInt(millis) * 1000000n;
+        }
         return new fastn.recordInstanceClass({
             date: datePart,
-            time: nanosSinceMidnight,
+            time: timePart,
         });
-    } else {
-        const year = date.getUTCFullYear();
-        const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = date.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
-        const timePart = date.getTimezoneOffset() * 6000000000;
-        console.log("timePart:", timePart); 
-        console.log("Combined:", debug_to_timestamp_millis(datePart, timePart));
+    }
 
-        return new fastn.recordInstanceClass({
-            date: datePart,
-            time: 0,
-        });
+    formatForDateInput() {
+        const date = this._date;
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
+
+    formatForTimeInput() {
+        const date = this._date;
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${hours}:${minutes}`;
+    }
+
+    formatToString() {
+        if (!isValidDate(this._date)) {
+            console.warn("Invalid date detected, using current date instead");
+            return new Date().toISOString().replace(/[-:.]/g, "");
+        }
+        return this._date.toISOString().replace(/[-:.]/g, "");
+    }
+
+    setFromDateInput(dateString) {
+        const [year, month, day] = dateString.split("-").map(Number);
+        const d = new Date(this._date);
+        d.setFullYear(year);
+        d.setMonth(month - 1);
+        d.setDate(day);
+        this._date = d;
+        return this;
+    }
+
+    setFromTimeInput(timeString) {
+        const [hours, minutes] = timeString.split(":").map(Number);
+        const d = new Date(this._date);
+        d.setHours(hours);
+        d.setMinutes(minutes);
+        d.setSeconds(0);
+        d.setMilliseconds(0);
+        this._date = d;
+        return this;
+    }
+
+    getDate() {
+        return new Date(this._date);
+    }
+
+    setDate(date) {
+        this._date = new Date(date);
+        return this;
+    }
+
+    // Static helper to convert directly from FASTN record to milliseconds timestamp
+    static toTimestampMillis(dt) {
+        const model = new DateTimeModel(dt);
+        return model.getDate().getTime();
     }
 }
 
-function parseDateInput(input, baseDate = null) {
-    const [year, month, day] = input.split("-").map(Number);
-    let date = baseDate ? new Date(baseDate) : new Date();
-    date.setFullYear(year);
-    date.setMonth(month - 1);
-    date.setDate(day);
-    return date;
-}
-
-function parseTimeInput(input, baseDate = null) {
-    const [hours, minutes] = input.split(":").map(Number);
-    let date = baseDate ? new Date(baseDate) : new Date();
-    date.setHours(hours);
-    date.setMinutes(minutes);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-    return date;
-}
-
-class Calender extends HTMLElement {
+// Base component class to reduce duplication
+class BaseTimeComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
-        this.local_date = null;
+        this.model = new DateTimeModel();
         this._onChangeCallback = null;
     }
 
     connectedCallback() {
         const data = window.ftd.component_data(this);
         this.data = data;
-        const dt = to_timestamp_millis(data.dt);
-        this.local_date = new Date(dt - new Date().getTimezoneOffset());
+        if (data.dt) {
+            this.model.importFromFastn(data.dt);
+        }
         this.render();
         this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        this.shadowRoot
-            .querySelector(".date-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(
-                        selectedDate,
-                        this.local_date
-                    );
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling date input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.local_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
-    }
-
-    getDateString() {
-        return formatDateForInput(this.local_date);
-    }
-
-    getTimeString() {
-        return formatTimeForInput(this.local_date);
-    }
-
-    setDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid date detected, keeping previous value");
-            return;
+        if (this.setupSpecificEventListeners) {
+            this.setupSpecificEventListeners();
         }
-        this.local_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.local_date);
-        this.data.dt.get().set(convertToReturnFormat(this.local_date, true));
-        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: { value: formattedDate, rawDate: this.local_date },
-                bubbles: true,
-            })
-        );
-    }
-
-    updateInputs() {
-        const dateInput = this.shadowRoot.querySelector(".date-input");
-        const timeInput = this.shadowRoot.querySelector(".time-input");
-        if (dateInput) dateInput.value = this.getDateString();
-        if (timeInput) timeInput.value = this.getTimeString();
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
+        this.shadowRoot.innerHTML = this.renderTemplate();
+    }
+
+    setupEventListeners() {
+        // Common listeners if any
+    }
+
+    updateFastnAndNotify(withTime = true) {
+        if (this.data.dt) {
+            const record = this.data.dt.get();
+            record.set(this.model.exportToFastn(withTime));
+            this.dispatchEvent(
+                new CustomEvent("change", {
+                    detail: {
+                        value: this.model.formatForDateInput(),
+                        rawDate: this.model.getDate(),
+                    },
+                    bubbles: true,
+                })
+            );
+            if (this._onChangeCallback) {
+                this._onChangeCallback(this.model.formatForDateInput());
+            }
+        }
+    }
+
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+}
+
+class Calender extends BaseTimeComponent {
+    renderTemplate() {
+        return `
             <style>
                 :host {
                     display: inline-block;
@@ -295,94 +208,55 @@ class Calender extends HTMLElement {
             <div class="container">
                 <div class="input-group">
                     <label>Date</label>
-                    <input type="date" class="date-input" value="${this.getDateString()}">
+                    <input type="date" class="date-input" value="${this.model.formatForDateInput()}">
                 </div>
                 <div class="input-group">
                     <label>Time</label>
-                    <input type="time" class="time-input" value="${this.getTimeString()}">
+                    <input type="time" class="time-input" value="${this.model.formatForTimeInput()}">
                 </div>
             </div>
         `;
     }
 
-    get value() {
-        return formatDateToString(this.local_date);
-    }
-
-    set value(newValue) {
-        this.local_date = new Date(newValue);
-        this.updateInputs();
-    }
-
-    onChange(callback) {
-        this._onChangeCallback = callback;
-    }
-}
-
-class DateInput extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.local_date = null;
-        this._onChangeCallback = null;
-    }
-
-    connectedCallback() {
-        const data = window.ftd.component_data(this);
-        this.data = data;
-        const dt = to_timestamp_millis(data.dt);
-        this.local_date = new Date(dt - new Date().getTimezoneOffset());
-        this.render();
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
+    setupSpecificEventListeners() {
         this.shadowRoot
             .querySelector(".date-input")
             .addEventListener("change", (e) => {
                 try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(selectedDate);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setDateTime(newDate);
+                    this.model.setFromDateInput(e.target.value);
+                    this.updateFastnAndNotify(true); // true = include time
                 } catch (error) {
                     console.error("Error handling date input:", error);
-                    this.updateInputs();
+                    this.render(); // Reset to valid state
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.model.setFromTimeInput(e.target.value);
+                    this.updateFastnAndNotify(true); // true = include time
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.render(); // Reset to valid state
                 }
             });
     }
 
-    getDateString() {
-        return formatDateForInput(this.local_date);
+    get value() {
+        return this.model.formatToString();
     }
 
-    setDateTime(date) {
-        this.local_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.local_date);
-        const recordInstance = this.data.dt.get();
-        const return_value = convertToReturnFormat(this.local_date, false);
-        recordInstance.set(return_value);
-        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: { value: formattedDate, rawDate: this.local_date },
-                bubbles: true,
-            })
-        );
+    set value(newValue) {
+        this.model.setDate(new Date(newValue));
+        this.render();
     }
+}
 
-    updateInputs() {
-        const dateInput = this.shadowRoot.querySelector(".date-input");
-        if (dateInput) dateInput.value = this.getDateString();
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = `
+class DateInput extends BaseTimeComponent {
+    renderTemplate() {
+        return `
             <style>
                 :host {
                     display: inline-block;
@@ -417,92 +291,39 @@ class DateInput extends HTMLElement {
             <div class="container">
                 <div class="input-group">
                     <label>Date</label>
-                    <input type="date" class="date-input" value="${this.getDateString()}">
+                    <input type="date" class="date-input" value="${this.model.formatForDateInput()}">
                 </div>
             </div>
         `;
     }
 
-    get value() {
-        return formatDateToString(this.local_date);
-    }
-
-    set value(newValue) {
-        this.local_date = new Date(newValue);
-        this.updateInputs();
-    }
-
-    onChange(callback) {
-        this._onChangeCallback = callback;
-    }
-}
-
-class TimeInput extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.local_date = null;
-        this._onChangeCallback = null;
-    }
-
-    connectedCallback() {
-        const data = window.ftd.component_data(this);
-        const date = Number(data.dt.get().toObject().dt);
-        const milliseconds = Math.floor(date / 1000000);
-        this.data = data;
-        this.local_date = new Date(
-            milliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.render();
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
+    setupSpecificEventListeners() {
         this.shadowRoot
-            .querySelector(".time-input")
+            .querySelector(".date-input")
             .addEventListener("change", (e) => {
                 try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.local_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setDateTime(newDate);
+                    this.model.setFromDateInput(e.target.value);
+                    this.updateFastnAndNotify(false); // false = date only (no time)
                 } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
+                    console.error("Error handling date input:", error);
+                    this.render(); // Reset to valid state
                 }
             });
     }
 
-    getTimeString() {
-        return formatTimeForInput(this.local_date);
+    get value() {
+        return this.model.formatToString();
     }
 
-    setDateTime(date) {
-        this.local_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.local_date);
-        const recordInstance = this.data.dt.get();
-        recordInstance.set(convertToReturnFormat(this.local_date, true));
-        if (this._onChangeCallback) this._onChangeCallback(formattedDate);
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: { value: formattedDate, rawDate: this.local_date },
-                bubbles: true,
-            })
-        );
+    set value(newValue) {
+        this.model.setDate(new Date(newValue));
+        this.render();
     }
+}
 
-    updateInputs() {
-        const timeInput = this.shadowRoot.querySelector(".time-input");
-        if (timeInput) timeInput.value = this.getTimeString();
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = `
+class TimeInput extends BaseTimeComponent {
+    renderTemplate() {
+        return `
             <style>
                 :host {
                     display: inline-block;
@@ -537,299 +358,108 @@ class TimeInput extends HTMLElement {
             <div class="container">
                 <div class="input-group">
                     <label>Time</label>
-                    <input type="time" class="time-input" value="${this.getTimeString()}">
+                    <input type="time" class="time-input" value="${this.model.formatForTimeInput()}">
                 </div>
             </div>
         `;
     }
 
+    setupSpecificEventListeners() {
+        this.shadowRoot
+            .querySelector(".time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.model.setFromTimeInput(e.target.value);
+                    this.updateFastnAndNotify(true); // true = include time
+                } catch (error) {
+                    console.error("Error handling time input:", error);
+                    this.render(); // Reset to valid state
+                }
+            });
+    }
+
     get value() {
-        return formatDateToString(this.local_date);
+        return this.model.formatToString();
     }
 
     set value(newValue) {
-        this.local_date = new Date(newValue);
-        this.updateInputs();
-    }
-
-    onChange(callback) {
-        this._onChangeCallback = callback;
+        this.model.setDate(new Date(newValue));
+        this.render();
     }
 }
 
-class CalenderRange extends HTMLElement {
+// RangeBaseComponent for handling date/time ranges
+class RangeBaseComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
-        this.start_date = null;
-        this.end_date = null;
+        this.startModel = new DateTimeModel();
+        this.endModel = new DateTimeModel();
         this._onChangeCallback = null;
     }
 
     connectedCallback() {
         const data = window.ftd.component_data(this);
-        const startDate = Number(data.start_dt.get().toObject().dt);
-        const endDate = Number(data.end_dt.get().toObject().dt);
-        const startMilliseconds = Math.floor(startDate / 1000000);
-        const endMilliseconds = Math.floor(endDate / 1000000);
-
         this.data = data;
-        this.start_date = new Date(
-            startMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.end_date = new Date(
-            endMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
+
+        if (data.start_dt && data.end_dt) {
+            this.startModel.importFromFastn(data.start_dt);
+            this.endModel.importFromFastn(data.end_dt);
+        }
+
         this.render();
         this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        this.shadowRoot
-            .querySelector(".start-date-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(
-                        selectedDate,
-                        this.start_date
-                    );
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setStartDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling date input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".end-date-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(selectedDate, this.end_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setEndDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling date input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".start-time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.start_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setStartDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".end-time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.end_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setEndDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
-    }
-
-    getDateString(date) {
-        return formatDateForInput(date);
-    }
-
-    getTimeString(date) {
-        return formatTimeForInput(date);
-    }
-
-    setStartDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid start date detected, keeping previous value");
-            return;
+        if (this.setupSpecificEventListeners) {
+            this.setupSpecificEventListeners();
         }
-
-        this.start_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.start_date);
-        const recordInstance = this.data.start_dt.get();
-        recordInstance.set(convertToReturnFormat(this.start_date, true));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: formattedDate,
-                end: formatDateToString(this.end_date),
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: { value: formattedDate, rawDate: this.start_date },
-                    end: {
-                        value: formatDateToString(this.end_date),
-                        rawDate: this.end_date,
-                    },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    setEndDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid end date detected, keeping previous value");
-            return;
-        }
-
-        this.end_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.end_date);
-        const recordInstance = this.data.end_dt.get();
-        recordInstance.set(convertToReturnFormat(this.end_date, true));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: formatDateToString(this.start_date),
-                end: formattedDate,
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: {
-                        value: formatDateToString(this.start_date),
-                        rawDate: this.start_date,
-                    },
-                    end: { value: formattedDate, rawDate: this.end_date },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    updateInputs() {
-        const startDateInput =
-            this.shadowRoot.querySelector(".start-date-input");
-        const endDateInput = this.shadowRoot.querySelector(".end-date-input");
-        const startTimeInput =
-            this.shadowRoot.querySelector(".start-time-input");
-        const endTimeInput = this.shadowRoot.querySelector(".end-time-input");
-
-        if (startDateInput)
-            startDateInput.value = this.getDateString(this.start_date);
-        if (endDateInput)
-            endDateInput.value = this.getDateString(this.end_date);
-        if (startTimeInput)
-            startTimeInput.value = this.getTimeString(this.start_date);
-        if (endTimeInput)
-            endTimeInput.value = this.getTimeString(this.end_date);
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
-            <style>
-                :host {
-                    display: inline-block;
-                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                }
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    padding: 10px;
-                    border-radius: 8px;
-                    background-color: #f5f5f5;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                }
-                .range-group {
-                    display: flex;
-                    gap: 20px;
-                    margin-bottom: 10px;
-                }
-                .date-time-group {
-                    flex: 1;
-                }
-                input {
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 16px;
-                }
-                label {
-                    display: block;
-                    margin-bottom: 4px;
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #333;
-                }
-                .input-group {
-                    margin-bottom: 8px;
-                }
-            </style>
-            <div class="container">
-                <div class="range-group">
-                    <div class="date-time-group">
-                        <label>Start Date</label>
-                        <input type="date" class="start-date-input" value="${this.getDateString(
-                            this.start_date
-                        )}">
-                        <label>Start Time</label>
-                        <input type="time" class="start-time-input" value="${this.getTimeString(
-                            this.start_date
-                        )}">
-                    </div>
-                    <div class="date-time-group">
-                        <label>End Date</label>
-                        <input type="date" class="end-date-input" value="${this.getDateString(
-                            this.end_date
-                        )}">
-                        <label>End Time</label>
-                        <input type="time" class="end-time-input" value="${this.getTimeString(
-                            this.end_date
-                        )}">
-                    </div>
-                </div>
-            </div>
-        `;
+        this.shadowRoot.innerHTML = this.renderTemplate();
     }
 
-    get value() {
-        return {
-            start: formatDateToString(this.start_date),
-            end: formatDateToString(this.end_date),
+    setupEventListeners() {
+        // Common event listeners if any
+    }
+
+    updateStartFastnAndNotify(withTime = true) {
+        if (this.data.start_dt) {
+            const record = this.data.start_dt.get();
+            record.set(this.startModel.exportToFastn(withTime));
+            this.dispatchRangeChangeEvent();
+        }
+    }
+
+    updateEndFastnAndNotify(withTime = true) {
+        if (this.data.end_dt) {
+            const record = this.data.end_dt.get();
+            record.set(this.endModel.exportToFastn(withTime));
+            this.dispatchRangeChangeEvent();
+        }
+    }
+
+    dispatchRangeChangeEvent() {
+        const detail = {
+            start: {
+                value: this.startModel.formatToString(),
+                rawDate: this.startModel.getDate(),
+            },
+            end: {
+                value: this.endModel.formatToString(),
+                rawDate: this.endModel.getDate(),
+            },
         };
-    }
 
-    set value(newValue) {
-        this.start_date = new Date(newValue.start);
-        this.end_date = new Date(newValue.end);
-        this.updateInputs();
+        this.dispatchEvent(
+            new CustomEvent("change", {
+                detail: detail,
+                bubbles: true,
+            })
+        );
+
+        if (this._onChangeCallback) {
+            this._onChangeCallback(detail);
+        }
     }
 
     onChange(callback) {
@@ -837,158 +467,9 @@ class CalenderRange extends HTMLElement {
     }
 }
 
-class DateRange extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.start_date = null;
-        this.end_date = null;
-        this._onChangeCallback = null;
-    }
-
-    connectedCallback() {
-        const data = window.ftd.component_data(this);
-        const startDate = Number(data.start_dt.get().toObject().dt);
-        const endDate = Number(data.end_dt.get().toObject().dt);
-        const startMilliseconds = Math.floor(startDate / 1000000);
-        const endMilliseconds = Math.floor(endDate / 1000000);
-
-        this.data = data;
-        this.start_date = new Date(
-            startMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.end_date = new Date(
-            endMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.render();
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        this.shadowRoot
-            .querySelector(".start-date-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(selectedDate);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setStartDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling date input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".end-date-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const selectedDate = e.target.value;
-                    const newDate = parseDateInput(selectedDate);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid date input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setEndDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling date input:", error);
-                    this.updateInputs();
-                }
-            });
-    }
-
-    getDateString(date) {
-        return formatDateForInput(date);
-    }
-
-    setStartDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid start date detected, keeping previous value");
-            return;
-        }
-
-        this.start_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.start_date);
-        const recordInstance = this.data.start_dt.get();
-        recordInstance.set(convertToReturnFormat(this.start_date, false));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: { value: formattedDate, rawDate: this.start_date },
-                end: {
-                    value: formatDateToString(this.end_date),
-                    rawDate: this.end_date,
-                },
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: { value: formattedDate, rawDate: this.start_date },
-                    end: {
-                        value: formatDateToString(this.end_date),
-                        rawDate: this.end_date,
-                    },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    setEndDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid end date detected, keeping previous value");
-            return;
-        }
-
-        this.end_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.end_date);
-        const recordInstance = this.data.end_dt.get();
-        recordInstance.set(convertToReturnFormat(this.end_date, false));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: {
-                    value: formatDateToString(this.start_date),
-                    rawDate: this.start_date,
-                },
-                end: { value: formattedDate, rawDate: this.end_date },
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: {
-                        value: formatDateToString(this.start_date),
-                        rawDate: this.start_date,
-                    },
-                    end: { value: formattedDate, rawDate: this.end_date },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    updateInputs() {
-        const startDateInput =
-            this.shadowRoot.querySelector(".start-date-input");
-        const endDateInput = this.shadowRoot.querySelector(".end-date-input");
-
-        if (startDateInput)
-            startDateInput.value = this.getDateString(this.start_date);
-        if (endDateInput)
-            endDateInput.value = this.getDateString(this.end_date);
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = `
+class DateRange extends RangeBaseComponent {
+    renderTemplate() {
+        return `
             <style>
                 :host {
                     display: inline-block;
@@ -1032,185 +513,60 @@ class DateRange extends HTMLElement {
                 <div class="range-group">
                     <div class="date-group">
                         <label>Start Date</label>
-                        <input type="date" class="start-date-input" value="${this.getDateString(
-                            this.start_date
-                        )}">
+                        <input type="date" class="start-date-input" value="${this.startModel.formatForDateInput()}">
                     </div>
                     <div class="date-group">
                         <label>End Date</label>
-                        <input type="date" class="end-date-input" value="${this.getDateString(
-                            this.end_date
-                        )}">
+                        <input type="date" class="end-date-input" value="${this.endModel.formatForDateInput()}">
                     </div>
                 </div>
             </div>
         `;
     }
 
+    setupSpecificEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.startModel.setFromDateInput(e.target.value);
+                    this.updateStartFastnAndNotify(false); // false = date only (no time)
+                } catch (error) {
+                    console.error("Error handling start date input:", error);
+                    this.render(); // Reset to valid state
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.endModel.setFromDateInput(e.target.value);
+                    this.updateEndFastnAndNotify(false); // false = date only (no time)
+                } catch (error) {
+                    console.error("Error handling end date input:", error);
+                    this.render(); // Reset to valid state
+                }
+            });
+    }
+
     get value() {
         return {
-            start: formatDateToString(this.start_date),
-            end: formatDateToString(this.end_date),
+            start: this.startModel.formatToString(),
+            end: this.endModel.formatToString(),
         };
     }
 
     set value(newValue) {
-        this.start_date = new Date(newValue.start);
-        this.end_date = new Date(newValue.end);
-        this.updateInputs();
-    }
-
-    onChange(callback) {
-        this._onChangeCallback = callback;
+        if (newValue.start) this.startModel.setDate(new Date(newValue.start));
+        if (newValue.end) this.endModel.setDate(new Date(newValue.end));
+        this.render();
     }
 }
 
-class TimeRange extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.start_date = null;
-        this.end_date = null;
-        this._onChangeCallback = null;
-    }
-
-    connectedCallback() {
-        const data = window.ftd.component_data(this);
-        const startDate = Number(data.start_dt.get().toObject().dt);
-        const endDate = Number(data.end_dt.get().toObject().dt);
-        const startMilliseconds = Math.floor(startDate / 1000000);
-        const endMilliseconds = Math.floor(endDate / 1000000);
-
-        this.data = data;
-        this.start_date = new Date(
-            startMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.end_date = new Date(
-            endMilliseconds - new Date().getTimezoneOffset() * 60000
-        );
-        this.render();
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        this.shadowRoot
-            .querySelector(".start-time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.start_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setStartDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
-
-        this.shadowRoot
-            .querySelector(".end-time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.end_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setEndDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
-    }
-
-    getTimeString() {
-        return formatTimeForInput(this.start_date);
-    }
-
-    setStartDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid start date detected, keeping previous value");
-            return;
-        }
-
-        this.start_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.start_date);
-        const recordInstance = this.data.start_dt.get();
-        recordInstance.set(convertToReturnFormat(this.start_date, true));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: formattedDate,
-                end: formatDateToString(this.end_date),
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: { value: formattedDate, rawDate: this.start_date },
-                    end: {
-                        value: formatDateToString(this.end_date),
-                        rawDate: this.end_date,
-                    },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    setEndDateTime(date) {
-        if (!isValidDate(date)) {
-            console.warn("Invalid end date detected, keeping previous value");
-            return;
-        }
-
-        this.end_date = date;
-        this.updateInputs();
-        const formattedDate = formatDateToString(this.end_date);
-        const recordInstance = this.data.end_dt.get();
-        recordInstance.set(convertToReturnFormat(this.end_date, true));
-
-        if (this._onChangeCallback)
-            this._onChangeCallback({
-                start: formatDateToString(this.start_date),
-                end: formattedDate,
-            });
-
-        this.dispatchEvent(
-            new CustomEvent("change", {
-                detail: {
-                    start: {
-                        value: formatDateToString(this.start_date),
-                        rawDate: this.start_date,
-                    },
-                    end: { value: formattedDate, rawDate: this.end_date },
-                },
-                bubbles: true,
-            })
-        );
-    }
-
-    updateInputs() {
-        const startTimeInput =
-            this.shadowRoot.querySelector(".start-time-input");
-        const endTimeInput = this.shadowRoot.querySelector(".end-time-input");
-
-        if (startTimeInput)
-            startTimeInput.value = this.getTimeString(this.start_date);
-        if (endTimeInput)
-            endTimeInput.value = this.getTimeString(this.end_date);
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = `
+class TimeRange extends RangeBaseComponent {
+    renderTemplate() {
+        return `
             <style>
                 :host {
                     display: inline-block;
@@ -1254,42 +610,195 @@ class TimeRange extends HTMLElement {
                 <div class="range-group">
                     <div class="time-group">
                         <label>Start Time</label>
-                        <input type="time" class="start-time-input" value="${this.getTimeString(
-                            this.start_date
-                        )}">
+                        <input type="time" class="start-time-input" value="${this.startModel.formatForTimeInput()}">
                     </div>
                     <div class="time-group">
                         <label>End Time</label>
-                        <input type="time" class="end-time-input" value="${this.getTimeString(
-                            this.end_date
-                        )}">
+                        <input type="time" class="end-time-input" value="${this.endModel.formatForTimeInput()}">
                     </div>
                 </div>
             </div>
         `;
     }
 
+    setupSpecificEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.startModel.setFromTimeInput(e.target.value);
+                    this.updateStartFastnAndNotify(true); // true = include time
+                } catch (error) {
+                    console.error("Error handling start time input:", error);
+                    this.render(); // Reset to valid state
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.endModel.setFromTimeInput(e.target.value);
+                    this.updateEndFastnAndNotify(true); // true = include time
+                } catch (error) {
+                    console.error("Error handling end time input:", error);
+                    this.render(); // Reset to valid state
+                }
+            });
+    }
+
     get value() {
         return {
-            start: formatDateToString(this.start_date),
-            end: formatDateToString(this.end_date),
+            start: this.startModel.formatToString(),
+            end: this.endModel.formatToString(),
         };
     }
 
     set value(newValue) {
-        this.start_date = new Date(newValue.start);
-        this.end_date = new Date(newValue.end);
-        this.updateInputs();
-    }
-
-    onChange(callback) {
-        this._onChangeCallback = callback;
+        if (newValue.start) this.startModel.setDate(new Date(newValue.start));
+        if (newValue.end) this.endModel.setDate(new Date(newValue.end));
+        this.render();
     }
 }
 
+class CalenderRange extends RangeBaseComponent {
+    renderTemplate() {
+        return `
+            <style>
+                :host {
+                    display: inline-block;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                }
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f5f5f5;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                .range-group {
+                    display: flex;
+                    gap: 20px;
+                    margin-bottom: 10px;
+                }
+                .datetime-group {
+                    flex: 1;
+                }
+                input {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #333;
+                }
+                .input-group {
+                    margin-bottom: 8px;
+                }
+            </style>
+            <div class="container">
+                <div class="range-group">
+                    <div class="datetime-group">
+                        <div class="input-group">
+                            <label>Start Date</label>
+                            <input type="date" class="start-date-input" value="${this.startModel.formatForDateInput()}">
+                        </div>
+                        <div class="input-group">
+                            <label>Start Time</label>
+                            <input type="time" class="start-time-input" value="${this.startModel.formatForTimeInput()}">
+                        </div>
+                    </div>
+                    <div class="datetime-group">
+                        <div class="input-group">
+                            <label>End Date</label>
+                            <input type="date" class="end-date-input" value="${this.endModel.formatForDateInput()}">
+                        </div>
+                        <div class="input-group">
+                            <label>End Time</label>
+                            <input type="time" class="end-time-input" value="${this.endModel.formatForTimeInput()}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    setupSpecificEventListeners() {
+        this.shadowRoot
+            .querySelector(".start-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.startModel.setFromDateInput(e.target.value);
+                    this.updateStartFastnAndNotify(true);
+                } catch (error) {
+                    console.error("Error handling start date input:", error);
+                    this.render();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".start-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.startModel.setFromTimeInput(e.target.value);
+                    this.updateStartFastnAndNotify(true);
+                } catch (error) {
+                    console.error("Error handling start time input:", error);
+                    this.render();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-date-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.endModel.setFromDateInput(e.target.value);
+                    this.updateEndFastnAndNotify(true);
+                } catch (error) {
+                    console.error("Error handling end date input:", error);
+                    this.render();
+                }
+            });
+
+        this.shadowRoot
+            .querySelector(".end-time-input")
+            .addEventListener("change", (e) => {
+                try {
+                    this.endModel.setFromTimeInput(e.target.value);
+                    this.updateEndFastnAndNotify(true);
+                } catch (error) {
+                    console.error("Error handling end time input:", error);
+                    this.render();
+                }
+            });
+    }
+
+    get value() {
+        return {
+            start: this.startModel.formatToString(),
+            end: this.endModel.formatToString(),
+        };
+    }
+
+    set value(newValue) {
+        if (newValue.start) this.startModel.setDate(new Date(newValue.start));
+        if (newValue.end) this.endModel.setDate(new Date(newValue.end));
+        this.render();
+    }
+}
+
+// Define custom elements
 customElements.define("calender-widget", Calender);
 customElements.define("date-widget", DateInput);
 customElements.define("time-widget", TimeInput);
-customElements.define("calender-range", CalenderRange);
 customElements.define("date-range", DateRange);
 customElements.define("time-range", TimeRange);
+customElements.define("calender-range", CalenderRange);
