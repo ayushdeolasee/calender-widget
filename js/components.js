@@ -14,7 +14,7 @@ function formatDateForInput(date) {
 function formatTimeForInput(date) {
     // Format time as HH:MM for input value
     const hours = String(date.getHours()).padStart(2, "0");
-    es = String(date.getMinutes()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
 }
 
@@ -110,7 +110,6 @@ function debug_to_timestamp_millis(date, time) {
 }
 
 function convertToReturnFormat(dt, withTime = true) {
-    console.log(dt);
     let date = new Date(dt);
 
     if (withTime == true) {
@@ -139,23 +138,8 @@ function convertToReturnFormat(dt, withTime = true) {
         const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
         const day = date.getUTCDate().toString().padStart(2, "0");
         const datePart = parseInt(`${year}${month}${day}`);
-
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const seconds = date.getUTCSeconds();
-        const milliseconds = date.getUTCMilliseconds();
-
-        const nanosSinceMidnight =
-            Number(hours) * 3600 * 1000000000 +
-            Number(minutes) * 60 * 1000000000 +
-            Number(seconds) * 1000000000 +
-            Number(milliseconds) * 1000000n;
-
-        console.log("Nanos since midnight: ", nanosSinceMidnight);
-
-        const timePart = Number(date.getTime()) - nanosSinceMidnight;
-
-        console.log("timePart: ", timePart);
+        const timePart = date.getTimezoneOffset() * 6000000000;
+        console.log("timePart:", timePart); 
         console.log("Combined:", debug_to_timestamp_millis(datePart, timePart));
 
         return new fastn.recordInstanceClass({
@@ -347,9 +331,7 @@ class DateInput extends HTMLElement {
         const data = window.ftd.component_data(this);
         this.data = data;
         const dt = to_timestamp_millis(data.dt);
-        // const date = Number(data.dt.get().toObject().dt);
-        // const milliseconds = Math.floor(date / 1000000);
-        this.local_date = new Date(dt - new Date().getTimezoneOffset() * 60000);
+        this.local_date = new Date(dt - new Date().getTimezoneOffset());
         this.render();
         this.setupEventListeners();
     }

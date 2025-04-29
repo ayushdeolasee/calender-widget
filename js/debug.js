@@ -116,8 +116,7 @@ function parseTimeInput(input, baseDate = null) {
     return date;
 }
 
-// --- Classes ---
-class Calender extends HTMLElement {
+class DateInput extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
@@ -126,11 +125,12 @@ class Calender extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log("Calender web-componenet called");
         const data = window.ftd.component_data(this);
+        this.data = data;
         const dt = to_timestamp_millis(data.dt);
         console.log(dt);
-        this.local_date = new Date(dt - new Date().getTimezoneOffset());
+        this.local_date = new Date(dt - new Date().getTimezoneOffset() * 60000);
+ 
         this.render();
         this.setupEventListeners();
     }
@@ -141,10 +141,7 @@ class Calender extends HTMLElement {
             .addEventListener("change", (e) => {
                 try {
                     const selectedDate = e.target.value;
-                    const newDate = parseDateInput(
-                        selectedDate,
-                        this.local_date
-                    );
+                    const newDate = parseDateInput(selectedDate);
                     if (!isValidDate(newDate)) {
                         console.warn("Invalid date input detected");
                         this.updateInputs();
@@ -156,49 +153,19 @@ class Calender extends HTMLElement {
                     this.updateInputs();
                 }
             });
-
-        this.shadowRoot
-            .querySelector(".time-input")
-            .addEventListener("change", (e) => {
-                try {
-                    const timeValue = e.target.value;
-                    const newDate = parseTimeInput(timeValue, this.local_date);
-                    if (!isValidDate(newDate)) {
-                        console.warn("Invalid time input detected");
-                        this.updateInputs();
-                        return;
-                    }
-                    this.setDateTime(newDate);
-                } catch (error) {
-                    console.error("Error handling time input:", error);
-                    this.updateInputs();
-                }
-            });
     }
 
     getDateString() {
         return formatDateForInput(this.local_date);
     }
 
-    getTimeString() {
-        return formatTimeForInput(this.local_date);
-    }
-
     setDateTime(date) {
-        console.log("setDateTime called");
-        if (!isValidDate(date)) {
-            console.warn("Invalid date detected, keeping previous value");
-            return;
-        }
         this.local_date = date;
         this.updateInputs();
         const formattedDate = formatDateToString(this.local_date);
-        console.log("formatted date:", formattedDate);
-
         const recordInstance = this.data.dt.get();
-
-        console.log("record instance:", recordInstance);
-        recordInstance.set(convertToReturnFormat(this.local_date, true));
+        const return_value = convertToReturnFormat(this.local_date, false);
+        recordInstance.set(return_value);
         if (this._onChangeCallback) this._onChangeCallback(formattedDate);
         this.dispatchEvent(
             new CustomEvent("change", {
@@ -210,9 +177,7 @@ class Calender extends HTMLElement {
 
     updateInputs() {
         const dateInput = this.shadowRoot.querySelector(".date-input");
-        const timeInput = this.shadowRoot.querySelector(".time-input");
         if (dateInput) dateInput.value = this.getDateString();
-        if (timeInput) timeInput.value = this.getTimeString();
     }
 
     render() {
@@ -252,10 +217,6 @@ class Calender extends HTMLElement {
                 <div class="input-group">
                     <label>Date</label>
                     <input type="date" class="date-input" value="${this.getDateString()}">
-                </div>
-                <div class="input-group">
-                    <label>Time</label>
-                    <input type="time" class="time-input" value="${this.getTimeString()}">
                 </div>
             </div>
         `;
