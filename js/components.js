@@ -34,11 +34,17 @@ class DateTimeModel {
     }
 
     exportToFastn(withTime = true) {
-        const date = this._date;
-        const year = date.getUTCFullYear();
-        const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = date.getUTCDate().toString().padStart(2, "0");
-        const datePart = parseInt(`${year}${month}${day}`);
+        const date = this._date; // Represents a UTC moment
+        const yearUTC = date.getUTCFullYear();
+        const monthUTC = date.getUTCMonth(); // 0-based
+        const dayUTC = date.getUTCDate();
+
+        const datePart = parseInt(
+            `${yearUTC}${(monthUTC + 1).toString().padStart(2, "0")}${dayUTC
+                .toString()
+                .padStart(2, "0")}`
+        );
+
         let timePart = 0n;
         if (withTime) {
             const hours = date.getUTCHours();
@@ -50,6 +56,28 @@ class DateTimeModel {
                 BigInt(minutes) * 60n * 1000000000n +
                 BigInt(seconds) * 1000000000n +
                 BigInt(millis) * 1000000n;
+        } else {
+            const localMidnight = new Date(
+                yearUTC,
+                monthUTC,
+                dayUTC,
+                0,
+                0,
+                0,
+                0
+            );
+
+            const hoursUTC_forLocalMidnight = localMidnight.getUTCHours();
+            const minutesUTC_forLocalMidnight = localMidnight.getUTCMinutes();
+            const secondsUTC_forLocalMidnight = localMidnight.getUTCSeconds();
+            const millisUTC_forLocalMidnight =
+                localMidnight.getUTCMilliseconds();
+
+            timePart =
+                BigInt(hoursUTC_forLocalMidnight) * 3600n * 1000000000n +
+                BigInt(minutesUTC_forLocalMidnight) * 60n * 1000000000n +
+                BigInt(secondsUTC_forLocalMidnight) * 1000000000n +
+                BigInt(millisUTC_forLocalMidnight) * 1000000n;
         }
         return new fastn.recordInstanceClass({
             date: datePart,
