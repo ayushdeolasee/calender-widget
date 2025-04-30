@@ -12,7 +12,7 @@ class DateTimeModel {
         }
     }
 
-    importFromFastn(record) {
+    importFromFastn(record, withEnd = false) {
         const obj =
             record instanceof fastn.recordInstanceClass
                 ? record.toObject()
@@ -24,12 +24,16 @@ class DateTimeModel {
         const nanos = BigInt(obj.time);
         const secs = Number(nanos / 1000000000n);
         const hours = Math.floor(secs / 3600);
-        const minutes = Math.floor((secs % 3600) / 60);
+        let minutes = Math.floor((secs % 3600) / 60);
+        if (withEnd == true) {
+            minutes += 30;
+        }
         const seconds = secs % 60;
         const millis = Math.floor(Number(nanos % 1000000000n) / 1000000);
         this._date = new Date(
             Date.UTC(year, month, day, hours, minutes, seconds, millis)
         );
+
         return this;
     }
 
@@ -137,18 +141,12 @@ class DateTimeModel {
         this._date = new Date(date);
         return this;
     }
-
-    // Static helper to convert directly from FASTN record to milliseconds timestamp
-    static toTimestampMillis(dt) {
-        const model = new DateTimeModel(dt);
-        return model.getDate().getTime();
-    }
 }
 
-// Base component class to reduce duplication
 class BaseTimeComponent extends HTMLElement {
-    constructor() {
+    constructor(withTime = false) {
         super();
+        this.withTime = withTime;
         this.attachShadow({ mode: "open" });
         this.model = new DateTimeModel();
         this._onChangeCallback = null;
@@ -159,9 +157,14 @@ class BaseTimeComponent extends HTMLElement {
         this.data = data;
         if (data.dt) {
             this.model.importFromFastn(data.dt);
+            if (this.withTime) {
+                this.updateFastnAndNotify(false);
+            } else {
+                this.updateFastnAndNotify();
+            }
         }
         this.render();
-        this.setupEventListeners();
+
         if (this.setupSpecificEventListeners) {
             this.setupSpecificEventListeners();
         }
@@ -169,10 +172,6 @@ class BaseTimeComponent extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = this.renderTemplate();
-    }
-
-    setupEventListeners() {
-        // Common listeners if any
     }
 
     updateFastnAndNotify(withTime = true) {
@@ -283,6 +282,10 @@ class Calender extends BaseTimeComponent {
 }
 
 class DateInput extends BaseTimeComponent {
+    constructor() {
+        super(true);
+    }
+
     renderTemplate() {
         return `
             <style>
@@ -416,10 +419,10 @@ class TimeInput extends BaseTimeComponent {
     }
 }
 
-// RangeBaseComponent for handling date/time ranges
 class RangeBaseComponent extends HTMLElement {
-    constructor() {
+    constructor(withTime = false) {
         super();
+        this.withTime = withTime;
         this.attachShadow({ mode: "open" });
         this.startModel = new DateTimeModel();
         this.endModel = new DateTimeModel();
@@ -432,11 +435,17 @@ class RangeBaseComponent extends HTMLElement {
 
         if (data.start_dt && data.end_dt) {
             this.startModel.importFromFastn(data.start_dt);
-            this.endModel.importFromFastn(data.end_dt);
+            this.endModel.importFromFastn(data.end_dt, true);
+            if (this.withTime) {
+                this.updateStartFastnAndNotify(false);
+                this.updateEndFastnAndNotify(false);
+            } else {
+                this.updateStartFastnAndNotify();
+                this.updateEndFastnAndNotify();
+            }
         }
 
         this.render();
-        this.setupEventListeners();
         if (this.setupSpecificEventListeners) {
             this.setupSpecificEventListeners();
         }
@@ -444,10 +453,6 @@ class RangeBaseComponent extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = this.renderTemplate();
-    }
-
-    setupEventListeners() {
-        // Common event listeners if any
     }
 
     updateStartFastnAndNotify(withTime = true) {
@@ -496,6 +501,10 @@ class RangeBaseComponent extends HTMLElement {
 }
 
 class DateRange extends RangeBaseComponent {
+    constructor() {
+        super(true);
+    }
+
     renderTemplate() {
         return `
             <style>

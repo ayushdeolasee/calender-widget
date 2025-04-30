@@ -10,17 +10,6 @@ end_dt: $end
 -- ftd.integer: $end.date
 -- ftd.integer: $end.time
 
--- datetime.datetime $start_combined:
-date: 20250428
-time: 75120000000000
-
--- datetime.datetime $end_combined:
-date: 20250430
-time: 35520000000000
-
--- ftd.integer: $datetime.to-timestamp-millis(dt=*$start_combined)
--- ftd.integer: $datetime.to-timestamp-millis(dt=*$end_combined)
-
 -- ds.page: Calender-widget
 margin: $ds.spaces.vertical-gap.zero
 
