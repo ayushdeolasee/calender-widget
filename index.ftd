@@ -1,16 +1,25 @@
--- datetime.datetime current: $datetime.now()
+-- datetime.datetime start: $datetime.now()
+-- datetime.datetime end: $datetime.now()
 
--- date-widget:
-dt: $current
+-- calender-range:
+start_dt: $start
+end_dt: $end
 
--- ftd.integer: $current.date
--- ftd.integer: $current.time
+-- ftd.integer: $start.date
+-- ftd.integer: $start.time
+-- ftd.integer: $end.date
+-- ftd.integer: $end.time
 
--- datetime.datetime $debug:
-date: 20250412
-time: 66600000000000
+-- datetime.datetime $start_combined:
+date: 20250428
+time: 75120000000000
 
--- ftd.integer: $datetime.to-timestamp-millis(dt=*$debug)
+-- datetime.datetime $end_combined:
+date: 20250430
+time: 35520000000000
+
+-- ftd.integer: $datetime.to-timestamp-millis(dt=*$start_combined)
+-- ftd.integer: $datetime.to-timestamp-millis(dt=*$end_combined)
 
 -- ds.page: Calender-widget
 margin: $ds.spaces.vertical-gap.zero
