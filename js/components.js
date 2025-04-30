@@ -12,7 +12,7 @@ class DateTimeModel {
         }
     }
 
-    importFromFastn(record, withEnd = false) {
+    importFromFastn(record) {
         const obj =
             record instanceof fastn.recordInstanceClass
                 ? record.toObject()
@@ -25,9 +25,6 @@ class DateTimeModel {
         const secs = Number(nanos / 1000000000n);
         const hours = Math.floor(secs / 3600);
         let minutes = Math.floor((secs % 3600) / 60);
-        if (withEnd == true) {
-            minutes += 30;
-        }
         const seconds = secs % 60;
         const millis = Math.floor(Number(nanos % 1000000000n) / 1000000);
         this._date = new Date(
@@ -144,9 +141,9 @@ class DateTimeModel {
 }
 
 class BaseTimeComponent extends HTMLElement {
-    constructor(withTime = false) {
+    constructor(updateOnInit = false) {
         super();
-        this.withTime = withTime;
+        this.updateOnInit = updateOnInit;
         this.attachShadow({ mode: "open" });
         this.model = new DateTimeModel();
         this._onChangeCallback = null;
@@ -157,10 +154,8 @@ class BaseTimeComponent extends HTMLElement {
         this.data = data;
         if (data.dt) {
             this.model.importFromFastn(data.dt);
-            if (this.withTime) {
+            if (this.updateOnInit) {
                 this.updateFastnAndNotify(false);
-            } else {
-                this.updateFastnAndNotify();
             }
         }
         this.render();
@@ -420,9 +415,9 @@ class TimeInput extends BaseTimeComponent {
 }
 
 class RangeBaseComponent extends HTMLElement {
-    constructor(withTime = false) {
+    constructor(updateOnInit = false) {
         super();
-        this.withTime = withTime;
+        this.updateOnInit = updateOnInit;
         this.attachShadow({ mode: "open" });
         this.startModel = new DateTimeModel();
         this.endModel = new DateTimeModel();
@@ -435,14 +430,11 @@ class RangeBaseComponent extends HTMLElement {
 
         if (data.start_dt && data.end_dt) {
             this.startModel.importFromFastn(data.start_dt);
-            this.endModel.importFromFastn(data.end_dt, true);
-            if (this.withTime) {
+            this.endModel.importFromFastn(data.end_dt);
+            if (this.updateOnInit) {
                 this.updateStartFastnAndNotify(false);
                 this.updateEndFastnAndNotify(false);
-            } else {
-                this.updateStartFastnAndNotify();
-                this.updateEndFastnAndNotify();
-            }
+            } 
         }
 
         this.render();
