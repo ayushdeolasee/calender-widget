@@ -452,8 +452,44 @@
             this.shadowRoot.innerHTML = this.renderTemplate();
         }
 
+        checkStartEnd() {
+            if (this.startModel.getDate() > this.endModel.getDate()) {
+                const container_class =
+                    this.shadowRoot.getElementById("container");
+                console.log(container_class);
+                container_class.style.setProperty("border-style", "solid");
+                container_class.style.setProperty("border-color", "red");
+                const error_para_query =
+                    this.shadowRoot.querySelector(".error-message");
+                if (!error_para_query) {
+                    console.log("Error para not found");
+                    const error_para = document.createElement("p");
+                    const text_node = document.createTextNode(
+                        "Start date is after end date"
+                    );
+                    error_para.appendChild(text_node);
+                    error_para.classList.add("error-message");
+                    container_class.appendChild(error_para);
+                }
+                console.warn("Start date is after end date");
+            } else {
+                const container_class =
+                    this.shadowRoot.getElementById("container");
+                if (!(container_class == null)) {
+                    console.log("Container class is null");
+                    container_class.style.setProperty("border-style", "none");
+                    const error_para =
+                        this.shadowRoot.querySelector(".error-message");
+                    if (error_para) {
+                        error_para.remove();
+                    }
+                }
+            }
+        }
+
         updateStartFastnAndNotify(withTime = true) {
             if (this.data.start_dt) {
+                this.checkStartEnd();
                 const record = this.data.start_dt.get();
                 record.set(this.startModel.exportToFastn(withTime));
                 this.dispatchRangeChangeEvent();
@@ -462,6 +498,7 @@
 
         updateEndFastnAndNotify(withTime = true) {
             if (this.data.end_dt) {
+                this.checkStartEnd();
                 const record = this.data.end_dt.get();
                 record.set(this.endModel.exportToFastn(withTime));
                 this.dispatchRangeChangeEvent();
@@ -509,7 +546,7 @@
                         display: inline-block;
                         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     }
-                    .container {
+                    #container {
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
@@ -542,8 +579,13 @@
                     .input-group {
                         margin-bottom: 8px;
                     }
+                    .error-message {
+                        color: red;
+                        font-size: 14px;
+                        margin: -7px;
+                    } 
                 </style>
-                <div class="container">
+                <div id="container">
                     <div class="range-group">
                         <div class="date-group">
                             <label>Start Date</label>
@@ -610,7 +652,7 @@
                         display: inline-block;
                         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     }
-                    .container {
+                    #container {
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
@@ -643,8 +685,13 @@
                     .input-group {
                         margin-bottom: 8px;
                     }
+                    .error-message {
+                        color: red;
+                        font-size: 14px;
+                        margin: -7px;
+                    } 
                 </style>
-                <div class="container">
+                <div id="container">
                     <div class="range-group">
                         <div class="time-group">
                             <label>Start Time</label>
@@ -711,7 +758,7 @@
                         display: inline-block;
                         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     }
-                    .container {
+                    #container {
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
@@ -728,7 +775,13 @@
                     .datetime-group {
                         flex: 1;
                     }
+                    .error-message {
+                        color: red;
+                        font-size: 14px;
+                        margin: -7px;
+                    } 
                     input {
+                        
                         padding: 8px;
                         border: 1px solid #ccc;
                         border-radius: 4px;
@@ -745,7 +798,7 @@
                         margin-bottom: 8px;
                     }
                 </style>
-                <div class="container">
+                <div id="container">
                     <div class="range-group">
                         <div class="datetime-group">
                             <div class="input-group">
