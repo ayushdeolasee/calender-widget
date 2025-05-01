@@ -1,15 +1,3 @@
--- datetime.datetime start: $datetime.now()
--- datetime.datetime end: $datetime.now(diff=30)
-
--- calender-range:
-start_dt: $start
-end_dt: $end
-
--- ftd.integer: $start.date
--- ftd.integer: $start.time
--- ftd.integer: $end.date
--- ftd.integer: $end.time
-
 -- ds.page: Calender-widget
 margin: $ds.spaces.vertical-gap.zero
 
