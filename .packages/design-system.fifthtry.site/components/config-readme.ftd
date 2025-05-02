@@ -1,8 +1,0 @@
--- component config-readme:
-
--- ds.copy-regular:
-color: $ds.colors.text-strong
-
-The `config` folder contains essential configuration files that manage the core settings of your site.
-
--- end: config-readme

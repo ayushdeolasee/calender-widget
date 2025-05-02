@@ -1,6 +1,0 @@
--- import: fastn
-
--- fastn.package: fastn-typography.fifthtry.site
-
--- fastn.dependency: manrope-font.fifthtry.site
--- fastn.dependency: inter-font.fifthtry.site
