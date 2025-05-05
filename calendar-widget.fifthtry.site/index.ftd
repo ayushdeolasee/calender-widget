@@ -1,8 +1,8 @@
--- ds.page: Calender-widget
+-- ds.page: Calendar-widget
 margin: $ds.spaces.vertical-gap.zero
 
 -- ds.heading-large: Calender Widget Package
--- ds.copy-regular: Package: `calender-widget.fifthtry.site`
+-- ds.copy-regular: Package: `calendar-widget.fifthtry.site`
 margin: $ds.spaces.vertical-gap.small
 
 -- ds.copy-regular: This package provides multiple web-components for date and time selection, and workes hand in hand with the [datetime package](https://datetime-v0.fifthtry.site). The source code for this package is available in the [Github](https://github.com/ayushdeolasee/calender-widget), under the AGPL-3 Lisence.
@@ -14,15 +14,15 @@ margin: $ds.spaces.vertical-gap.medium
 -- ds.column:
 align-content: left
 
-	-- ds.heading-small: calender-widget[datetime.datetime]
-	-- ds.copy-regular: The calender-widget web-component is a component that provides two input fields of `date` and `time` to the user. The web-component takes as input one variable - `dt` - of type `datetime.datetime` which it modifies on state change of input fields.
+	-- ds.heading-small: calendar-widget[datetime.datetime]
+	-- ds.copy-regular: The calendar-widget web-component is a component that provides two input fields of `date` and `time` to the user. The web-component takes as input one variable - `dt` - of type `datetime.datetime` which it modifies on state change of input fields.
 	
 	-- ds.code:
 	lang: ftd
 	
 	\;; define a variable of type datetime.datetime that pulls the current datetime from the datetime.now() function. And pass the variable to the calender widget.
 	\-- datetime.datetime $dt: $datetime.now()
-	\-- calendar.calender-widget:
+	\-- calendar.calendar-widget:
 	\   dt: $dt
 	
 	-- end: ds.code
@@ -53,8 +53,8 @@ align-content: left
 	
 	-- end: ds.code
 
-	-- ds.heading-small: calender-range[datetime.datetime]
-	-- ds.copy-regular: The calender-range web-component is a component that provides four input fields of `start date`, `start time`, `end date` and `end time` to the user. The web-component takes as input two variables - `start_dt` and `end_dt` - of type `datetime.datetime` which it modifies on state change of the respective input fields.
+	-- ds.heading-small: calendar-range[datetime.datetime]
+	-- ds.copy-regular: The calendar-range web-component is a component that provides four input fields of `start date`, `start time`, `end date` and `end time` to the user. The web-component takes as input two variables - `start_dt` and `end_dt` - of type `datetime.datetime` which it modifies on state change of the respective input fields.
 	
 	-- ds.code:
 	lang: ftd
@@ -62,7 +62,7 @@ align-content: left
 	\;; define two variables of type datetime.datetime that pulls the current datetime from the datetime.now() function. And pass them to the calender widget.
 	\-- datetime.datetime $start: $datetime.now()
 	\-- datetime.datetime $end: $datetime.now()
-	\-- calendar.calender-range:
+	\-- calendar.calendar-range:
 	\   start_dt: $start
 	\   end_dt: $end
 	
@@ -116,7 +116,7 @@ align-content: left
 -- end: ds.column
 -- end: ds.page
 
--- web-component calender-widget:
+-- web-component calendar-widget:
 datetime.datetime dt:
 js: $assets.files.js.components.js
 
@@ -134,7 +134,7 @@ js: $assets.files.js.components.js
 
 -- end: time-widget
 
--- web-component calender-range:
+-- web-component calendar-range:
 datetime.datetime start_dt:
 datetime.datetime end_dt:
 js: $assets.files.js.components.js

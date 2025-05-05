@@ -198,7 +198,7 @@
         }
     }
 
-    class Calender extends BaseTimeComponent {
+    class Calendar extends BaseTimeComponent {
         renderTemplate() {
             return `
                 <style>
@@ -750,7 +750,7 @@
         }
     }
 
-    class CalenderRange extends RangeBaseComponent {
+    class CalendarRange extends RangeBaseComponent {
         renderTemplate() {
             return `
                 <style>
@@ -896,11 +896,10 @@
         }
     }
 
-    // Define custom elements
-    customElements.define("calender-widget", Calender);
+    customElements.define("calender-widget", Calendar);
     customElements.define("date-widget", DateInput);
     customElements.define("time-widget", TimeInput);
     customElements.define("date-range", DateRange);
     customElements.define("time-range", TimeRange);
-    customElements.define("calender-range", CalenderRange);
+    customElements.define("calender-range", CalendarRange);
 })();
