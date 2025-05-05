@@ -1,0 +1,93 @@
+-- ds.page: Calendar Widget Example 
+-- ds.copy-regular: This is an example of the calendar widget. It is a simple calendar widget that allows you to select a date and time. 
+-- ds.heading-small: `calender-widget`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.calender-widget:
+dt: $calender-widget-current
+
+-- ds.copy-regular: Date:
+-- ftd.integer: $calender-widget-current.date
+-- ds.copy-regular: Time:
+-- ftd.integer: $calender-widget-current.time
+
+-- ds.heading-large: `date-widget`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.date-widget:
+dt: $date-widget-current
+
+-- ds.copy-regular: Date:
+-- ftd.integer: $date-widget-current.date
+-- ds.copy-regular: Time:
+-- ftd.integer: $date-widget-current.time
+
+-- ds.heading-large: `time-widget`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.time-widget:
+dt: $calender-widget-current
+
+-- ds.copy-regular: Date:
+-- ftd.integer: $time-widget-current.date
+-- ds.copy-regular: Time:
+-- ftd.integer: $time-widget-current.time
+
+-- ds.heading-large: `calender-range`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.calender-range:
+start_dt: $calender-range-start
+end_dt: $calender-range-end 
+
+-- ds.copy-regular: Start Date:
+-- ftd.integer: $calender-range-start.date
+-- ds.copy-regular: Start Time:
+-- ftd.integer: $calender-range-start.time
+-- ds.copy-regular: End Date:
+-- ftd.integer: $calender-range-end.date
+-- ds.copy-regular: End Time:
+-- ftd.integer: $calender-range-end.time
+
+-- ds.heading-large: `date-range`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.date-range:
+start_dt: $date-range-start
+end_dt: $date-range-end 
+
+-- ds.copy-regular: Start Date:
+-- ftd.integer: $date-range-start.date
+-- ds.copy-regular: Start Time:
+-- ftd.integer: $date-range-start.time
+-- ds.copy-regular: End Date:
+-- ftd.integer: $date-range-end.date
+-- ds.copy-regular: End Time:
+-- ftd.integer: $date-range-end.time
+
+-- ds.heading-large: `time-range`
+-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+-- calendar.time-range:
+start_dt: $time-range-start
+end_dt: $time-range-end 
+
+-- ds.copy-regular: Start Date:
+-- ftd.integer: $time-range-start.date
+-- ds.copy-regular: Start Time:
+-- ftd.integer: $time-range-start.time
+-- ds.copy-regular: End Date:
+-- ftd.integer: $time-range-end.date
+-- ds.copy-regular: End Time:
+-- ftd.integer: $time-range-end.time
+
+
+
+-- end: ds.page
+
+
+
+
+-- datetime.datetime $calender-widget-current: $datetime.now()
+-- datetime.datetime $date-widget-current: $datetime.now()
+-- datetime.datetime $time-widget-current: $datetime.now()
+-- datetime.datetime $calender-range-start: $datetime.now()
+-- datetime.datetime $calender-range-end: $datetime.now(diff=30)
+-- datetime.datetime $date-range-start: $datetime.now()
+-- datetime.datetime $date-range-end: $datetime.now(diff=30)
+-- datetime.datetime $time-range-start: $datetime.now()
+-- datetime.datetime $time-range-end: $datetime.now(diff=30)
