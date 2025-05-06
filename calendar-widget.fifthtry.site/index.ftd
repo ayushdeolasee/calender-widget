@@ -120,7 +120,7 @@ align-content: left
 datetime.datetime dt:
 js: $assets.files.js.components.js
 
--- end: calender-widget
+-- end: calendar-widget
 
 -- web-component date-widget:
 datetime.datetime dt:
@@ -139,7 +139,7 @@ datetime.datetime start_dt:
 datetime.datetime end_dt:
 js: $assets.files.js.components.js
 
--- end: calender-range
+-- end: calendar-range
 
 -- web-component date-range:
 datetime.datetime start_dt:
