@@ -896,10 +896,10 @@
         }
     }
 
-    customElements.define("calender-widget", Calendar);
+    customElements.define("calendar-widget", Calendar);
     customElements.define("date-widget", DateInput);
     customElements.define("time-widget", TimeInput);
     customElements.define("date-range", DateRange);
     customElements.define("time-range", TimeRange);
-    customElements.define("calender-range", CalendarRange);
+    customElements.define("calendar-range", CalendarRange);
 })();

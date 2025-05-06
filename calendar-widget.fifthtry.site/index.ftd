@@ -112,7 +112,7 @@ align-content: left
 	
 	-- end: ds.code
 	;; TODO: add github link for the package source code
-	-- ds.copy-regular: Checkout an example of the package at [calender-widget.fifthtry.site](https://calender-widget.fifthtry.site), and visit the source code at [github.com](github.com)
+	-- ds.copy-regular: Checkout an example of the package at [https://calendar-widget-example.fifthtry.site](https://calendar-widget-example.fifthtry.site), and visit the source code at [github.com](https://github.com/ayushdeolasee/calender-widget/tree/main/calendar-widget-example.fifthtry.site)
 -- end: ds.column
 -- end: ds.page
 
