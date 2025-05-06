@@ -1,0 +1,11 @@
+-- import: fastn
+-- fastn.package: calendar-widget-example.fifthtry.site
+
+-- fastn.dependency: design-system.fifthtry.site
+-- fastn.dependency: datetime-v0.fifthtry.site
+-- fastn.dependency: calendar-widget.fifthtry.site
+
+-- fastn.auto-import: calendar-widget.fifthtry.site-example/assets
+-- fastn.auto-import: calendar-widget.fifthtry.site as calendar
+-- fastn.auto-import: datetime-v0.fifthtry.site as datetime
+-- fastn.auto-import: design-system.fifthtry.site as ds
