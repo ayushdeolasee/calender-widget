@@ -18,8 +18,6 @@ jobs:
     env:
       FIFTHTRY_SITE_WRITE_TOKEN: ${{ secrets.FT_CALENDER_WIDGET_EXAMPLE }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - run: sh -c "$(curl -fsSL https://fastn.com/install.sh)"
-      - name: Upload to FifthTry using fastn
-        run: cd calendar-widget-example.fifthtry.site & fastn upload calendar-widget-example
+        - uses: actions/checkout@v2
+        - run: sh -c "$(curl -fsSL https://fastn.com/install.sh)"
+        - run: cd calendar-widget-example.fifthtry.site & fastn upload calendar-widget-example
