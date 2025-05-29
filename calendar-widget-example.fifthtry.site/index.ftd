@@ -115,8 +115,6 @@ align-content: left
 -- ftd.integer: $time-range-end.time
 -- end: ds.row
 -- end: ds.column
-
-
 -- end: ds.page
 
 
