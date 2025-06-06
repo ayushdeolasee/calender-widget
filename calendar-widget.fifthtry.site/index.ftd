@@ -5,7 +5,7 @@ margin: $ds.spaces.vertical-gap.zero
 -- ds.copy-regular: Package: `calendar-widget.fifthtry.site`
 margin: $ds.spaces.vertical-gap.small
 
--- ds.copy-regular: This package provides multiple web-components for date and time selection, and workes hand in hand with the [datetime package](https://datetime-v0.fifthtry.site). The source code for this package is available in the [Github](https://github.com/ayushdeolasee/calender-widget), under the AGPL-3 Lisence.
+-- ds.copy-regular: This package provides multiple web-components for date and time selection for the [fastn language](https://fastn.com). Fastn is a modern and data-centric language that is designed to be easy to learn and use. The package also works hand in hand with the [datetime package](https://datetime-v0.fifthtry.site), which is package that provides functions to handle datetime objects in fastn. The source code for this package is available in the [Github](https://github.com/ayushdeolasee/calender-widget), under the AGPL-3 Lisence.
 margin: $ds.spaces.vertical-gap.medium
 
 -- ds.heading-medium: `Web Components`:
@@ -86,7 +86,7 @@ align-content: left
 	-- ds.copy-regular: The time-range web-component is a component that provides two input fields of `start time` and `end time` to the user. The web-component takes as input two variables - `start_dt` and `end_dt` - of type `datetime.datetime` which it modifies on state change of the respective input fields. It will update only the time component and leave the date component as the current date.
 	
 	-- ds.code:
-	lang: ftd
+	lang: ft
 	
 	\;; define two variables of type datetime.datetime that pulls the current datetime from the datetime.now() function. And pass them to the calender widget.
 	\-- datetime.datetime $start: $datetime.now()
@@ -98,7 +98,7 @@ align-content: left
 	-- end: ds.code
 -- end: ds.column
 
--- ds.heading-medium: `Web Components`:
+-- ds.heading-medium: `Using the package`:
 -- ds.column:
 align-content: left
 	-- ds.copy-regular: There is one additional package that need be imported to use the calender widget. The datetime package provides functions to deal with datetime objects. Find the documenation for the datetime package [here](https://datetime-v0.fifthtry.site).
@@ -111,8 +111,291 @@ align-content: left
 	\-- fastn.auto-import: calendar-widget.fifthtry.site as calendar
 	
 	-- end: ds.code
-	;; TODO: add github link for the package source code
-	-- ds.copy-regular: Checkout an example of the package at [https://calendar-widget-example.fifthtry.site](https://calendar-widget-example.fifthtry.site), and visit the source code at [github.com](https://github.com/ayushdeolasee/calender-widget/tree/main/calendar-widget-example.fifthtry.site)
+	;; -- ds.copy-regular: Checkout an example of the package at [https://calendar-widget-example.fifthtry.site](https://calendar-widget-example.fifthtry.site), and visit the source code at [github.com](https://github.com/ayushdeolasee/calender-widget/tree/main/calendar-widget-example.fifthtry.site)
+-- end: ds.column
+
+-- ds.heading-medium: `Example`:
+-- ds.column:
+align-content: left
+
+	-- ds.copy-regular: The following is an example of all the web-componenets in the package along with all the source code to use them.
+	-- ds.column:
+	background.solid: $ds.colors.background.step-1
+		-- ds.heading-small: `calendar-widget`
+		-- ds.column:
+		    align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- calendar-widget:
+			    dt: $calendar-widget-current
+			-- ds.row:
+			    align-content: left
+				-- ds.copy-regular: Date:
+				-- ftd.integer: $calendar-widget-current.date
+				-- ds.copy-regular: Time:
+				-- ftd.integer: $calendar-widget-current.time
+			-- end: ds.row
+		-- end: ds.column
+
+		-- ds.heading-small: `date-widget`
+		-- ds.column:
+		 align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- date-widget:
+			 dt: $date-widget-current
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: Date:
+				-- ftd.integer: $date-widget-current.date
+				-- ds.copy-regular: Time:
+				-- ftd.integer: $date-widget-current.time
+			-- end: ds.row
+		-- end: ds.column
+
+		-- ds.heading-small: `time-widget`
+		-- ds.column:
+		 align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- time-widget:
+			 dt: $time-widget-current
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: Date:
+				-- ftd.integer: $time-widget-current.date
+				-- ds.copy-regular: Time:
+				-- ftd.integer: $time-widget-current.time
+			-- end: ds.row
+		-- end: ds.column
+
+		-- ds.heading-small: `calendar-range`
+		-- ds.column:
+		 align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- calendar-range:
+			 start_dt: $calendar-range-start
+			 end_dt: $calendar-range-end
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: Start Date:
+				-- ftd.integer: $calendar-range-start.date
+				-- ds.copy-regular: Start Time:
+				-- ftd.integer: $calendar-range-start.time
+			-- end: ds.row
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: End Date:
+				-- ftd.integer: $calendar-range-end.date
+				-- ds.copy-regular: End Time:
+				-- ftd.integer: $calendar-range-end.time
+			-- end: ds.row
+		-- end: ds.column
+
+		-- ds.heading-small: `date-range`
+		-- ds.column:
+		 align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- date-range:
+			 start_dt: $date-range-start
+			 end_dt: $date-range-end
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: Start Date:
+				-- ftd.integer: $date-range-start.date
+				-- ds.copy-regular: Start Time:
+				-- ftd.integer: $date-range-start.time
+			-- end: ds.row
+			-- ds.row:
+			 align-content: left
+				-- ds.copy-regular: End Date:
+				-- ftd.integer: $date-range-end.date
+				-- ds.copy-regular: End Time:
+				-- ftd.integer: $date-range-end.time
+			-- end: ds.row
+		-- end: ds.column
+
+		-- ds.heading-small: `time-range`
+		
+		-- ds.column:
+		align-content: left
+			-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+			-- time-range:
+			start_dt: $time-range-start
+			end_dt: $time-range-end
+			
+			-- ds.row:
+			align-content: left
+				-- ds.copy-regular: Start Date:
+				-- ftd.integer: $time-range-start.date
+				-- ds.copy-regular: Start Time:
+				-- ftd.integer: $time-range-start.time
+			-- end: ds.row
+			-- ds.row:
+			align-content: left
+				-- ds.copy-regular: End Date:
+				-- ftd.integer: $time-range-end.date
+				-- ds.copy-regular: End Time:
+				-- ftd.integer: $time-range-end.time
+			-- end: ds.row
+
+		-- end: ds.column
+	-- end: ds.column
+
+	-- ds.copy-regular: Here is the code for the example that is displayed above:
+	style: bold
+	
+	-- ds.copy-regular: Firstly we import the required packages in the FASTN.ftd file as such:
+	-- ds.code: FASTN.ftd
+	lang: ftd
+	
+	\-- import: fastn
+	\-- fastn.package: calendar-widget-example.fifthtry.site
+	
+	\-- fastn.dependency: datetime-v0.fifthtry.site
+	\-- fastn.dependency: calendar-widget.fifthtry.site
+	\-- fastn.dependency: design-system.fifthtry.site
+	
+	\-- fastn.auto-import: calendar-widget.fifthtry.site-example/assets
+	\-- fastn.auto-import: calendar-widget.fifthtry.site as calendar
+	\-- fastn.auto-import: datetime-v0.fifthtry.site as datetime
+	\-- fastn.auto-import: design-system.fifthtry.site as ds
+	
+	-- end: ds.code
+
+	-- ds.copy-regular: This example uses three packages, firstly we import the [datetime package](https://datetime-v0.fifthtry.site) which will allow us to use the datetime functions, then import the calendar-widget package which provides the web-components documented above, and lastly we import the [design-system package](https://design-system.fifthtry.site) which is a design system for FASTN, and provides many UI components that make it easy to build UI's.
+	
+	-- ds.copy-regular: Here is the index.ftd file that is used to display the example:
+	-- ds.code: index.ftd
+	lang: ftd
+	
+	\-- ds.page: Calendar Widget Example
+	\-- ds.copy-regular: This is an example of the calendar widget. It is a simple calendar widget that allows you to select a date and time.
+	
+	\-- ds.heading-small: `calendar-widget`
+	\-- ds.column:
+	    align-content: left
+	    \-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	    \-- calendar.calendar-widget:
+	        dt: $calendar-widget-current
+	    \-- ds.row:
+	        align-content: left
+	        \-- ds.copy-regular: Date:
+	        \-- ftd.integer: $calendar-widget-current.date
+	        \-- ds.copy-regular: Time:
+	        \-- ftd.integer: $calendar-widget-current.time
+	    \-- end: ds.row
+	\-- end: ds.column
+	
+	\-- ds.heading-small: `date-widget`
+	\-- ds.column:
+	    align-content: left
+	    \-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	    \-- calendar.date-widget:
+	        dt: $date-widget-current
+	    \-- ds.row:
+	        align-content: left
+	        \-- ds.copy-regular: Date:
+	        \-- ftd.integer: $date-widget-current.date
+	        \-- ds.copy-regular: Time:
+	        \-- ftd.integer: $date-widget-current.time
+	    \-- end: ds.row
+	\-- end: ds.column
+	
+	\-- ds.heading-small: `time-widget`
+	\-- ds.column:
+	    align-content: left
+	    \-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	    \-- calendar.time-widget:
+	        dt: $time-widget-current
+	    \-- ds.row:
+	        \align-content: left
+	        \-- ds.copy-regular: Date:
+	        \-- ftd.integer: $time-widget-current.date
+	        \-- ds.copy-regular: Time:
+	        \-- ftd.integer: $time-widget-current.time
+	    \-- end: ds.row
+	\-- end: ds.column
+	
+	\-- ds.heading-small: `calendar-range`
+	\-- ds.column:
+	    \align-content: left
+	    \-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	    \-- calendar.calendar-range:
+	        \start_dt: $calendar-range-start
+	        \end_dt: $calendar-range-end
+	    \-- ds.row:
+	        \align-content: left
+	        \-- ds.copy-regular: Start Date:
+	        \-- ftd.integer: $calendar-range-start.date
+	        \-- ds.copy-regular: Start Time:
+	        \-- ftd.integer: $calendar-range-start.time
+	    \-- end: ds.row
+	    \-- ds.row:
+	        \align-content: left
+	        \-- ds.copy-regular: End Date:
+	        \-- ftd.integer: $calendar-range-end.date
+	        \-- ds.copy-regular: End Time:
+	        \-- ftd.integer: $calendar-range-end.time
+	    \-- end: ds.row
+	\-- end: ds.column
+	
+	\-- ds.heading-small: `date-range`
+	\-- ds.column:
+	    \align-content: left
+	    \-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	    \-- calendar.date-range:
+	        \start_dt: $date-range-start
+	        \end_dt: $date-range-end
+	    \-- ds.row:
+	        \align-content: left
+	        \-- ds.copy-regular: Start Date:
+	        \-- ftd.integer: $date-range-start.date
+	        \-- ds.copy-regular: Start Time:
+	        \-- ftd.integer: $date-range-start.time
+	    \-- end: ds.row
+	    \-- ds.row:
+	        \align-content: left
+	        \-- ds.copy-regular: End Date:
+	        \-- ftd.integer: $date-range-end.date
+	        \-- ds.copy-regular: End Time:
+	        \-- ftd.integer: $date-range-end.time
+	    \-- end: ds.row
+	\-- end: ds.column
+	
+	\-- ds.heading-small: `time-range`
+	\-- ds.column:
+	\align-content: left
+	\-- ds.copy-regular: Go ahead and change the values and see them update the variables:
+	\-- calendar.time-range:
+	\start_dt: $time-range-start
+	\end_dt: $time-range-end
+	
+	\-- ds.row:
+	\align-content: left
+	\-- ds.copy-regular: Start Date:
+	\-- ftd.integer: $time-range-start.date
+	\-- ds.copy-regular: Start Time:
+	\-- ftd.integer: $time-range-start.time
+	\-- end: ds.row
+	\-- ds.row:
+	\align-content: left
+	\-- ds.copy-regular: End Date:
+	\-- ftd.integer: $time-range-end.date
+	\-- ds.copy-regular: End Time:
+	\-- ftd.integer: $time-range-end.time
+	\-- end: ds.row
+	\-- end: ds.column
+	\-- end: ds.page
+	
+	\-- datetime.datetime $calendar-widget-current: $datetime.now()
+	\-- datetime.datetime $date-widget-current: $datetime.now()
+	\-- datetime.datetime $time-widget-current: $datetime.now()
+	\-- datetime.datetime $calendar-range-start: $datetime.now()
+	\-- datetime.datetime $calendar-range-end: $datetime.now(diff=30)
+	\-- datetime.datetime $date-range-start: $datetime.now()
+	\-- datetime.datetime $date-range-end: $datetime.now(diff=30)
+	\-- datetime.datetime $time-range-start: $datetime.now()
+	\-- datetime.datetime $time-range-end: $datetime.now(diff=30)
+	-- end: ds.code
+
 -- end: ds.column
 -- end: ds.page
 
@@ -154,3 +437,14 @@ datetime.datetime end_dt:
 js: $assets.files.js.components.js
 
 -- end: time-range
+
+
+-- datetime.datetime $calendar-widget-current: $datetime.now()
+-- datetime.datetime $date-widget-current: $datetime.now()
+-- datetime.datetime $time-widget-current: $datetime.now()
+-- datetime.datetime $calendar-range-start: $datetime.now()
+-- datetime.datetime $calendar-range-end: $datetime.now(diff=30)
+-- datetime.datetime $date-range-start: $datetime.now()
+-- datetime.datetime $date-range-end: $datetime.now(diff=30)
+-- datetime.datetime $time-range-start: $datetime.now()
+-- datetime.datetime $time-range-end: $datetime.now(diff=30)
